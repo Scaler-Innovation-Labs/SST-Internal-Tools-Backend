@@ -1,4 +1,4 @@
-package com.sstinternaltools.sstinternal_tools.jwt.entity;
+package com.sstinternaltools.sstinternal_tools.security.entity;
 
 import jakarta.persistence.*;
 import com.sstinternaltools.sstinternal_tools.user.entity.User;

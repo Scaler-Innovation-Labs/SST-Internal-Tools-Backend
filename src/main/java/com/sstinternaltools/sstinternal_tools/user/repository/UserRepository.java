@@ -6,7 +6,7 @@ import com.sstinternaltools.sstinternal_tools.user.entity.User;
 import java.util.Optional;
 import java.util.UUID;
 
-public interface UserRepository extends JpaRepository<User, UUID>
+public interface UserRepository extends JpaRepository<User, Long>
 {
     Optional<User> findByUsername(String username);
 }

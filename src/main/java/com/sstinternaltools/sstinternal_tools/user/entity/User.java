@@ -2,6 +2,8 @@ package com.sstinternaltools.sstinternal_tools.user.entity;
 
 import jakarta.persistence.*;
 
+import java.time.LocalDateTime;
+import java.util.List;
 import java.util.UUID;
 
 @Entity
@@ -13,6 +15,11 @@ public class User
     @Column(name = "user_id",nullable = false)
     private Long id;
     private String username;
+    @Column(unique = true)
     private String email;
     private String password;
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<UserRole> userRoles;
+    private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
 }

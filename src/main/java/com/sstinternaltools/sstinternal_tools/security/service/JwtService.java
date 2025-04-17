@@ -136,10 +136,16 @@ public class JwtService {
         jwtTokenRepository.saveAll(tokens);
     }
 
-
+    //method to validate access token
     public boolean validateAccessToken(String token, User user) {
         final String email = extractEmail(token);
         return (email.equals(user.getEmail()) && !isTokenExpired(token));
     }
+
+    //method to check the token is expired or not
+    private boolean isTokenExpired(String token) {
+        return extractExpiration(token).before(new Date());
+    }
+
 
 }

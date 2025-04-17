@@ -29,4 +29,7 @@ public interface JwtTokenRepository extends JpaRepository<JwtToken, Long> {
            WHERE t.user.id = :userId AND (t.expired = false OR t.revoked = false)
            """)
     List<JwtToken> findAllTokensToRevoke(Long userId);
+
+    List<JwtToken> findAllTokensByUser_Email(String email);
+
 }

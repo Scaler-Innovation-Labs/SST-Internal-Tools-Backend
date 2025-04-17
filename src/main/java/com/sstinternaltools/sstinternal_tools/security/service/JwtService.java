@@ -119,6 +119,21 @@ public class JwtService {
                 .isPresent();
     }
 
+    //method to revoke Refresh token
+    public void revokeRefreshToken(String token){
+        jwtTokenRepository.findByToken(token).ifPresent(
+                t->{
+                    t.setRevoked(true);
+                    jwtTokenRepository.save(t);
+                }
+        );
+    }
 
+    //method to revoke all the refresh tokens for the user
+    public void revokeAllTokensForUser(String email){
+        List<JwtToken> tokens=jwtTokenRepository.findAllTokensByUser_Email(email);
+        tokens.forEach(token-> token.setRevoked(true));
+        jwtTokenRepository.saveAll(tokens);
+    }
 
 }

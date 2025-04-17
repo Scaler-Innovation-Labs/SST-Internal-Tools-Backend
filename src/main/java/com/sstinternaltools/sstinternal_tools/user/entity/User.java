@@ -17,16 +17,38 @@ public class User
     private String username;
     @Column(unique = true)
     private String email;
-    private String password;
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<UserRole> userRoles;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 
-    public User(String username, String email, String password, List<UserRole> userRoles,LocalDateTime createdAt, LocalDateTime updatedAt) {
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public List<UserRole> getUserRoles() {
+        return userRoles;
+    }
+
+    public void setUserRoles(List<UserRole> userRoles) {
+        this.userRoles = userRoles;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public User(String username, String email, List<UserRole> userRoles, LocalDateTime createdAt, LocalDateTime updatedAt) {
         this.username = username;
         this.email = email;
-        this.password = password;
         this.userRoles = userRoles;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;

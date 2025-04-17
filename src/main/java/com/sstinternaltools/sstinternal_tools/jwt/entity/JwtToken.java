@@ -6,6 +6,7 @@ import com.sstinternaltools.sstinternal_tools.user.entity.User;
 @Entity
 public class JwtToken
 {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

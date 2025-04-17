@@ -22,4 +22,15 @@ public class User
     private List<UserRole> userRoles;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
+
+    public User(String username, String email, String password, List<UserRole> userRoles,LocalDateTime createdAt, LocalDateTime updatedAt) {
+        this.username = username;
+        this.email = email;
+        this.password = password;
+        this.userRoles = userRoles;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
+    }
+
+    public User() {}
 }

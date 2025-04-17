@@ -111,5 +111,14 @@ public class JwtService {
         }
     }
 
+    //method to validate refresh token
+    public boolean isRefreshTokenValid(String token){
+        return jwtTokenRepository.findByToken(token)
+                .filter(t-> !t.isRevoked() && !t.isExpired() && t.getTokenType()==TokenType.REFRESH)
+                .filter(t->t.getExpirationDateTime().isAfter(LocalDateTime.now()))
+                .isPresent();
+    }
+
+
 
 }

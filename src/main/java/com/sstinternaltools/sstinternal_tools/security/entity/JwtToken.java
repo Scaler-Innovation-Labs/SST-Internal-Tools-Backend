@@ -21,7 +21,7 @@ public class JwtToken
 
     private boolean revoked;
     private boolean expired;
-    private LocalDateTime expirationTime;
+    private LocalDateTime expirationDateTime;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
@@ -29,12 +29,12 @@ public class JwtToken
 
     public JwtToken() {}
 
-    public JwtToken(String token, TokenType tokenType, boolean revoked, boolean expired,LocalDateTime expirationTime, User user) {
+    public JwtToken(String token, TokenType tokenType, boolean revoked, boolean expired,LocalDateTime expirationDateTime, User user) {
         this.token = token;
         this.tokenType = tokenType;
         this.revoked = revoked;
         this.expired = expired;
-        this.expirationTime = expirationTime;
+        this.expirationDateTime = expirationDateTime;
         this.user = user;
     }
 
@@ -84,5 +84,13 @@ public class JwtToken
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public LocalDateTime getExpirationDateTime() {
+        return expirationDateTime;
+    }
+
+    public void setExpirationDateTime(LocalDateTime expirationDateTime) {
+        this.expirationDateTime = expirationDateTime;
     }
 }

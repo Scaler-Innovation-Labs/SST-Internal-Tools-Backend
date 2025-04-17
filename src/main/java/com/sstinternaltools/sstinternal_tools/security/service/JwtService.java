@@ -1,12 +1,19 @@
 package com.sstinternaltools.sstinternal_tools.security.service;
 
+import com.sstinternaltools.sstinternal_tools.security.entity.JwtToken;
+import com.sstinternaltools.sstinternal_tools.security.entity.TokenType;
 import com.sstinternaltools.sstinternal_tools.security.repository.JwtTokenRepository;
 import com.sstinternaltools.sstinternal_tools.user.entity.User;
 import com.sstinternaltools.sstinternal_tools.user.entity.UserRole;
 import com.sstinternaltools.sstinternal_tools.user.repository.UserRepository;
 import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.io.Decoders;
+import io.jsonwebtoken.security.Keys;
 import org.springframework.beans.factory.annotation.Value;
 
+import javax.crypto.SecretKey;
+import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -27,17 +34,51 @@ public class JwtService {
         this.refreshTokenExpiration=refreshTokenExpiration;
     }
 
+    //generates encoded secret key to sign the tokens
+    private SecretKey getKey(){
+        byte[] keyBytes = Decoders.BASE64.decode(jwtSecretKey);
+        return Keys.hmacShaKeyFor(keyBytes);
+    }
+
+
+    //method to generate access token
     public String generateAccessToken(String email) {
-        //Loading user using userEmail
+
         User user=userRepository.findByEmail(email)
                 .orElseThrow(()->new RuntimeException("User with email " + email + " not found."));
 
-        List<UserRole> role=user.get
-
-
+        List<UserRole> role=user.getUserRoles();
         Map<String, Object> claims = new HashMap<>();
+        claims.put("role", role);
         return Jwts.builder()
                 .claims()
                 .add(claims)
+                .subject(email)
+                .issuedAt(new Date(System.currentTimeMillis()))
+                .expiration(new Date(System.currentTimeMillis()+accessTokenExpiration))
+                .and()
+                .signWith(getKey())
+                .compact();
     }
+
+    public JwtToken generateRefreshToken(String email) {
+        String token= Jwts.builder()
+                .claims()
+                .subject(email)
+                .issuedAt(new Date(System.currentTimeMillis()))
+                .expiration(new Date(System.currentTimeMillis()+refreshTokenExpiration))
+                .and()
+                .signWith(getKey())
+                .compact();
+
+        JwtToken refreshToken= new JwtToken(
+                token,
+                TokenType.REFRESH,
+                false,
+                false,
+                LocalDateTime.now()
+        )
+    }
+
+
 }

@@ -3,6 +3,8 @@ package com.sstinternaltools.sstinternal_tools.security.entity;
 import jakarta.persistence.*;
 import com.sstinternaltools.sstinternal_tools.user.entity.User;
 
+import java.time.LocalDateTime;
+
 @Entity
 public class JwtToken
 {
@@ -19,6 +21,7 @@ public class JwtToken
 
     private boolean revoked;
     private boolean expired;
+    private LocalDateTime expirationTime;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
@@ -26,11 +29,12 @@ public class JwtToken
 
     public JwtToken() {}
 
-    public JwtToken(String token, TokenType tokenType, boolean revoked, boolean expired, User user) {
+    public JwtToken(String token, TokenType tokenType, boolean revoked, boolean expired,LocalDateTime expirationTime, User user) {
         this.token = token;
         this.tokenType = tokenType;
         this.revoked = revoked;
         this.expired = expired;
+        this.expirationTime = expirationTime;
         this.user = user;
     }
 

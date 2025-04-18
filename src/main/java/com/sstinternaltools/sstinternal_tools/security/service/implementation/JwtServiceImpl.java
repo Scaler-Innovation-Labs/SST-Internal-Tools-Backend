@@ -91,7 +91,7 @@ public class JwtServiceImpl implements JwtService {
         );
         jwtTokenRepository.save(refreshToken);
 
-        return refreshToken;
+        return token;
     }
 
     //method to extract the email stored inside jwt

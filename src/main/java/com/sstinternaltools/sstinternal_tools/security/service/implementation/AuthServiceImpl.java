@@ -27,24 +27,20 @@ public class AuthServiceImpl implements AuthService {
     }
 
     @Override
-    public ResponseEntity<Map<String, String>> rotateRefreshToken(Cookie refreshCookie,  HttpServletResponse response) {
+    public Map<String, String> rotateRefreshToken(Cookie refreshCookie, HttpServletResponse response) {
         String refreshToken = refreshCookie.getValue();
 
         if (refreshToken == null || !jwtService.isRefreshTokenValid(refreshToken)) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Map.of("error", "Invalid or expired refresh token"));
+            return Map.of("error", "Invalid or expired refresh token");
         }
 
         String email = jwtService.extractEmail(refreshToken);
         jwtService.revokeRefreshToken(refreshToken);
 
         String newAccessToken = jwtService.generateAccessToken(email);
-        Cookie newRefreshToken = jwtService.generateRefreshToken(email);
+        String newRefreshToken = jwtService.generateRefreshToken(email);
 
-        response.addCookie(newRefreshToken);
-        return ResponseEntity
-                .ok(Map.of(
-                "accessToken", newAccessToken
-        ));
+        return Map.of("accessToken", newAccessToken, "refreshToken", newRefreshToken);
     }
 
     @Override

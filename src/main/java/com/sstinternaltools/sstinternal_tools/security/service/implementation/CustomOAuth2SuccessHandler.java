@@ -1,6 +1,7 @@
 package com.sstinternaltools.sstinternal_tools.security.service.implementation;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.sstinternaltools.sstinternal_tools.security.exception.InvalidCredentialsException;
 import com.sstinternaltools.sstinternal_tools.security.service.interfaces.AuthService;
 import com.sstinternaltools.sstinternal_tools.security.service.interfaces.CustomLogicService;
 import com.sstinternaltools.sstinternal_tools.security.service.interfaces.JwtService;

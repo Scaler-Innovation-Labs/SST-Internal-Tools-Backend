@@ -2,6 +2,8 @@ package com.sstinternaltools.sstinternal_tools.security.config;
 
 import com.sstinternaltools.sstinternal_tools.security.exception.JwtAuthenticationException;
 import com.sstinternaltools.sstinternal_tools.security.exception.UserNotFoundException;
+import com.sstinternaltools.sstinternal_tools.security.service.interfaces.JwtService;
+import com.sstinternaltools.sstinternal_tools.security.service.interfaces.MyUserDetailService;
 import com.sstinternaltools.sstinternal_tools.user.entity.User;
 import com.sstinternaltools.sstinternal_tools.user.repository.UserRepository;
 import jakarta.servlet.FilterChain;
@@ -22,12 +24,12 @@ public class JwtFilter extends OncePerRequestFilter {
 
     private final JwtService jwtService;
     private final UserRepository userRepository;
-    private final MyUserDetailService myUserDetailService;
+    private final MyUserDetailService myUserDetailsService;
 
-    public JwtFilter(JwtService jwtService, UserRepository userRepository, MyUserDetailService myUserDetailService) {
+    public JwtFilter(JwtService jwtService, UserRepository userRepository, MyUserDetailService myUserDetailsService) {
         this.jwtService = jwtService;
         this.userRepository = userRepository;
-        this.myUserDetailService = myUserDetailService;
+        this.myUserDetailsService = myUserDetailsService;
     }
 
     @Override
@@ -57,7 +59,7 @@ public class JwtFilter extends OncePerRequestFilter {
                 throw new JwtAuthenticationException("Invalid or expired access token.");
             }
 
-            UserDetails userDetails = myUserDetailService.loadUserByUsername(userEmail);
+            UserDetails userDetails = myUserDetailsService.loadUserByEmail(userEmail);
             UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
             authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
             SecurityContextHolder.getContext().setAuthentication(authToken);

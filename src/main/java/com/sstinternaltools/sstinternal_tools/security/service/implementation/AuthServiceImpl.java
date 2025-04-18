@@ -3,21 +3,27 @@ package com.sstinternaltools.sstinternal_tools.security.service.implementation;
 import com.sstinternaltools.sstinternal_tools.security.exception.JwtAuthenticationException;
 import com.sstinternaltools.sstinternal_tools.security.service.interfaces.AuthService;
 import com.sstinternaltools.sstinternal_tools.security.service.interfaces.JwtService;
+import com.sstinternaltools.sstinternal_tools.user.entity.User;
+import com.sstinternaltools.sstinternal_tools.user.entity.UserRole;
+import com.sstinternaltools.sstinternal_tools.user.repository.UserRepository;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Map;
 
 @Service
 public class AuthServiceImpl implements AuthService {
 
     private final JwtService jwtService;
+    private final UserRepository userRepository;
 
-    public AuthServiceImpl(JwtService jwtService) {
+    public AuthServiceImpl(JwtService jwtService, UserRepository userRepository) {
         this.jwtService = jwtService;
+        this.userRepository = userRepository;
     }
 
     @Override
@@ -50,5 +56,13 @@ public class AuthServiceImpl implements AuthService {
         }
 
         jwtService.revokeRefreshToken(refreshToken);
+    }
+
+    @Override
+    public void register(String email, List<UserRole> roles) {
+        User user = new User();
+        user.setEmail(email);
+        user.setUserRoles(roles);
+        userRepository.save(user);
     }
 }

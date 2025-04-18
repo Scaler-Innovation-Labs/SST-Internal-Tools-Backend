@@ -1,4 +1,4 @@
-package com.sstinternaltools.sstinternal_tools.security.service;
+package com.sstinternaltools.sstinternal_tools.security.service.implementation;
 
 import com.sstinternaltools.sstinternal_tools.security.entity.JwtToken;
 import com.sstinternaltools.sstinternal_tools.security.entity.TokenType;
@@ -21,7 +21,7 @@ import java.util.Map;
 import java.util.function.Function;
 
 @Service
-public class JwtService {
+public class JwtServiceImplementation {
 
     private String jwtSecretKey;
     private long accessTokenExpiration;
@@ -29,7 +29,7 @@ public class JwtService {
     private final JwtTokenRepository jwtTokenRepository;
     private final UserRepository userRepository;
 
-    public JwtService(JwtTokenRepository jwtTokenRepository,UserRepository userRepository,@Value("${jwt.secretKey}") String jwtSecretKey,@Value("${jwt.access_expiration}") long accessTokenExpiration,@Value("{jwt.refresh_expiration}") long refreshTokenExpiration) {
+    public JwtServiceImplementation(JwtTokenRepository jwtTokenRepository, UserRepository userRepository, @Value("${jwt.secretKey}") String jwtSecretKey, @Value("${jwt.access_expiration}") long accessTokenExpiration, @Value("{jwt.refresh_expiration}") long refreshTokenExpiration) {
         this.jwtTokenRepository = jwtTokenRepository;
         this.userRepository = userRepository;
         this.jwtSecretKey=jwtSecretKey;

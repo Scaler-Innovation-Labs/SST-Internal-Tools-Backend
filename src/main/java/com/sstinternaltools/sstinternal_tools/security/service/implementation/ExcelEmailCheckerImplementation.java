@@ -1,4 +1,4 @@
-package com.sstinternaltools.sstinternal_tools.security.service;
+package com.sstinternaltools.sstinternal_tools.security.service.implementation;
 
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
@@ -9,7 +9,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 
 @Service
-public class ExcelEmailChecker {
+public class ExcelEmailCheckerImplementation {
 
     public boolean isEmailInExcel(String emailToSearch,String EXCEL_FILE_PATH) {
         try (FileInputStream fis = new FileInputStream(new File(EXCEL_FILE_PATH));

@@ -1,4 +1,4 @@
-package com.sstinternaltools.sstinternal_tools.security.service;
+package com.sstinternaltools.sstinternal_tools.security.service.implementation;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sstinternaltools.sstinternal_tools.user.entity.UserRole;
@@ -17,17 +17,17 @@ import java.util.List;
 import java.util.Map;
 
 @Component
-public class CustomOAuth2SuccessHandler implements AuthenticationSuccessHandler {
-   private final JwtService jwtService;
+public class CustomOAuth2SuccessHandlerImplementation implements AuthenticationSuccessHandler {
+   private final JwtServiceImplementation jwtServiceImplementation;
    private final UserRepository userRepository;
-   private final CustomLogicService customLogicService;
+   private final CustomLogicServiceImplementation customLogicServiceImplementation;
    private final AuthService authService;
     private final ObjectMapper objectMapper;
 
-   public CustomOAuth2SuccessHandler(JwtService jwtService,UserRepository userRepository,CustomLogicService customLogicService,AuthService authService,ObjectMapper objectMapper) {
-       this.jwtService = jwtService;
+   public CustomOAuth2SuccessHandlerImplementation(JwtServiceImplementation jwtServiceImplementation, UserRepository userRepository, CustomLogicServiceImplementation customLogicServiceImplementation, AuthService authService, ObjectMapper objectMapper) {
+       this.jwtServiceImplementation = jwtServiceImplementation;
        this.userRepository = userRepository;
-       this.customLogicService = customLogicService;
+       this.customLogicServiceImplementation = customLogicServiceImplementation;
        this.authService = authService;
        this.objectMapper = objectMapper;
    }
@@ -47,7 +47,7 @@ public class CustomOAuth2SuccessHandler implements AuthenticationSuccessHandler 
 
            if (userRepository.findByEmail(email) == null) {
 
-               List<UserRole> roles = customLogicService.assignRoles(email);
+               List<UserRole> roles = customLogicServiceImplementation.assignRoles(email);
 
                if (roles.isEmpty()) {
                    throw new InvalidCredentialsException("You are not allowed to access");
@@ -56,8 +56,11 @@ public class CustomOAuth2SuccessHandler implements AuthenticationSuccessHandler 
                authService.register(email, roles);
            }
 
-           String accessToken = jwtService.generateAccessToken(email);
-           String refreshToken = jwtService.generateRefreshToken(email);
+           String accessToken = jwtServiceImplementation.generateAccessToken(email);
+           String refreshToken = jwtServiceImplementation.generateRefreshToken(email);
+
+           //set the refresh token in HttpOnly cookie
+
 
            Map<String, String> tokens = new HashMap<>();
            tokens.put("accessToken", accessToken);

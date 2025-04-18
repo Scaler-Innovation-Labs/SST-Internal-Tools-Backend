@@ -1,6 +1,7 @@
-package com.sstinternaltools.sstinternal_tools.security.service;
+package com.sstinternaltools.sstinternal_tools.security.service.implementation;
 
 import com.sstinternaltools.sstinternal_tools.security.exception.JwtAuthenticationException;
+import com.sstinternaltools.sstinternal_tools.security.service.interfaces.AuthService;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.http.HttpStatus;

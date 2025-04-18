@@ -1,7 +1,7 @@
 package com.sstinternaltools.sstinternal_tools.security.controller.Implementation;
 
 import com.sstinternaltools.sstinternal_tools.security.controller.Interface.AuthController;
-import com.sstinternaltools.sstinternal_tools.security.service.AuthService;
+import com.sstinternaltools.sstinternal_tools.security.service.interfaces.AuthService;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.http.ResponseEntity;

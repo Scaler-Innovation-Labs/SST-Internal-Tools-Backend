@@ -1,4 +1,4 @@
-package com.sstinternaltools.sstinternal_tools.security.service;
+package com.sstinternaltools.sstinternal_tools.security.service.interfaces;
 
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;

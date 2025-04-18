@@ -1,6 +1,7 @@
 package com.sstinternaltools.sstinternal_tools.security.service.implementation;
 
 import com.sstinternaltools.sstinternal_tools.security.service.interfaces.CustomLogicService;
+import com.sstinternaltools.sstinternal_tools.security.service.interfaces.ExcelEmailChecker;
 import com.sstinternaltools.sstinternal_tools.user.entity.Role;
 import com.sstinternaltools.sstinternal_tools.user.entity.User;
 import com.sstinternaltools.sstinternal_tools.user.entity.UserRole;
@@ -14,13 +15,13 @@ import java.util.List;
 @Service
 public class CustomLogicServiceImpl implements CustomLogicService {
 
-    private final ExcelEmailCheckerImpl excelEmailCheckerImpl;
+    private final ExcelEmailChecker excelEmailChecker;
     private final UserRepository userRepository;
 
     private static final String EXCEL_FILE_PATH = "src/main/resources/admins.xlsx";
 
-    public CustomLogicServiceImpl(ExcelEmailCheckerImpl excelEmailCheckerImpl, UserRepository userRepository) {
-        this.excelEmailCheckerImpl = excelEmailCheckerImpl;
+    public CustomLogicServiceImpl(ExcelEmailChecker excelEmailChecker, UserRepository userRepository) {
+        this.excelEmailChecker = excelEmailChecker;
         this.userRepository = userRepository;
     }
 
@@ -33,7 +34,7 @@ public class CustomLogicServiceImpl implements CustomLogicService {
                     .orElseThrow(() -> new RuntimeException("User not found with email: " + email));
 
             if (domain.equals("scaler.com")) {
-                if (excelEmailCheckerImpl.isEmailInExcel(email, EXCEL_FILE_PATH)) {
+                if (excelEmailChecker.isEmailInExcel(email, EXCEL_FILE_PATH)) {
                     UserRole adminRole = new UserRole();
                     adminRole.setRole(Role.ADMIN);// Assign admin role if found in the Excel sheet
                     adminRole.setUser(user);

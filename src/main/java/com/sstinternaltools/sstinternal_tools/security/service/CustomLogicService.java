@@ -1,5 +1,6 @@
 package com.sstinternaltools.sstinternal_tools.security.service;
 
+import com.sstinternaltools.sstinternal_tools.security.exception.RoleAssignmentException;
 import com.sstinternaltools.sstinternal_tools.user.entity.Role;
 import com.sstinternaltools.sstinternal_tools.user.entity.User;
 import com.sstinternaltools.sstinternal_tools.user.entity.UserRole;

@@ -1,5 +1,7 @@
 package com.sstinternaltools.sstinternal_tools.security.config;
 
+import com.sstinternaltools.sstinternal_tools.security.exception.JwtAuthenticationException;
+import com.sstinternaltools.sstinternal_tools.security.exception.UserNotFoundException;
 import com.sstinternaltools.sstinternal_tools.security.service.JwtService;
 import com.sstinternaltools.sstinternal_tools.user.entity.User;
 import com.sstinternaltools.sstinternal_tools.user.repository.UserRepository;

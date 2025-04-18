@@ -1,15 +1,15 @@
 package com.sstinternaltools.sstinternal_tools.security.service.implementation;
 
 import com.sstinternaltools.sstinternal_tools.security.entity.UserPrincipal;
+import com.sstinternaltools.sstinternal_tools.security.service.interfaces.MyUserDetailsService;
 import com.sstinternaltools.sstinternal_tools.user.entity.User;
 import com.sstinternaltools.sstinternal_tools.user.repository.UserRepository;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 @Service
-public class MyUserDetailServiceImpl implements UserDetailsService {
+public class MyUserDetailServiceImpl implements MyUserDetailsService {
 
     private final UserRepository userJpaRepository;
 
@@ -18,7 +18,7 @@ public class MyUserDetailServiceImpl implements UserDetailsService {
     }
 
     @Override
-    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+    public UserDetails loadUserByEmail(String email) throws UsernameNotFoundException {
         User user = userJpaRepository.findByEmail(email).orElseThrow(() -> new UserNotFoundException("User with email " + email + " not found."));
         return new UserPrincipal(user);
     }

@@ -8,7 +8,6 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Map;
 
-@Service
 public interface AuthService {
     public Map<String, String> rotateRefreshToken(Cookie refreshCookie, HttpServletResponse response);
     public void logout(Cookie refreshCookie);

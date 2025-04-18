@@ -1,6 +1,7 @@
 package com.sstinternaltools.sstinternal_tools.user.entity;
 
 import jakarta.persistence.*;
+import org.springframework.context.annotation.Lazy;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -18,6 +19,7 @@ public class User
     @Column(unique = true)
     private String email;
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+//    @Lazy
     private List<UserRole> userRoles;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;

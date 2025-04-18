@@ -37,14 +37,14 @@ public class CustomLogicServiceImpl implements CustomLogicService {
             if (domain.equals("scaler.com")) {
                 if (excelEmailChecker.isEmailInExcel(email, EXCEL_FILE_PATH)) {
                     UserRole adminRole = new UserRole();
-                    adminRole.setRole(Role.ADMIN);// Assign admin role if found in the Excel sheet
+                    adminRole.setRole(Role.valueOf("admin".toUpperCase()));// Assign admin role if found in the Excel sheet
                     adminRole.setUser(user);
                     roles.add(adminRole);
                 }
             }
             else if (domain.equals("sst.scaler.com")) {
                 UserRole studentRole = new UserRole();
-                studentRole.setRole(Role.STUDENT);// Assign student role
+                studentRole.setRole(Role.valueOf("student".toUpperCase()));// Assign student role
                 studentRole.setUser(user);
                 roles.add(studentRole);
             }

@@ -31,7 +31,7 @@ public class JwtServiceImpl implements JwtService {
     private final JwtTokenRepository jwtTokenRepository;
     private final UserRepository userRepository;
 
-    public JwtServiceImpl(JwtTokenRepository jwtTokenRepository, UserRepository userRepository, @Value("${JWT_SECRET_KEY}") String jwtSecretKey, @Value("${JWT_ACCESS_EXPIRATION_TIME}") long accessTokenExpiration, @Value("{JWT_REFRESH_EXPIRATION_TIME}") long refreshTokenExpiration) {
+    public JwtServiceImpl(JwtTokenRepository jwtTokenRepository, UserRepository userRepository, @Value("${JWT_SECRET_KEY}") String jwtSecretKey, @Value("${JWT_ACCESS_EXPIRATION_TIME}") long accessTokenExpiration, @Value("${JWT_REFRESH_EXPIRATION_TIME}") long refreshTokenExpiration) {
         this.jwtTokenRepository = jwtTokenRepository;
         this.userRepository = userRepository;
         this.jwtSecretKey=jwtSecretKey;
@@ -49,12 +49,17 @@ public class JwtServiceImpl implements JwtService {
     //method to generate access token
     public String generateAccessToken(String email) {
 
-        User user=userRepository.findByEmail(email)
-                .orElseThrow(()->new RuntimeException("User with email " + email + " not found."));
+        User user = userRepository.findByEmailWithRoles(email)
+                .orElseThrow(() -> new RuntimeException("User with email " + email + " not found."));
 
-        List<UserRole> role=user.getUserRoles();
+
+        List<String> roleNames = user.getUserRoles()
+                .stream()
+                .map(userRole -> userRole.getRole().name())
+                .toList();
+
         Map<String, Object> claims = new HashMap<>();
-        claims.put("role", role);
+        claims.put("role", roleNames);
         return Jwts.builder()
                 .claims()
                 .add(claims)

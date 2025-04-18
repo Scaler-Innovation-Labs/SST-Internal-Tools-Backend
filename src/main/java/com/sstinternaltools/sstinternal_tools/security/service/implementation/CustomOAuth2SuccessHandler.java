@@ -5,6 +5,7 @@ import com.sstinternaltools.sstinternal_tools.security.exception.InvalidCredenti
 import com.sstinternaltools.sstinternal_tools.security.service.interfaces.AuthService;
 import com.sstinternaltools.sstinternal_tools.security.service.interfaces.CustomLogicService;
 import com.sstinternaltools.sstinternal_tools.security.service.interfaces.JwtService;
+import com.sstinternaltools.sstinternal_tools.user.entity.User;
 import com.sstinternaltools.sstinternal_tools.user.entity.UserRole;
 import com.sstinternaltools.sstinternal_tools.user.repository.UserRepository;
 import jakarta.servlet.ServletException;
@@ -50,7 +51,9 @@ public class CustomOAuth2SuccessHandler implements AuthenticationSuccessHandler 
                throw new InvalidCredentialsException("Invalid domain: " + domain);
            }
 
-           if (userRepository.findByEmail(email) == null) {
+           if (userRepository.findByEmail(email).isEmpty()) {
+
+               authService.register(email);
 
                List<UserRole> roles = customLogicService.assignRoles(email);
 
@@ -58,7 +61,9 @@ public class CustomOAuth2SuccessHandler implements AuthenticationSuccessHandler 
                    throw new InvalidCredentialsException("You are not allowed to access");
                }
 
-               authService.register(email, roles);
+               User user = userRepository.findByEmail(email).get();
+               user.setUserRoles(roles);
+               userRepository.save(user);
            }
 
            String accessToken = jwtService.generateAccessToken(email);
@@ -73,6 +78,7 @@ public class CustomOAuth2SuccessHandler implements AuthenticationSuccessHandler 
            response.getWriter().write(objectMapper.writeValueAsString(tokens));// Converts the tokens Map<String, String> into a JSON string using Jackson's ObjectMapper
 
        } catch(Exception e){
+           e.printStackTrace();
            response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "OAuth2 login failed. Please try again.");
        }
     }

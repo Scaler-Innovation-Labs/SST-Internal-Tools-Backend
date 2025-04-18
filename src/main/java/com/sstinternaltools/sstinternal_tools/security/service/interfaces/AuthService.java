@@ -11,5 +11,5 @@ import java.util.Map;
 public interface AuthService {
     public Map<String, String> rotateRefreshToken(Cookie refreshCookie, HttpServletResponse response);
     public void logout(Cookie refreshCookie);
-    void register(String email, List<UserRole> roles);
+    void register(String email);
 }

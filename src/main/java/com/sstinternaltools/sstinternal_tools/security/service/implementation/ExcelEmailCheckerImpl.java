@@ -9,7 +9,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 
 @Service
-public class ExcelEmailCheckerImplementation {
+public class ExcelEmailCheckerImpl {
 
     public boolean isEmailInExcel(String emailToSearch,String EXCEL_FILE_PATH) {
         try (FileInputStream fis = new FileInputStream(new File(EXCEL_FILE_PATH));

@@ -17,17 +17,17 @@ import java.util.List;
 import java.util.Map;
 
 @Component
-public class CustomOAuth2SuccessHandlerImplementation implements AuthenticationSuccessHandler {
-   private final JwtServiceImplementation jwtServiceImplementation;
+public class CustomOAuth2SuccessHandlerImpl implements AuthenticationSuccessHandler {
+   private final JwtServiceImpl jwtServiceImpl;
    private final UserRepository userRepository;
-   private final CustomLogicServiceImplementation customLogicServiceImplementation;
+   private final CustomLogicServiceImpl customLogicServiceImpl;
    private final AuthService authService;
     private final ObjectMapper objectMapper;
 
-   public CustomOAuth2SuccessHandlerImplementation(JwtServiceImplementation jwtServiceImplementation, UserRepository userRepository, CustomLogicServiceImplementation customLogicServiceImplementation, AuthService authService, ObjectMapper objectMapper) {
-       this.jwtServiceImplementation = jwtServiceImplementation;
+   public CustomOAuth2SuccessHandlerImpl(JwtServiceImpl jwtServiceImpl, UserRepository userRepository, CustomLogicServiceImpl customLogicServiceImpl, AuthService authService, ObjectMapper objectMapper) {
+       this.jwtServiceImpl = jwtServiceImpl;
        this.userRepository = userRepository;
-       this.customLogicServiceImplementation = customLogicServiceImplementation;
+       this.customLogicServiceImpl = customLogicServiceImpl;
        this.authService = authService;
        this.objectMapper = objectMapper;
    }
@@ -47,7 +47,7 @@ public class CustomOAuth2SuccessHandlerImplementation implements AuthenticationS
 
            if (userRepository.findByEmail(email) == null) {
 
-               List<UserRole> roles = customLogicServiceImplementation.assignRoles(email);
+               List<UserRole> roles = customLogicServiceImpl.assignRoles(email);
 
                if (roles.isEmpty()) {
                    throw new InvalidCredentialsException("You are not allowed to access");
@@ -56,8 +56,8 @@ public class CustomOAuth2SuccessHandlerImplementation implements AuthenticationS
                authService.register(email, roles);
            }
 
-           String accessToken = jwtServiceImplementation.generateAccessToken(email);
-           String refreshToken = jwtServiceImplementation.generateRefreshToken(email);
+           String accessToken = jwtServiceImpl.generateAccessToken(email);
+           String refreshToken = jwtServiceImpl.generateRefreshToken(email);
 
            //set the refresh token in HttpOnly cookie
 

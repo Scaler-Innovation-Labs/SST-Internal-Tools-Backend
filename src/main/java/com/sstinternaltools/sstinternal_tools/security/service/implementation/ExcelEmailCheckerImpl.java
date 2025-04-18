@@ -1,5 +1,6 @@
 package com.sstinternaltools.sstinternal_tools.security.service.implementation;
 
+import com.sstinternaltools.sstinternal_tools.security.service.interfaces.ExcelEmailChecker;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.stereotype.Service;
@@ -9,7 +10,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 
 @Service
-public class ExcelEmailCheckerImpl {
+public class ExcelEmailCheckerImpl implements ExcelEmailChecker {
 
     public boolean isEmailInExcel(String emailToSearch,String EXCEL_FILE_PATH) {
         try (FileInputStream fis = new FileInputStream(new File(EXCEL_FILE_PATH));

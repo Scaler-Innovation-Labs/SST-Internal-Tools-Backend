@@ -61,8 +61,6 @@ public class CustomOAuth2SuccessHandler implements AuthenticationSuccessHandler 
            String accessToken = jwtService.generateAccessToken(email);
            String refreshToken = jwtService.generateRefreshToken(email);
 
-           //set the refresh token in HttpOnly cookie
-
 
            Map<String, String> tokens = new HashMap<>();
            tokens.put("accessToken", accessToken);

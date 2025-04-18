@@ -11,6 +11,7 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
+import jakarta.servlet.http.Cookie;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import javax.crypto.SecretKey;
@@ -66,7 +67,7 @@ public class JwtServiceImpl implements JwtService {
     }
 
     //method to generate refresh token
-    public String generateRefreshToken(String email) {
+    public Cookie generateRefreshToken(String email) {
         User user=userRepository.findByEmail(email)
                 .orElseThrow(()->new RuntimeException("User with email " + email + " not found."));
 
@@ -88,7 +89,15 @@ public class JwtServiceImpl implements JwtService {
                 user
         );
         jwtTokenRepository.save(refreshToken);
-        return token;
+
+        //Added the refresh token in httpOnly cookie
+        Cookie refreshCookie = new Cookie("refreshToken", token);
+        refreshCookie.setHttpOnly(true);
+        refreshCookie.setSecure(true);
+        refreshCookie.setPath("/access/refresh");
+        refreshCookie.setMaxAge((int)refreshTokenExpiration/1000);
+
+        return refreshCookie;
     }
 
     //method to extract the email stored inside jwt

@@ -35,4 +35,9 @@ public class CustomExceptionHandler {
         return buildResponse(HttpStatus.BAD_REQUEST, "Role Assignment Error", ex.getMessage());
     }
 
+    @ExceptionHandler(InvalidCredentialsException.class)
+    public ResponseEntity<Map<String, Object>> handleInvalidCredentialsException(InvalidCredentialsException ex) {
+        return buildResponse(HttpStatus.UNAUTHORIZED, "Role Assignment Error", ex.getMessage());
+    }
+
 }

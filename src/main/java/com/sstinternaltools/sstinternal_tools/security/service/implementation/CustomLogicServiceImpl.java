@@ -1,5 +1,6 @@
 package com.sstinternaltools.sstinternal_tools.security.service.implementation;
 
+import com.sstinternaltools.sstinternal_tools.security.exception.RoleAssignmentException;
 import com.sstinternaltools.sstinternal_tools.security.service.interfaces.CustomLogicService;
 import com.sstinternaltools.sstinternal_tools.security.service.interfaces.ExcelEmailChecker;
 import com.sstinternaltools.sstinternal_tools.user.entity.Role;

@@ -2,6 +2,7 @@ package com.sstinternaltools.sstinternal_tools.security.service.implementation;
 
 import com.sstinternaltools.sstinternal_tools.security.entity.JwtToken;
 import com.sstinternaltools.sstinternal_tools.security.entity.TokenType;
+import com.sstinternaltools.sstinternal_tools.security.exception.JwtAuthenticationException;
 import com.sstinternaltools.sstinternal_tools.security.repository.JwtTokenRepository;
 import com.sstinternaltools.sstinternal_tools.security.service.interfaces.JwtService;
 import com.sstinternaltools.sstinternal_tools.user.entity.User;

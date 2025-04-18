@@ -30,7 +30,8 @@ public class AuthControllerImpl implements AuthController {
     @Override
     @PostMapping("/logout")
     public ResponseEntity<String> logout(@CookieValue("refreshToken") Cookie refreshCookie) {
-        return authService.logout(refreshCookie);
+        authService.logout(refreshCookie);
+        return ResponseEntity.ok("✅ User logged out successfully");
     }
 }
 

@@ -23,10 +23,12 @@ public class JwtFilter extends OncePerRequestFilter {
 
     private final JwtService jwtService;
     private final UserRepository userRepository;
+    private final MyUserDetailService myUserDetailService;
 
-    public JwtFilter(JwtService jwtService, UserRepository userRepository) {
+    public JwtFilter(JwtService jwtService, UserRepository userRepository, MyUserDetailService myUserDetailService) {
         this.jwtService = jwtService;
         this.userRepository = userRepository;
+        this.myUserDetailService = myUserDetailService;
     }
 
     @Override

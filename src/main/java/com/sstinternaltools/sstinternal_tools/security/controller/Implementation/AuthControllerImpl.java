@@ -3,6 +3,7 @@ package com.sstinternaltools.sstinternal_tools.security.controller.Implementatio
 import com.sstinternaltools.sstinternal_tools.security.controller.Interface.AuthController;
 import com.sstinternaltools.sstinternal_tools.security.service.AuthService;
 import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -23,8 +24,8 @@ public class AuthControllerImpl implements AuthController {
 
     @Override
     @PostMapping("/refresh")
-    public ResponseEntity<Map<String, String>> rotateRefreshToken(@CookieValue("refreshToken") Cookie refreshCookie) {
-        return authService.rotateRefreshToken(refreshCookie);
+    public ResponseEntity<Map<String, String>> rotateRefreshToken(@CookieValue("refreshToken") Cookie refreshCookie, HttpServletResponse response) {
+        return authService.rotateRefreshToken(refreshCookie, response);
     }
 
     @Override

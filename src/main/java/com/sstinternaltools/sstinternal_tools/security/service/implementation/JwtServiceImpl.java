@@ -12,7 +12,6 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
-import jakarta.servlet.http.Cookie;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import javax.crypto.SecretKey;
@@ -32,7 +31,7 @@ public class JwtServiceImpl implements JwtService {
     private final JwtTokenRepository jwtTokenRepository;
     private final UserRepository userRepository;
 
-    public JwtServiceImpl(JwtTokenRepository jwtTokenRepository, UserRepository userRepository, @Value("${jwt.secretKey}") String jwtSecretKey, @Value("${jwt.access_expiration}") long accessTokenExpiration, @Value("{jwt.refresh_expiration}") long refreshTokenExpiration) {
+    public JwtServiceImpl(JwtTokenRepository jwtTokenRepository, UserRepository userRepository, @Value("${JWT_SECRET_KEY}") String jwtSecretKey, @Value("${JWT_ACCESS_EXPIRATION_TIME}") long accessTokenExpiration, @Value("{JWT_REFRESH_EXPIRATION_TIME}") long refreshTokenExpiration) {
         this.jwtTokenRepository = jwtTokenRepository;
         this.userRepository = userRepository;
         this.jwtSecretKey=jwtSecretKey;

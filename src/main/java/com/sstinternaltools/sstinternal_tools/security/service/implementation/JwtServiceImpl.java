@@ -68,7 +68,7 @@ public class JwtServiceImpl implements JwtService {
     }
 
     //method to generate refresh token
-    public Cookie generateRefreshToken(String email) {
+    public String generateRefreshToken(String email) {
         User user=userRepository.findByEmail(email)
                 .orElseThrow(()->new RuntimeException("User with email " + email + " not found."));
 
@@ -91,14 +91,7 @@ public class JwtServiceImpl implements JwtService {
         );
         jwtTokenRepository.save(refreshToken);
 
-        //Added the refresh token in httpOnly cookie
-        Cookie refreshCookie = new Cookie("refreshToken", token);
-        refreshCookie.setHttpOnly(true);
-        refreshCookie.setSecure(true);
-        refreshCookie.setPath("/access/refresh");
-        refreshCookie.setMaxAge((int)refreshTokenExpiration/1000);
-
-        return refreshCookie;
+        return refreshToken;
     }
 
     //method to extract the email stored inside jwt

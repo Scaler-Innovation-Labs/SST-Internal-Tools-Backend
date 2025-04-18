@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 @Service
 public interface JwtService {
     String generateAccessToken(String email);
-    Cookie generateRefreshToken(String email);
+    String generateRefreshToken(String email);
     boolean isRefreshTokenValid(String token);
     void revokeRefreshToken(String token);
     void revokeAllTokensForUser(String email);

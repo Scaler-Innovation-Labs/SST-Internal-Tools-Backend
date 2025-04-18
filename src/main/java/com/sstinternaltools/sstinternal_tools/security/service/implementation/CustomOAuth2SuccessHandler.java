@@ -62,11 +62,11 @@ public class CustomOAuth2SuccessHandler implements AuthenticationSuccessHandler 
            }
 
            String accessToken = jwtService.generateAccessToken(email);
-           Cookie refreshToken = jwtService.generateRefreshToken(email);
-           response.addCookie(refreshToken); //send cookie in response to frontend
+           String refreshToken = jwtService.generateRefreshToken(email);
 
            Map<String, String> tokens = new HashMap<>();
            tokens.put("accessToken", accessToken); //access token send in the json format
+           tokens.put("refreshToken", refreshToken);
 
            response.setContentType("application/json");//Tells browser that the server response will be in JSON format
            response.setCharacterEncoding("UTF-8");//: Specifies that the characters in the response body will use UTF-8 encoding(to avoid character corruption)

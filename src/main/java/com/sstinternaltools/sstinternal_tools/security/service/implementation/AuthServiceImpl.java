@@ -27,8 +27,7 @@ public class AuthServiceImpl implements AuthService {
     }
 
     @Override
-    public Map<String, String> rotateRefreshToken(Cookie refreshCookie, HttpServletResponse response) {
-        String refreshToken = refreshCookie.getValue();
+    public Map<String, String> rotateRefreshToken(String refreshToken) {
 
         if (refreshToken == null || !jwtService.isRefreshTokenValid(refreshToken)) {
             return Map.of("error", "Invalid or expired refresh token");
@@ -44,8 +43,7 @@ public class AuthServiceImpl implements AuthService {
     }
 
     @Override
-    public void logout(Cookie refreshCookie) {
-        String refreshToken = refreshCookie.getValue();
+    public void logout(String refreshToken) {
 
         if (refreshToken == null || !jwtService.isRefreshTokenValid(refreshToken)) {
             throw new JwtAuthenticationException("Invalid or expired refresh token");

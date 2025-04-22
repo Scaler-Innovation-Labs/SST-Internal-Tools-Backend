@@ -9,6 +9,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import java.util.Map;
 
 public interface AuthController {
-    public ResponseEntity<Map<String, String>> rotateRefreshToken (@PathVariable String refreshToken);
-    public ResponseEntity<String> logout(@PathVariable String refreshToken);
+    public ResponseEntity<Map<String, String>> rotateRefreshToken (String refreshToken);
+    public ResponseEntity<String> logout(String refreshToken);
 }

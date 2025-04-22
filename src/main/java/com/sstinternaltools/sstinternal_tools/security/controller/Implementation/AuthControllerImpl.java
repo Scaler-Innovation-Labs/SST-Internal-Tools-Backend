@@ -22,16 +22,26 @@ public class AuthControllerImpl implements AuthController {
 
     @Override
     @PostMapping("/refresh")
-    public ResponseEntity<Map<String, String>> rotateRefreshToken(@PathVariable String refreshToken) {
+    public ResponseEntity<Map<String, String>> rotateRefreshToken(@RequestHeader("Authorization") String refreshToken) {
         Map<String, String> map = authService.rotateRefreshToken(refreshToken);
         return new ResponseEntity<>(map, HttpStatus.OK);
     }
 
     @Override
     @PostMapping("/logout")
-    public ResponseEntity<String> logout(@PathVariable String refreshToken) {
+    public ResponseEntity<String> logout(@RequestHeader("Authorization") String refreshToken) {
         authService.logout(refreshToken);
         return ResponseEntity.ok("✅ User logged out successfully");
+    }
+
+    @GetMapping("/helloSecret")
+    public ResponseEntity<String> helloSecret() {
+        return ResponseEntity.ok("Hello World Secret");
+    }
+
+    @GetMapping("/")
+    public ResponseEntity<String> hello() {
+        return ResponseEntity.ok("Hello World");
     }
 }
 

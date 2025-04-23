@@ -73,9 +73,8 @@ public class CustomOAuth2SuccessHandler implements AuthenticationSuccessHandler 
            tokens.put("accessToken", accessToken); //access token send in the json format
            tokens.put("refreshToken", refreshToken);
 
-           response.setContentType("application/json");//Tells browser that the server response will be in JSON format
-           response.setCharacterEncoding("UTF-8");//: Specifies that the characters in the response body will use UTF-8 encoding(to avoid character corruption)
-           response.getWriter().write(objectMapper.writeValueAsString(tokens));// Converts the tokens Map<String, String> into a JSON string using Jackson's ObjectMapper
+
+           response.sendRedirect("/");
 
        } catch(Exception e){
            e.printStackTrace();

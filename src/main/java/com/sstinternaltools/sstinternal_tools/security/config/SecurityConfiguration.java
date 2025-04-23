@@ -1,6 +1,7 @@
 package com.sstinternaltools.sstinternal_tools.security.config;
 
 import com.sstinternaltools.sstinternal_tools.security.service.implementation.CustomOAuth2SuccessHandler;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;

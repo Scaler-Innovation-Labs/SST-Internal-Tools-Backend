@@ -34,14 +34,5 @@ public class AuthControllerImpl implements AuthController {
         return ResponseEntity.ok("✅ User logged out successfully");
     }
 
-    @GetMapping("/helloSecret")
-    public ResponseEntity<String> helloSecret() {
-        return ResponseEntity.ok("Hello World Secret");
-    }
-
-    @GetMapping("/")
-    public ResponseEntity<String> hello() {
-        return ResponseEntity.ok("Hello World");
-    }
 }
 

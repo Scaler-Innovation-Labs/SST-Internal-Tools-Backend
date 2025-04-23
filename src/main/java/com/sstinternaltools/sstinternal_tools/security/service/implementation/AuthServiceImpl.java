@@ -30,7 +30,7 @@ public class AuthServiceImpl implements AuthService {
     public Map<String, String> rotateRefreshToken(String refreshToken) {
 
         if (refreshToken == null || !jwtService.isRefreshTokenValid(refreshToken)) {
-            return Map.of("error", "Invalid or expired refresh token");
+            throw new JwtAuthenticationException("Invalid or expired refresh token");
         }
 
         String email = jwtService.extractEmail(refreshToken);

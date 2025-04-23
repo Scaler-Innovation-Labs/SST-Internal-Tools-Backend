@@ -6,7 +6,6 @@ import com.sstinternaltools.sstinternal_tools.security.exception.JwtAuthenticati
 import com.sstinternaltools.sstinternal_tools.security.repository.JwtTokenRepository;
 import com.sstinternaltools.sstinternal_tools.security.service.interfaces.JwtService;
 import com.sstinternaltools.sstinternal_tools.user.entity.User;
-import com.sstinternaltools.sstinternal_tools.user.entity.UserRole;
 import com.sstinternaltools.sstinternal_tools.user.repository.UserRepository;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
@@ -110,13 +109,22 @@ public class JwtServiceImpl implements JwtService {
 
     //generic method to extract claims from the token
     private Claims extractAllClaims(String token) {
+//        System.out.println("Extracting claims from token: " + token);
         try {
-            return Jwts.parser().verifyWith(getKey())
+            return Jwts.parser()
+                    .verifyWith(getKey())
                     .build()
                     .parseSignedClaims(token)
                     .getPayload();
-        } catch (Exception e) {
-            throw new JwtAuthenticationException("Error in extracting claims");
+        } catch (io.jsonwebtoken.security.SignatureException ex) {
+//            System.err.println("Signature verification failed: " + ex.getMessage());
+            throw new JwtAuthenticationException("Invalid JWT signature");
+        } catch (io.jsonwebtoken.ExpiredJwtException ex) {
+//            System.err.println("Token expired: " + ex.getMessage());
+            throw new JwtAuthenticationException("JWT token has expired");
+        } catch (Exception ex) {
+//            System.err.println("General JWT parsing error: " + ex.getMessage());
+            throw new JwtAuthenticationException("Error extracting claims from JWT");
         }
     }
 

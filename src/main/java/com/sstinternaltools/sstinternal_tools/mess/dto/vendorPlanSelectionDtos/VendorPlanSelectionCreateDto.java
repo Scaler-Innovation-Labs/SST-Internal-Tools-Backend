@@ -5,18 +5,19 @@ import jakarta.validation.constraints.NotBlank;
 import java.time.YearMonth;
 
 public class VendorPlanSelectionCreateDto {
-    @NotBlank(message = "User id cannot be blank")
-    private Long userId;
+
     @NotBlank(message = "Vendor plan id cannot be blank")
     private Long vendorPlanId;
+    @NotBlank(message = "User id cannot be blank")
+    private Long userId;
     @NotBlank(message = "Month cannot be blank")
     private YearMonth selectedMonth;
 
     public VendorPlanSelectionCreateDto() {}
 
-    public VendorPlanSelectionCreateDto(Long userId, Long vendorPlanId, YearMonth selectedMonth) {
-        this.userId = userId;
+    public VendorPlanSelectionCreateDto(Long vendorPlanId,Long userId, YearMonth selectedMonth) {
         this.vendorPlanId = vendorPlanId;
+        this.userId = userId;
         this.selectedMonth = selectedMonth;
     }
 

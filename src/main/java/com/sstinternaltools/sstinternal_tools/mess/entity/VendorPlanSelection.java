@@ -54,7 +54,7 @@ public class VendorPlanSelection {
         return selectedMonth;
     }
 
-    public void setMonth(LocalDate month) {
+    public void setMonth(YearMonth month) {
         this.selectedMonth = selectedMonth;
     }
 }

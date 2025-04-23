@@ -24,6 +24,10 @@ public class User
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 
+    public Long getId() {
+        return id;
+    }
+
     public String getUsername() {
         return username;
     }

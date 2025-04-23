@@ -4,6 +4,7 @@ import com.sstinternaltools.sstinternal_tools.user.entity.User;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
+import java.time.YearMonth;
 
 @Entity
 public class VendorPlanSelection {
@@ -19,13 +20,13 @@ public class VendorPlanSelection {
     @JoinColumn(name="vendor_plan_id")
     private VendorPlan plan;
 
-    private LocalDate month;
+    private YearMonth selectedMonth;
 
     public VendorPlanSelection() {}
 
-    public VendorPlanSelection(User user, LocalDate month, VendorPlan plan) {
+    public VendorPlanSelection(User user, YearMonth selectedMonth, VendorPlan plan) {
         this.user = user;
-        this.month = month;
+        this.selectedMonth = selectedMonth;
         this.plan = plan;
     }
 
@@ -49,11 +50,11 @@ public class VendorPlanSelection {
         this.plan = plan;
     }
 
-    public LocalDate getMonth() {
-        return month;
+    public YearMonth getMonth() {
+        return selectedMonth;
     }
 
     public void setMonth(LocalDate month) {
-        this.month = month;
+        this.selectedMonth = selectedMonth;
     }
 }

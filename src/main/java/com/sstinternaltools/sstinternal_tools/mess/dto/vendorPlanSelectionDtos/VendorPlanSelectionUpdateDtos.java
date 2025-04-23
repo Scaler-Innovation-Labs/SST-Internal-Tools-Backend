@@ -1,4 +1,4 @@
 package com.sstinternaltools.sstinternal_tools.mess.dto.vendorPlanSelectionDtos;
 
-public class vendorPlanSelectionResponseDto {
+public class VendorPlanSelectionUpdateDtos {
 }

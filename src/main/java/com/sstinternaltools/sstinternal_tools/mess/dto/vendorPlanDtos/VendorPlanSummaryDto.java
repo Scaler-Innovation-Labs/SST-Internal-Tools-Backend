@@ -5,35 +5,26 @@ import jakarta.validation.constraints.NotBlank;
 
 import java.util.Set;
 
-public class VendorPlanResponseDto {
-    @NotBlank(message = "Plan Id cannot be blank")
-    private String vendorPlanId;
+public class VendorPlanSummaryDto {
+
     @NotBlank(message = "Plan name cannot be blank")
     private String planName;
     @NotBlank(message = "Vendor id cannot be blank")
-    private Long vendorId; // Only the ID, not the whole Vendor entity
+    private String vendorName; // Only the ID, not the whole Vendor entity
     @NotBlank(message = "Plan fee cannot be blank")
     private Double fee;
     @NotBlank(message = "Plan meal type cannot be blank")
     private Set<MealType> mealTypes;
 
-    public VendorPlanResponseDto() {}
+    public VendorPlanSummaryDto() {}
 
-    public VendorPlanResponseDto( String vendorPlanId,String planName, Set<MealType> mealTypes, Long vendorId, Double fee) {
-        this.vendorPlanId = vendorPlanId;
+    public VendorPlanSummaryDto(String planName,String vendorName, Set<MealType> mealTypes, Double fee) {
         this.planName = planName;
+        this.vendorName = vendorName;
         this.mealTypes = mealTypes;
-        this.vendorId = vendorId;
         this.fee = fee;
     }
 
-    public String getVendorPlanId() {
-        return vendorPlanId;
-    }
-
-    public void setVendorPlanId(String vendorPlanId) {
-        this.vendorPlanId = vendorPlanId;
-    }
 
     public String getPlanName() {
         return planName;
@@ -43,12 +34,12 @@ public class VendorPlanResponseDto {
         this.planName = planName;
     }
 
-    public Long getVendorId() {
-        return vendorId;
+    public String getVendorName() {
+        return vendorName;
     }
 
-    public void setVendorId(Long vendorId) {
-        this.vendorId = vendorId;
+    public void setVendorName(String vendorName) {
+        this.vendorName = vendorName;
     }
 
     public Double getFee() {

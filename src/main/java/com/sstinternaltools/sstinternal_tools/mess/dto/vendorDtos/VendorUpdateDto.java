@@ -1,9 +1,9 @@
 package com.sstinternaltools.sstinternal_tools.mess.dto.vendorDtos;
 
-public class vendorUpdateDto {
+public class VendorUpdateDto {
     private String vendorName;
 
-    public vendorUpdateDto(String vendorName) {
+    public VendorUpdateDto(String vendorName) {
         this.vendorName = vendorName;
     }
 

@@ -6,6 +6,8 @@ public class VendorSummaryDto {
     @NotBlank(message = "Vendor name cannot be blank")
     private String vendorName;
 
+    public VendorSummaryDto(){}
+
     public VendorSummaryDto(String vendorName) {
         this.vendorName = vendorName;
     }

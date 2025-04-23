@@ -8,6 +8,8 @@ public class VendorResponseDto {
     @NotBlank(message = "Vendor name cannot be blank")
     private String vendorName;
 
+    public VendorResponseDto() {}
+
     public VendorResponseDto(Long vendorId, String vendorName) {
         this.vendorId = vendorId;
         this.vendorName = vendorName;

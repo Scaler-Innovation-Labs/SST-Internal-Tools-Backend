@@ -9,22 +9,22 @@ public class Vendor {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "vendor_id",nullable = false)
     private Long id;
-    private String name;
+    private String vendorName;
 
     public Vendor() {}
     public Vendor(String name) {
-        this.name = name;
+        this.vendorName = name;
     }
 
     public Long getId() {
         return id;
     }
 
-    public String getName() {
-        return name;
+    public String getVendorName() {
+        return vendorName;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setVendorName(String name) {
+        this.vendorName = name;
     }
 }

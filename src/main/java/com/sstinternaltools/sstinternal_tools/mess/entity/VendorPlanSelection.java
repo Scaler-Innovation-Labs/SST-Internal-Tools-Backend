@@ -16,6 +16,7 @@ public class VendorPlanSelection {
     private User user;
 
     @ManyToOne
+    @JoinColumn(name="vendor_plan_id")
     private VendorPlan plan;
 
     private LocalDate month;

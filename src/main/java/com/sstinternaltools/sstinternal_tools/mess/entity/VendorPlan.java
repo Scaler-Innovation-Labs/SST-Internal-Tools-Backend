@@ -8,6 +8,7 @@ import java.util.Set;
 public class VendorPlan {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "vendor_plan_id",nullable = false)
     private Long id;
 
     private String planName;

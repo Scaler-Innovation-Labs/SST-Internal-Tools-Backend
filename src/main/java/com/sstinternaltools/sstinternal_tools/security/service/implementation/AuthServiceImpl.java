@@ -29,8 +29,14 @@ public class AuthServiceImpl implements AuthService {
     @Override
     public Map<String, String> rotateRefreshToken(String refreshToken) {
 
-        if (refreshToken == null || !jwtService.isRefreshTokenValid(refreshToken)) {
-            throw new JwtAuthenticationException("Invalid or expired refresh token");
+        if (refreshToken == null || !refreshToken.startsWith("Bearer ")) {
+            throw new JwtAuthenticationException("Invalid refresh token");
+        }
+
+        refreshToken = refreshToken.substring(7);
+
+        if (!jwtService.isRefreshTokenValid(refreshToken)) {
+            throw new JwtAuthenticationException("Expired or revoked refresh token");
         }
 
         String email = jwtService.extractEmail(refreshToken);
@@ -45,8 +51,14 @@ public class AuthServiceImpl implements AuthService {
     @Override
     public void logout(String refreshToken) {
 
-        if (refreshToken == null || !jwtService.isRefreshTokenValid(refreshToken)) {
-            throw new JwtAuthenticationException("Invalid or expired refresh token");
+        if (refreshToken == null || !refreshToken.startsWith("Bearer ")) {
+            throw new JwtAuthenticationException("Invalid refresh token");
+        }
+
+        refreshToken = refreshToken.substring(7);
+
+        if (!jwtService.isRefreshTokenValid(refreshToken)) {
+            throw new JwtAuthenticationException("Expired or revoked refresh token");
         }
 
         jwtService.revokeRefreshToken(refreshToken);

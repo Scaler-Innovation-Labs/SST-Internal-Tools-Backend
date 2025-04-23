@@ -10,4 +10,21 @@ public class Vendor {
     @Column(name = "vendor_id",nullable = false)
     private Long id;
     private String name;
+
+    public Vendor() {}
+    public Vendor(String name) {
+        this.name = name;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
 }

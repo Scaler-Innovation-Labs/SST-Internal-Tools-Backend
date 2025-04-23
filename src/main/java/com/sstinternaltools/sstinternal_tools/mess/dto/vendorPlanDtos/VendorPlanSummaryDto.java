@@ -9,7 +9,7 @@ public class VendorPlanSummaryDto {
 
     @NotBlank(message = "Plan name cannot be blank")
     private String planName;
-    @NotBlank(message = "Vendor id cannot be blank")
+    @NotBlank(message = "Vendor name cannot be blank")
     private String vendorName; // Only the ID, not the whole Vendor entity
     @NotBlank(message = "Plan fee cannot be blank")
     private Double fee;

@@ -5,9 +5,9 @@ import com.sstinternaltools.sstinternal_tools.mess.dto.vendorDtos.VendorResponse
 import com.sstinternaltools.sstinternal_tools.mess.dto.vendorDtos.VendorSummaryDto;
 import com.sstinternaltools.sstinternal_tools.mess.dto.vendorDtos.VendorUpdateDto;
 import com.sstinternaltools.sstinternal_tools.mess.entity.Vendor;
-import com.sstinternaltools.sstinternal_tools.mess.mapper.interfaces.DtoMapper;
+import com.sstinternaltools.sstinternal_tools.mess.mapper.interfaces.VendorDtoMapper;
 
-public class VendorMapper implements DtoMapper<Vendor, VendorCreateDto, VendorUpdateDto, VendorResponseDto,VendorSummaryDto> {
+public class VendorMapper implements VendorDtoMapper<Vendor, VendorCreateDto, VendorUpdateDto, VendorResponseDto,VendorSummaryDto> {
     @Override
     public Vendor fromCreateDto(VendorCreateDto createDto) {
         Vendor vendor = new Vendor();
@@ -17,7 +17,9 @@ public class VendorMapper implements DtoMapper<Vendor, VendorCreateDto, VendorUp
 
     @Override
     public Vendor fromUpdateDto(VendorUpdateDto updateDto, Vendor vendor) {
-        vendor.setVendorName(updateDto.getVendorName());
+        if (updateDto.getVendorName() != null) {
+            vendor.setVendorName(updateDto.getVendorName());
+        }
         return vendor;
     }
 

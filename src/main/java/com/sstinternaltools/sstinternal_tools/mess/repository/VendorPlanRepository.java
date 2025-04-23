@@ -6,9 +6,11 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface VendorPlanRepository extends JpaRepository<VendorPlan, Integer> {
     List<VendorPlan> findByVendorId(Long vendorId);
     List<VendorPlan> findByVendorIdAndMealTypesContaining(Long vendorId, MealType mealType);
+    Optional<VendorPlan> findById(Long id);
 }

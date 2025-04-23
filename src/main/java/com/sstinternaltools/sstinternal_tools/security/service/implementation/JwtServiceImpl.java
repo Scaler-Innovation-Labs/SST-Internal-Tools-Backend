@@ -59,6 +59,7 @@ public class JwtServiceImpl implements JwtService {
 
         Map<String, Object> claims = new HashMap<>();
         claims.put("role", roleNames);
+        claims.put("tokenType", TokenType.ACCESS.name());
         return Jwts.builder()
                 .claims()
                 .add(claims)
@@ -156,7 +157,10 @@ public class JwtServiceImpl implements JwtService {
     //method to validate access token
     public boolean validateAccessToken(String token, User user) {
         final String email = extractEmail(token);
-        return (email.equals(user.getEmail()) && !isTokenExpired(token));
+        final String tokenType = extractClaim(token, claims -> claims.get("tokenType", String.class));
+        return (email.equals(user.getEmail())
+                && !isTokenExpired(token)
+                && TokenType.ACCESS.name().equals(tokenType));
     }
 
     //method to check the token is expired or not

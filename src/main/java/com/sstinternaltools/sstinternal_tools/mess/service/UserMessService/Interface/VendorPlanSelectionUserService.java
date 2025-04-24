@@ -1,4 +1,4 @@
-package com.sstinternaltools.sstinternal_tools.mess.service.UserService.Interface;
+package com.sstinternaltools.sstinternal_tools.mess.service.UserMessService.Interface;
 
 import com.sstinternaltools.sstinternal_tools.mess.dto.vendorPlanSelectionDtos.VendorPlanSelectionCreateDto;
 import com.sstinternaltools.sstinternal_tools.mess.dto.vendorPlanSelectionDtos.VendorPlanSelectionResponseDto;

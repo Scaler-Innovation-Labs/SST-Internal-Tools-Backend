@@ -1,4 +1,4 @@
-package com.sstinternaltools.sstinternal_tools.mess.controller.UserController.Interface;
+package com.sstinternaltools.sstinternal_tools.mess.controller.UserMessController.Interface;
 
 import com.sstinternaltools.sstinternal_tools.mess.dto.vendorPlanSelectionDtos.VendorPlanSelectionCreateDto;
 import com.sstinternaltools.sstinternal_tools.mess.dto.vendorPlanSelectionDtos.VendorPlanSelectionSummaryDto;
@@ -6,7 +6,6 @@ import org.springframework.http.ResponseEntity;
 
 import java.time.YearMonth;
 import java.util.List;
-
 
 public interface VendorPlanSelectionUserController {
     public ResponseEntity<VendorPlanSelectionSummaryDto> getVendorPlanSelectionById(Long Id);

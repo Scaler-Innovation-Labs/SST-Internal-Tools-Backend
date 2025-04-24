@@ -1,4 +1,4 @@
-package com.sstinternaltools.sstinternal_tools.mess.service.UserService.Implementation;
+package com.sstinternaltools.sstinternal_tools.mess.service.UserMessService.Implementation;
 
 import com.sstinternaltools.sstinternal_tools.mess.dto.vendorPlanSelectionDtos.VendorPlanSelectionCreateDto;
 import com.sstinternaltools.sstinternal_tools.mess.dto.vendorPlanSelectionDtos.VendorPlanSelectionResponseDto;
@@ -6,7 +6,7 @@ import com.sstinternaltools.sstinternal_tools.mess.dto.vendorPlanSelectionDtos.V
 import com.sstinternaltools.sstinternal_tools.mess.entity.VendorPlanSelection;
 import com.sstinternaltools.sstinternal_tools.mess.mapper.implementation.VendorPlanSelectionMapper;
 import com.sstinternaltools.sstinternal_tools.mess.repository.VendorPlanSelectionRepository;
-import com.sstinternaltools.sstinternal_tools.mess.service.UserService.Interface.VendorPlanSelectionUserService;
+import com.sstinternaltools.sstinternal_tools.mess.service.UserMessService.Interface.VendorPlanSelectionUserService;
 import org.springframework.stereotype.Service;
 
 import java.time.YearMonth;

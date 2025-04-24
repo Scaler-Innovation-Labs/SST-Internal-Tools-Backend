@@ -9,8 +9,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface VendorPlanRepository extends JpaRepository<VendorPlan, Integer> {
+public interface VendorPlanRepository extends JpaRepository<VendorPlan, Long> {
     List<VendorPlan> findByVendorId(Long vendorId);
     List<VendorPlan> findByVendorIdAndMealTypesContaining(Long vendorId, MealType mealType);
-    Optional<VendorPlan> findById(Long id);
 }

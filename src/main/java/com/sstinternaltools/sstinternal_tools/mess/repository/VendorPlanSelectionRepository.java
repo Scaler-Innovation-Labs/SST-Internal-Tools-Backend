@@ -9,8 +9,9 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface VendorPlanSelectionRepository extends JpaRepository<VendorPlanSelection, Integer> {
+public interface VendorPlanSelectionRepository extends JpaRepository<VendorPlanSelection, Long> {
     List<VendorPlanSelection> findByUserIdAndSelectedMonth(Long userId, YearMonth selectedMonth);
     List<VendorPlanSelection> findByUserId(Long userId);
     List<VendorPlanSelection> findBySelectedMonthAndPlanVendorId(YearMonth selectedMonth, Long vendorId);
+    List<VendorPlanSelection> findBySelectedMonth(YearMonth selectedMonth);
 }

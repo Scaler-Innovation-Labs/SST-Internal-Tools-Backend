@@ -15,15 +15,6 @@ public class VendorPlanCreateDto {
     @NotBlank(message = "Plan meal type cannot be blank")
     private Set<MealType> mealTypes;
 
-    public VendorPlanCreateDto() {}
-
-    public VendorPlanCreateDto(String planName, Set<MealType> mealTypes, Long vendorId, Double fee) {
-        this.planName = planName;
-        this.mealTypes = mealTypes;
-        this.vendorId = vendorId;
-        this.fee = fee;
-    }
-
     public String getPlanName() {
         return planName;
     }

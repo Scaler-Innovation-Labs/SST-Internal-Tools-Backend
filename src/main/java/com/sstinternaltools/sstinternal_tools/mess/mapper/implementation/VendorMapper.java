@@ -6,7 +6,9 @@ import com.sstinternaltools.sstinternal_tools.mess.dto.vendorDtos.VendorSummaryD
 import com.sstinternaltools.sstinternal_tools.mess.dto.vendorDtos.VendorUpdateDto;
 import com.sstinternaltools.sstinternal_tools.mess.entity.Vendor;
 import com.sstinternaltools.sstinternal_tools.mess.mapper.interfaces.VendorDtoMapper;
+import org.springframework.stereotype.Component;
 
+@Component
 public class VendorMapper implements VendorDtoMapper<Vendor, VendorCreateDto, VendorUpdateDto, VendorResponseDto,VendorSummaryDto> {
     @Override
     public Vendor fromCreateDto(VendorCreateDto createDto) {

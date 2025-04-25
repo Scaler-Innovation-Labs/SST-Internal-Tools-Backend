@@ -13,14 +13,6 @@ public class VendorPlanSelectionCreateDto {
     @NotBlank(message = "Month cannot be blank")
     private YearMonth selectedMonth;
 
-    public VendorPlanSelectionCreateDto() {}
-
-    public VendorPlanSelectionCreateDto(Long vendorPlanId,Long userId, YearMonth selectedMonth) {
-        this.vendorPlanId = vendorPlanId;
-        this.userId = userId;
-        this.selectedMonth = selectedMonth;
-    }
-
     public Long getUserId() {
         return userId;
     }

@@ -8,7 +8,9 @@ import com.sstinternaltools.sstinternal_tools.mess.dto.vendorPlanDtos.VendorPlan
 import com.sstinternaltools.sstinternal_tools.mess.entity.Vendor;
 import com.sstinternaltools.sstinternal_tools.mess.entity.VendorPlan;
 import com.sstinternaltools.sstinternal_tools.mess.mapper.interfaces.VendorPlanDtoMapper;
+import org.springframework.stereotype.Component;
 
+@Component
 public class VendorPlanMapper implements VendorPlanDtoMapper<VendorPlan, Vendor, VendorPlanCreateDto, VendorPlanUpdateDto, VendorPlanResponseDto, VendorPlanSummaryDto> {
     @Override
     public VendorPlan fromCreateDto(VendorPlanCreateDto vendorPlanCreateDto,Vendor vendor) {

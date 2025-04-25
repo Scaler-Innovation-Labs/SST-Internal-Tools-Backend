@@ -14,9 +14,9 @@ import org.springframework.stereotype.Component;
 public class VendorPlanSelectionMapper implements VendorPlanSelectionDtoMapper <VendorPlanSelection, VendorPlan,User, VendorPlanSelectionCreateDto, VendorPlanSelectionUpdateDto, VendorPlanSelectionResponseDto, VendorPlanSelectionSummaryDto>{
 
     @Override
-    public VendorPlanSelection fromCreateDto(VendorPlanSelectionCreateDto vendorPlanSelectionCreateDto, VendorPlan vendorPlanlan, User user) {
+    public VendorPlanSelection fromCreateDto(VendorPlanSelectionCreateDto vendorPlanSelectionCreateDto, VendorPlan vendorPlan, User user) {
         VendorPlanSelection vendorPlanSelection = new VendorPlanSelection();
-        vendorPlanSelection.setPlan(vendorPlanlan);
+        vendorPlanSelection.setPlan(vendorPlan);
         vendorPlanSelection.setUser(user);
         vendorPlanSelection.setMonth(vendorPlanSelectionCreateDto.getSelectedMonth());
         return vendorPlanSelection;

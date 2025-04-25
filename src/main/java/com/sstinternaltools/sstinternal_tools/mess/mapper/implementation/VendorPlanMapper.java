@@ -40,7 +40,7 @@ public class VendorPlanMapper implements VendorPlanDtoMapper<VendorPlan, Vendor,
     @Override
     public VendorPlanResponseDto toResponseDto(VendorPlan vendorPlan) {
         VendorPlanResponseDto vendorPlanResponseDto = new VendorPlanResponseDto();
-        vendorPlanResponseDto.setVendorId(vendorPlan.getId());
+        vendorPlanResponseDto.setVendorPlanId(vendorPlan.getId());
         vendorPlanResponseDto.setPlanName(vendorPlan.getPlanName());
         vendorPlanResponseDto.setFee(vendorPlan.getFee());
         vendorPlanResponseDto.setMealTypes(vendorPlan.getMealTypes());

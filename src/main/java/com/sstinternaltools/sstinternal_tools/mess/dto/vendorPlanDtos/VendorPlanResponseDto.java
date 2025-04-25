@@ -7,7 +7,7 @@ import java.util.Set;
 
 public class VendorPlanResponseDto {
     @NotBlank(message = "Plan Id cannot be blank")
-    private String vendorPlanId;
+    private Long vendorPlanId;
     @NotBlank(message = "Plan name cannot be blank")
     private String planName;
     @NotBlank(message = "Vendor id cannot be blank")
@@ -19,7 +19,7 @@ public class VendorPlanResponseDto {
 
     public VendorPlanResponseDto() {}
 
-    public VendorPlanResponseDto( String vendorPlanId,String planName, Set<MealType> mealTypes, Long vendorId, Double fee) {
+    public VendorPlanResponseDto( Long vendorPlanId,String planName, Set<MealType> mealTypes, Long vendorId, Double fee) {
         this.vendorPlanId = vendorPlanId;
         this.planName = planName;
         this.mealTypes = mealTypes;
@@ -27,11 +27,11 @@ public class VendorPlanResponseDto {
         this.fee = fee;
     }
 
-    public String getVendorPlanId() {
+    public Long getVendorPlanId() {
         return vendorPlanId;
     }
 
-    public void setVendorPlanId(String vendorPlanId) {
+    public void setVendorPlanId(Long vendorPlanId) {
         this.vendorPlanId = vendorPlanId;
     }
 

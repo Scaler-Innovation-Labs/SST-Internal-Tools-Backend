@@ -12,14 +12,6 @@ public class BusScheduleUpdateDto {
     private LocalTime departureTime;
     private LocalDate date;
 
-    public BusScheduleUpdateDto(String source, String destination, LocalTime departureTime, LocalDate date) {
-        this.source = source;
-        this.destination = destination;
-        this.departureTime = departureTime;
-        this.date = date;
-    }
-
-    public BusScheduleUpdateDto() {}
 
     public String getSource() {
         return source;

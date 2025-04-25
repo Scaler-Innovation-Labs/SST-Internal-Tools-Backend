@@ -6,7 +6,9 @@ import com.sstinternaltools.sstinternal_tools.transport.dto.BusScheduleSummaryDt
 import com.sstinternaltools.sstinternal_tools.transport.dto.BusScheduleUpdateDto;
 import com.sstinternaltools.sstinternal_tools.transport.entity.BusSchedule;
 import com.sstinternaltools.sstinternal_tools.transport.mapper.interfaces.DtoMapper;
+import org.springframework.stereotype.Component;
 
+@Component
 public class BusScheduleMapper implements DtoMapper <BusSchedule, BusScheduleResponseDto, BusScheduleCreateDto, BusScheduleUpdateDto, BusScheduleSummaryDto> {
     @Override
     public BusSchedule fromCreateDto(BusScheduleCreateDto createDto) {

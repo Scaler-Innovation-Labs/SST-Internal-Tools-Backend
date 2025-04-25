@@ -10,7 +10,7 @@ import java.util.List;
 
 public interface BusScheduleService {
      BusScheduleResponseDto createBusSchedule(BusScheduleCreateDto dto);
-     BusScheduleSummaryDto updateBusSchedule(BusScheduleUpdateDto dto);
+     BusScheduleResponseDto updateBusSchedule(BusScheduleUpdateDto dto,Long scheduleId);
      void deleteBusSchedule(Long id);
      List<BusScheduleResponseDto> getSchedulesForDate(LocalDate date);
 }

@@ -5,6 +5,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.List;
 import java.util.Optional;
 @Repository
@@ -14,4 +15,6 @@ public interface BusScheduleRepository extends JpaRepository<BusSchedule, Long> 
     boolean existsByDate(LocalDate date);
     void deleteByDateBefore(LocalDate cutoffDate);
     void deleteById(Long id);
+    void deleteByDateAndDepartureTimeBefore(LocalDate date, LocalTime time);
+
 }

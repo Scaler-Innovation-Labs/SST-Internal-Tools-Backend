@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.ResourceAccessException;
 
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -76,10 +77,11 @@ public class BusScheduleServiceImpl implements BusScheduleService {
     }
 
     @Override
-    @Scheduled(cron = "0 0 2 1 */1 ?") //2 AM, 1st day, every month
+    @Scheduled(cron = "0 0 * * * ?") // Every hour at minute 0
     public void deleteOldSchedules() {
-        LocalDate cutoffDate = LocalDate.now().minusMonths(1);
-        busScheduleRepository.deleteByDateBefore(cutoffDate);
+        LocalDate today = LocalDate.now();
+        LocalTime cutoff = LocalTime.now().minusHours(1);
+        busScheduleRepository.deleteByDateAndDepartureTimeBefore(today, cutoff);
     }
 
 }

@@ -2,7 +2,6 @@ package com.sstinternaltools.sstinternal_tools.transport.service.implementation;
 
 import com.sstinternaltools.sstinternal_tools.transport.dto.BusScheduleCreateDto;
 import com.sstinternaltools.sstinternal_tools.transport.dto.BusScheduleResponseDto;
-import com.sstinternaltools.sstinternal_tools.transport.dto.BusScheduleSummaryDto;
 import com.sstinternaltools.sstinternal_tools.transport.dto.BusScheduleUpdateDto;
 import com.sstinternaltools.sstinternal_tools.transport.entity.BusSchedule;
 import com.sstinternaltools.sstinternal_tools.transport.mapper.implementation.BusScheduleMapper;
@@ -39,10 +38,9 @@ public class BusScheduleServiceImpl implements BusScheduleService {
             throw new IllegalArgumentException("Schedule id cannot be null");
         }
 
-        if(!busScheduleRepository.existsById(scheduleId)) {
-            throw new ResourceAccessException("Schedule does not exist");
-        }
-        BusSchedule busSchedule=busScheduleRepository.findById(scheduleId);
+        BusSchedule busSchedule = busScheduleRepository.findById(scheduleId)
+                .orElseThrow(() -> new ResourceAccessException("Schedule does not exist"));
+
         BusSchedule updatedBusSchedule=busScheduleMapper.fromUpdateDto(updateDto,busSchedule);
         busScheduleRepository.save(updatedBusSchedule);
         return busScheduleMapper.toResponseDto(busSchedule);

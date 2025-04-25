@@ -8,6 +8,7 @@ import com.sstinternaltools.sstinternal_tools.transport.entity.BusSchedule;
 import com.sstinternaltools.sstinternal_tools.transport.mapper.implementation.BusScheduleMapper;
 import com.sstinternaltools.sstinternal_tools.transport.repository.BusScheduleRepository;
 import com.sstinternaltools.sstinternal_tools.transport.service.interfaces.BusScheduleService;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.ResourceAccessException;
 
@@ -75,4 +76,12 @@ public class BusScheduleServiceImpl implements BusScheduleService {
                 .map(schedule -> busScheduleMapper.toResponseDto(schedule))
                 .collect(Collectors.toList());
     }
+
+    @Override
+    @Scheduled(cron = "0 0 2 1 */1 ?") //2 AM, 1st day, every month
+    public void deleteOldSchedules() {
+        LocalDate cutoffDate = LocalDate.now().minusMonths(1);
+        busScheduleRepository.deleteByDateBefore(cutoffDate);
+    }
+
 }

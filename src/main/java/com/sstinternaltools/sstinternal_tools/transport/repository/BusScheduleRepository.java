@@ -14,5 +14,5 @@ public interface BusScheduleRepository extends JpaRepository {
     List<BusSchedule> findAllByDate(LocalDate date);
     BusSchedule findById(Long id);
     boolean existsByDate(LocalDate date);
-
+    void deleteByDateBefore(LocalDate cutoffDate);
 }

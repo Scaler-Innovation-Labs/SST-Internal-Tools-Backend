@@ -13,4 +13,5 @@ public interface BusScheduleService {
      BusScheduleResponseDto updateBusSchedule(BusScheduleUpdateDto dto,Long scheduleId);
      void deleteBusSchedule(Long id);
      List<BusScheduleResponseDto> getSchedulesForDate(LocalDate date);
+     public void deleteOldSchedules();
 }

@@ -14,9 +14,7 @@ public class BusSchedule {
 
     private String source;
     private String destination;
-
     private LocalTime departureTime;
-
     private LocalDate date;
 
     public BusSchedule(String source, String destination, LocalTime departureTime, LocalDate date) {

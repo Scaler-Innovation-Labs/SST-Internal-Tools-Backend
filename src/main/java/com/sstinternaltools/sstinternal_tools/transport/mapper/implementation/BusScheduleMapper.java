@@ -31,8 +31,8 @@ public class BusScheduleMapper implements DtoMapper <BusSchedule, BusScheduleRes
         if(updateDto.getDate() != null) {
             busSchedule.setDate(updateDto.getDate());
         }
-        if(updateDto.getDepartureTime() != null) {
-            busSchedule.setDepartureTime(updateDto.getDepartureTime());
+        if(updateDto.getSource() != null) {
+            busSchedule.setSource(updateDto.getSource());
         }
         return busSchedule;
     }

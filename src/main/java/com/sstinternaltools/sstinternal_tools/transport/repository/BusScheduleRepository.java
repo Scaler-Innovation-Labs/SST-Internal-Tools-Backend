@@ -9,4 +9,5 @@ import java.util.Optional;
 public interface BusScheduleRepository extends JpaRepository {
     List<BusSchedule> findAllByDate(LocalDate date);
     Optional<BusSchedule> findById(Long id);
+    void save(BusSchedule busSchedule);
 }

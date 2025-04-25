@@ -19,8 +19,8 @@ import java.util.stream.Collectors;
 @Service
 public class BusScheduleServiceImpl implements BusScheduleService {
 
-    private BusScheduleMapper busScheduleMapper;
-    private BusScheduleRepository busScheduleRepository;
+    private final BusScheduleMapper busScheduleMapper;
+    private final BusScheduleRepository busScheduleRepository;
     public BusScheduleServiceImpl(BusScheduleMapper busScheduleMapper, BusScheduleRepository busScheduleRepository) {
         this.busScheduleMapper = busScheduleMapper;
         this.busScheduleRepository = busScheduleRepository;
@@ -67,7 +67,7 @@ public class BusScheduleServiceImpl implements BusScheduleService {
             throw new IllegalArgumentException("Date cannot be null");
         }
 
-        if(busScheduleRepository.existsByDate(date)==false){
+        if(!busScheduleRepository.existsByDate(date)){
             throw new ResourceAccessException("Schedule does not exist for "+date+".");
         }
 

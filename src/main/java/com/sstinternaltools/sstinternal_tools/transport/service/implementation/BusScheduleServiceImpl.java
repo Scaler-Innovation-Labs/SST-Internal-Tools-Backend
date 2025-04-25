@@ -69,7 +69,7 @@ public class BusScheduleServiceImpl implements BusScheduleService {
             throw new ResourceAccessException("Schedule does not exist for "+date+".");
         }
 
-        return busScheduleRepository.findAllByDate(date)
+        return busScheduleRepository.findAllByDateOrderByDepartureTimeAsc(date)
                 .stream()
                 .map(schedule -> busScheduleMapper.toResponseDto(schedule))
                 .collect(Collectors.toList());

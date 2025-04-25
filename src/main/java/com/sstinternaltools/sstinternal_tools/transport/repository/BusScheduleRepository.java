@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Optional;
 @Repository
 public interface BusScheduleRepository extends JpaRepository<BusSchedule, Long> {
+    List<BusSchedule> findAllByDateOrderByDepartureTimeAsc(LocalDate date);
     List<BusSchedule> findAllByDate(LocalDate date);
     boolean existsByDate(LocalDate date);
     void deleteByDateBefore(LocalDate cutoffDate);

@@ -1,6 +1,7 @@
 package com.sstinternaltools.sstinternal_tools.transport.dto;
 
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -10,9 +11,9 @@ public class BusScheduleCreateDto {
     private String source;
     @NotBlank(message = "Destination cannot be blank")
     private String destination;
-    @NotBlank(message = "Departure time cannot be blank")
+    @NotNull(message = "Departure time cannot be blank")
     private LocalTime departureTime;
-    @NotBlank(message = "Date cannot be blank")
+    @NotNull(message = "Date cannot be blank")
     private LocalDate date;
 
 

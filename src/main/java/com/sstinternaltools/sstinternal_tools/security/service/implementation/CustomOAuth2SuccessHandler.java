@@ -74,7 +74,11 @@ public class CustomOAuth2SuccessHandler implements AuthenticationSuccessHandler 
            tokens.put("refreshToken", refreshToken);
 
 
-           response.sendRedirect("/");
+
+           response.setContentType("application/json");
+           response.setCharacterEncoding("UTF-8");
+           response.getWriter().write(objectMapper.writeValueAsString(tokens));
+
 
        } catch(Exception e){
            e.printStackTrace();

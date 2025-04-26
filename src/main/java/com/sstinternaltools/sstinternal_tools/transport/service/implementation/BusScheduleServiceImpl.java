@@ -7,6 +7,7 @@ import com.sstinternaltools.sstinternal_tools.transport.entity.BusSchedule;
 import com.sstinternaltools.sstinternal_tools.transport.mapper.implementation.BusScheduleMapper;
 import com.sstinternaltools.sstinternal_tools.transport.repository.BusScheduleRepository;
 import com.sstinternaltools.sstinternal_tools.transport.service.interfaces.BusScheduleService;
+import jakarta.transaction.Transactional;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.ResourceAccessException;
@@ -27,6 +28,7 @@ public class BusScheduleServiceImpl implements BusScheduleService {
     }
 
     @Override
+    @Transactional
     public BusScheduleResponseDto createBusSchedule(BusScheduleCreateDto createDto) {
         BusSchedule busSchedule = busScheduleMapper.fromCreateDto(createDto);
         busScheduleRepository.save(busSchedule);
@@ -34,6 +36,7 @@ public class BusScheduleServiceImpl implements BusScheduleService {
     }
 
     @Override
+    @Transactional
     public BusScheduleResponseDto updateBusSchedule(BusScheduleUpdateDto updateDto,Long scheduleId) {
         if(scheduleId == null){
             throw new IllegalArgumentException("Schedule id cannot be null");
@@ -48,6 +51,7 @@ public class BusScheduleServiceImpl implements BusScheduleService {
     }
 
     @Override
+    @Transactional
     public void deleteBusSchedule(Long scheduleId) {
         if(scheduleId == null){
             throw new IllegalArgumentException("Schedule id cannot be null");
@@ -77,11 +81,14 @@ public class BusScheduleServiceImpl implements BusScheduleService {
     }
 
     @Override
-    @Scheduled(cron = "0 0 * * * ?") // Every hour at minute 0
+    @Scheduled(cron = "0 0 * * * ?", zone = "Asia/Kolkata") // Every hour at minute 0
+    @Transactional
     public void deleteOldSchedules() {
         LocalDate today = LocalDate.now();
         LocalTime cutoff = LocalTime.now().minusHours(1);
-        busScheduleRepository.deleteByDateAndDepartureTimeBefore(today, cutoff);
-    }
 
+        busScheduleRepository.deleteOldSchedules(today, cutoff);
+
+        System.err.println("Schedule deletion completed at " + LocalTime.now());
+    }
 }

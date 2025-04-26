@@ -1,7 +1,11 @@
 package com.sstinternaltools.sstinternal_tools.transport.repository;
 
 import com.sstinternaltools.sstinternal_tools.transport.entity.BusSchedule;
+import jakarta.transaction.Transactional;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDate;
@@ -13,8 +17,10 @@ public interface BusScheduleRepository extends JpaRepository<BusSchedule, Long> 
     List<BusSchedule> findAllByDateOrderByDepartureTimeAsc(LocalDate date);
     List<BusSchedule> findAllByDate(LocalDate date);
     boolean existsByDate(LocalDate date);
-    void deleteByDateBefore(LocalDate cutoffDate);
     void deleteById(Long id);
-    void deleteByDateAndDepartureTimeBefore(LocalDate date, LocalTime time);
+    @Modifying
+    @Transactional
+    @Query("DELETE FROM BusSchedule b WHERE b.date < :today OR (b.date = :today AND b.departureTime < :cutoff)")
+    void deleteOldSchedules(@Param("today") LocalDate today, @Param("cutoff") LocalTime cutoff);
 
 }

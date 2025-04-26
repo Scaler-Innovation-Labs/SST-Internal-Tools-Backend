@@ -8,7 +8,6 @@ import com.sstinternaltools.sstinternal_tools.transport.mapper.implementation.Bu
 import com.sstinternaltools.sstinternal_tools.transport.repository.BusScheduleRepository;
 import com.sstinternaltools.sstinternal_tools.transport.service.interfaces.BusScheduleService;
 import jakarta.transaction.Transactional;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.ResourceAccessException;
 
@@ -81,14 +80,10 @@ public class BusScheduleServiceImpl implements BusScheduleService {
     }
 
     @Override
-    @Scheduled(cron = "0 0 * * * ?", zone = "Asia/Kolkata") // Every hour at minute 0
     @Transactional
     public void deleteOldSchedules() {
         LocalDate today = LocalDate.now();
         LocalTime cutoff = LocalTime.now().minusHours(1);
-
         busScheduleRepository.deleteOldSchedules(today, cutoff);
-
-        System.err.println("Schedule deletion completed at " + LocalTime.now());
     }
 }

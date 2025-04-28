@@ -2,6 +2,8 @@ package com.sstinternaltools.sstinternal_tools.mess.dto.vendorPlanDtos;
 
 import com.sstinternaltools.sstinternal_tools.mess.entity.MealType;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 
 import java.util.Set;
 
@@ -14,7 +16,8 @@ public class VendorPlanResponseDto {
     private Long vendorId; // Only the ID, not the whole Vendor entity
     @NotBlank(message = "Plan fee cannot be blank")
     private Double fee;
-    @NotBlank(message = "Plan meal type cannot be blank")
+    @NotNull(message = "Plan meal type cannot be blank")
+    @NotEmpty(message = "Plan meal type set cannot be empty")
     private Set<MealType> mealTypes;
 
     public VendorPlanResponseDto() {}

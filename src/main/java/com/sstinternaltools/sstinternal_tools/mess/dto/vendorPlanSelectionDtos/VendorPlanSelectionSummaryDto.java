@@ -2,6 +2,8 @@ package com.sstinternaltools.sstinternal_tools.mess.dto.vendorPlanSelectionDtos;
 
 import com.sstinternaltools.sstinternal_tools.mess.entity.MealType;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 
 import java.time.YearMonth;
 import java.util.Set;
@@ -12,9 +14,10 @@ public class VendorPlanSelectionSummaryDto {
     private String vendorPlanName;
     @NotBlank(message = "Vendor name cannot be blank")
     private String vendorName;
-    @NotBlank(message = "Month cannot be blank")
+    @NotNull(message = "Month cannot be blank")
     private YearMonth selectedMonth;
-    @NotBlank(message = "Meal type cannot be blank")
+    @NotNull(message = "Meal type cannot be blank")
+    @NotEmpty(message = "Meal type cannot be empty")
     private Set<MealType> mealTypes;
     @NotBlank(message = "Fee cannot be blank")
     private double fee;

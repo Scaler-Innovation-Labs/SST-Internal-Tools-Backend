@@ -1,6 +1,7 @@
 package com.sstinternaltools.sstinternal_tools.mess.dto.vendorPlanSelectionDtos;
 
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 
 import java.time.YearMonth;
 
@@ -10,7 +11,7 @@ public class VendorPlanSelectionCreateDto {
     private Long vendorPlanId;
     @NotBlank(message = "User id cannot be blank")
     private Long userId;
-    @NotBlank(message = "Month cannot be blank")
+    @NotNull(message = "Month cannot be blank")
     private YearMonth selectedMonth;
 
     public Long getUserId() {

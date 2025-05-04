@@ -1,9 +1,10 @@
 package com.sstinternaltools.sstinternal_tools.mess.controller.AdminMessController.Interface;
 
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import com.sstinternaltools.sstinternal_tools.mess.dto.vendorPlanSelectionDtos.VendorPlanSelectionCreateDto;
+import com.sstinternaltools.sstinternal_tools.mess.dto.vendorPlanSelectionDtos.VendorPlanSelectionResponseDto;
+import org.springframework.http.ResponseEntity;
 
-@RestController
-@RequestMapping("/mess/vendorPlanSelection")
 public interface VendorPlanSelectionAdminController {
+    public ResponseEntity<VendorPlanSelectionResponseDto> createVendorPlanSelection(VendorPlanSelectionCreateDto vendorPlanSelectionCreateDto);
+    public ResponseEntity<String> deleteVendorPlanSelection(Long id);
 }

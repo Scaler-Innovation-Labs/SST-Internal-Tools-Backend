@@ -8,10 +8,12 @@ import com.sstinternaltools.sstinternal_tools.mess.entity.VendorPlan;
 import com.sstinternaltools.sstinternal_tools.mess.mapper.implementation.VendorPlanMapper;
 import com.sstinternaltools.sstinternal_tools.mess.repository.VendorPlanRepository;
 import com.sstinternaltools.sstinternal_tools.mess.service.AdminMessService.Interface.VendorPlanAdminService;
+import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@Service
 public class VendorPlanAdminServiceImpl implements VendorPlanAdminService {
     private final VendorPlanRepository vendorPlanRepository;
     private final VendorPlanMapper vendorPlanMapper;

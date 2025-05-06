@@ -4,9 +4,11 @@ import com.sstinternaltools.sstinternal_tools.mess.dto.vendorPlanDtos.VendorPlan
 import com.sstinternaltools.sstinternal_tools.mess.dto.vendorPlanDtos.VendorPlanResponseDto;
 import com.sstinternaltools.sstinternal_tools.mess.dto.vendorPlanDtos.VendorPlanSummaryDto;
 import com.sstinternaltools.sstinternal_tools.mess.dto.vendorPlanDtos.VendorPlanUpdateDto;
+import com.sstinternaltools.sstinternal_tools.mess.entity.Vendor;
 import com.sstinternaltools.sstinternal_tools.mess.entity.VendorPlan;
 import com.sstinternaltools.sstinternal_tools.mess.mapper.implementation.VendorPlanMapper;
 import com.sstinternaltools.sstinternal_tools.mess.repository.VendorPlanRepository;
+import com.sstinternaltools.sstinternal_tools.mess.repository.VendorRepository;
 import com.sstinternaltools.sstinternal_tools.mess.service.AdminMessService.Interface.VendorPlanAdminService;
 import org.springframework.stereotype.Service;
 
@@ -17,16 +19,18 @@ import java.util.List;
 public class VendorPlanAdminServiceImpl implements VendorPlanAdminService {
     private final VendorPlanRepository vendorPlanRepository;
     private final VendorPlanMapper vendorPlanMapper;
+    private final VendorRepository vendorRepository;
 
-    public VendorPlanAdminServiceImpl(VendorPlanRepository vendorPlanRepository, VendorPlanMapper vendorPlanMapper) {
+    public VendorPlanAdminServiceImpl(VendorPlanRepository vendorPlanRepository, VendorPlanMapper vendorPlanMapper, VendorRepository vendorRepository) {
         this.vendorPlanRepository = vendorPlanRepository;
         this.vendorPlanMapper = vendorPlanMapper;
+        this.vendorRepository = vendorRepository;
     }
 
     @Override
     public VendorPlanSummaryDto getVendorPlanById(Long id) {
         VendorPlan vendorPlan = vendorPlanRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException());
+                .orElseThrow(() -> new ResourceNotFoundException("Vendor Plan not found."));
         return vendorPlanMapper.toSummaryDto(vendorPlan);
     }
 
@@ -41,13 +45,12 @@ public class VendorPlanAdminServiceImpl implements VendorPlanAdminService {
     }
 
     @Override
-    public VendorPlanResponseDto createVendorPlan(VendorPlanCreateDto vendorPlanCreateDto) {
-//        VendorPlan vendorPlan = new VendorPlan();
-//        vendorPlanMapper.fromCreateDto(vendorPlanCreateDto, vendorPlan);
-//        Vendor savedVendor = vendorPlanRepository.save(vendorPlan);
-        // Let vendorPlan create dto take in  a vendorname from drop down. based on that ill search by name and create vendorplan from that.
-        // Then save that vendorPlan and return response dto. If not we should request vendor also in http request body which sounds like a hassle.
-        return null;
+    public VendorPlanResponseDto createVendorPlan(VendorPlanCreateDto vendorPlanCreateDto, Long vendorId) {
+        Vendor vendor = vendorRepository.findById(vendorId)
+                .orElseThrow(() -> new ResourceNotFoundException("Vendor not found."));
+        VendorPlan vendorPlan = vendorPlanMapper.fromCreateDto(vendorPlanCreateDto, vendor);
+        VendorPlan savedVendorPlan = vendorPlanRepository.save(vendorPlan);
+        return vendorPlanMapper.toResponseDto(savedVendorPlan);
     }
 
     @Override

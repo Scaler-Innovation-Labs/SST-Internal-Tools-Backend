@@ -10,7 +10,7 @@ import java.util.List;
 public interface VendorPlanAdminService {
     VendorPlanSummaryDto getVendorPlanById(Long id);
     List<VendorPlanSummaryDto> getAllVendorPlans();
-    VendorPlanResponseDto createVendorPlan(VendorPlanCreateDto vendorPlanCreateDto);
+    VendorPlanResponseDto createVendorPlan(VendorPlanCreateDto vendorPlanCreateDto, Long vendorId);
     VendorPlanResponseDto updateVendorPlan(VendorPlanUpdateDto vendorPlanUpdateDto, Long id);
     VendorPlanResponseDto partialUpdateVendorPlan(VendorPlanUpdateDto vendorPlanUpdateDto, Long id);
     void deleteVendorPlan(Long id);

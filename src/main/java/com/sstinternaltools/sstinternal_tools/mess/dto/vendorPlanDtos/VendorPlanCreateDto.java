@@ -10,9 +10,9 @@ import java.util.Set;
 public class VendorPlanCreateDto {
     @NotBlank(message = "Plan name cannot be blank")
     private String planName;
-    @NotBlank(message = "Vendor id cannot be blank")
+    @NotNull(message = "Vendor id cannot be blank")
     private Long vendorId; // Only the ID, not the whole Vendor entity
-    @NotBlank(message = "Plan fee cannot be blank")
+    @NotNull(message = "Plan fee cannot be blank")
     private Double fee;
     @NotNull(message = "Plan meal type cannot be blank")
     @NotEmpty(message = "Plan meal type set cannot be empty")

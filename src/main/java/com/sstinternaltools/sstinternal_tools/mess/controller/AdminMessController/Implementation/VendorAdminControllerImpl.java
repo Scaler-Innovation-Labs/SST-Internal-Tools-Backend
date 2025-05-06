@@ -10,11 +10,10 @@ import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @RestController
-@RequestMapping("/mess/vendor")
+@RequestMapping("/mess/admin/vendor")
 public class VendorAdminControllerImpl implements VendorAdminController {
 
     private final VendorAdminService vendorAdminService;

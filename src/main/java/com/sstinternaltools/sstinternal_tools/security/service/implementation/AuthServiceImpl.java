@@ -4,15 +4,9 @@ import com.sstinternaltools.sstinternal_tools.security.exception.JwtAuthenticati
 import com.sstinternaltools.sstinternal_tools.security.service.interfaces.AuthService;
 import com.sstinternaltools.sstinternal_tools.security.service.interfaces.JwtService;
 import com.sstinternaltools.sstinternal_tools.user.entity.User;
-import com.sstinternaltools.sstinternal_tools.user.entity.UserRole;
 import com.sstinternaltools.sstinternal_tools.user.repository.UserRepository;
-import jakarta.servlet.http.Cookie;
-import jakarta.servlet.http.HttpServletResponse;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.Map;
 
 @Service
@@ -29,8 +23,14 @@ public class AuthServiceImpl implements AuthService {
     @Override
     public Map<String, String> rotateRefreshToken(String refreshToken) {
 
-        if (refreshToken == null || !jwtService.isRefreshTokenValid(refreshToken)) {
-            throw new JwtAuthenticationException("Invalid or expired refresh token");
+        if (refreshToken == null || !refreshToken.startsWith("Bearer ")) {
+            throw new JwtAuthenticationException("Invalid refresh token");
+        }
+
+        refreshToken = refreshToken.substring(7);
+
+        if (!jwtService.isRefreshTokenValid(refreshToken)) {
+            throw new JwtAuthenticationException("Expired or revoked refresh token");
         }
 
         String email = jwtService.extractEmail(refreshToken);
@@ -45,8 +45,14 @@ public class AuthServiceImpl implements AuthService {
     @Override
     public void logout(String refreshToken) {
 
-        if (refreshToken == null || !jwtService.isRefreshTokenValid(refreshToken)) {
-            throw new JwtAuthenticationException("Invalid or expired refresh token");
+        if (refreshToken == null || !refreshToken.startsWith("Bearer ")) {
+            throw new JwtAuthenticationException("Invalid refresh token");
+        }
+
+        refreshToken = refreshToken.substring(7);
+
+        if (!jwtService.isRefreshTokenValid(refreshToken)) {
+            throw new JwtAuthenticationException("Expired or revoked refresh token");
         }
 
         jwtService.revokeRefreshToken(refreshToken);

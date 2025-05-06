@@ -13,5 +13,5 @@ public interface VendorPlanSelectionUserController {
     public ResponseEntity<List<VendorPlanSelectionSummaryDto>> getVendorPlanSelectionsByMonth(YearMonth month);
     public ResponseEntity<List<VendorPlanSelectionSummaryDto>> getVendorPlanSelectionsByMonthAndVendorId(YearMonth month, Long vendorId);
     public ResponseEntity<List<VendorPlanSelectionSummaryDto>> getVendorPlanSelectionsByUserIdAndMonth(Long userId, YearMonth month);
-    public ResponseEntity<String> createVendorPlanSelection(VendorPlanSelectionCreateDto vendorPlanSelectionCreateDto);
+    public ResponseEntity<String> createVendorPlanSelection(VendorPlanSelectionCreateDto vendorPlanSelectionCreateDto, Long vendorPlanId, Long userId);
 }

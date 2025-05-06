@@ -59,8 +59,8 @@ public class VendorPlanSelectionUserControllerImpl implements VendorPlanSelectio
 
     @Override
     @PostMapping("/create")
-    public ResponseEntity<String> createVendorPlanSelection(@Valid @RequestBody VendorPlanSelectionCreateDto vendorPlanSelectionCreateDto) {
-        VendorPlanSelectionResponseDto vendorPlanSelectionResponseDto = vendorPlanSelectionUserService.createVendorPlanSelection(vendorPlanSelectionCreateDto);
+    public ResponseEntity<String> createVendorPlanSelection(@Valid @RequestBody VendorPlanSelectionCreateDto vendorPlanSelectionCreateDto, @Valid @RequestBody Long vendorPlanId, @Valid @RequestBody Long userId) {
+        VendorPlanSelectionResponseDto vendorPlanSelectionResponseDto = vendorPlanSelectionUserService.createVendorPlanSelection(vendorPlanSelectionCreateDto, vendorPlanId, userId);
         return ResponseEntity.ok("User created successfully!");
     }
 }

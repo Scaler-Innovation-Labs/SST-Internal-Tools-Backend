@@ -5,6 +5,7 @@ import com.sstinternaltools.sstinternal_tools.announcement.dto.AnnouncementRespo
 import com.sstinternaltools.sstinternal_tools.announcement.dto.AnnouncementUpdateRequest;
 import com.sstinternaltools.sstinternal_tools.announcement.model.AnnouncementLabel;
 import com.sstinternaltools.sstinternal_tools.announcement.service.template.AnnouncementService;
+import jakarta.validation.Valid;
 import org.springframework.data.domain.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -26,7 +27,7 @@ public class AnnouncementController {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     @PreAuthorize("hasAnyRole('STUDENT_ADMIN','ADMIN','SUPER_ADMIN')")
-    public ResponseEntity<AnnouncementResponse> post(@RequestBody AnnouncementRequest dto) {
+    public ResponseEntity<AnnouncementResponse> post(@Valid @RequestBody AnnouncementRequest dto) {
         AnnouncementResponse response = svc.create(dto);
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }

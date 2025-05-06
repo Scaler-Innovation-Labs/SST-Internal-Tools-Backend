@@ -9,7 +9,7 @@ import java.time.LocalDateTime;
 import java.util.Map;
 
 @RestControllerAdvice
-public class CustomExceptionHandler {
+public class MessExceptionHandler {
 
     private ResponseEntity<Map<String, Object>> buildResponse(HttpStatus status, String error, String message) {
         return ResponseEntity.status(status).body(Map.of(

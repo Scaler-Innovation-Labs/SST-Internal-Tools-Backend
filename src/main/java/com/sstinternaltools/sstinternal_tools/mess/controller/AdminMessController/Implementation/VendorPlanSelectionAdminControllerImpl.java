@@ -30,7 +30,7 @@ public class VendorPlanSelectionAdminControllerImpl implements VendorPlanSelecti
     @Override
     @PutMapping("/update")
     public ResponseEntity<VendorPlanSelectionResponseDto> updateVendorPlanSelection(VendorPlanSelectionUpdateDto vendorPlanSelectionUpdateDto, Long vendorPlanSelectionId) {
-        VendorPlanSelectionResponseDto vendorPlanSelectionResponseDto = vendorPlanSelectionUserService.updateVendorPlanSelection(vendorPlanSelectionUpdateDto, vendorPlanSelectionId);
+        VendorPlanSelectionResponseDto vendorPlanSelectionResponseDto = vendorPlanSelectionAdminService.updateVendorPlanSelection(vendorPlanSelectionUpdateDto, vendorPlanSelectionId);
         return ResponseEntity.ok(vendorPlanSelectionResponseDto);
     }
 

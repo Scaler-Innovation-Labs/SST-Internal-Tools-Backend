@@ -6,6 +6,8 @@ import com.sstinternaltools.sstinternal_tools.mess.dto.vendorPlanDtos.VendorPlan
 import com.sstinternaltools.sstinternal_tools.mess.dto.vendorPlanDtos.VendorPlanUpdateDto;
 import com.sstinternaltools.sstinternal_tools.mess.entity.Vendor;
 import com.sstinternaltools.sstinternal_tools.mess.entity.VendorPlan;
+import com.sstinternaltools.sstinternal_tools.mess.exception.DuplicateResourceException;
+import com.sstinternaltools.sstinternal_tools.mess.exception.ResourceNotFoundException;
 import com.sstinternaltools.sstinternal_tools.mess.mapper.implementation.VendorPlanMapper;
 import com.sstinternaltools.sstinternal_tools.mess.repository.VendorPlanRepository;
 import com.sstinternaltools.sstinternal_tools.mess.repository.VendorRepository;
@@ -17,6 +19,7 @@ import java.util.List;
 
 @Service
 public class VendorPlanAdminServiceImpl implements VendorPlanAdminService {
+
     private final VendorPlanRepository vendorPlanRepository;
     private final VendorPlanMapper vendorPlanMapper;
     private final VendorRepository vendorRepository;
@@ -46,6 +49,9 @@ public class VendorPlanAdminServiceImpl implements VendorPlanAdminService {
 
     @Override
     public VendorPlanResponseDto createVendorPlan(VendorPlanCreateDto vendorPlanCreateDto, Long vendorId) {
+        if (vendorPlanRepository.existsByMealTypesAndVendor_Id(vendorPlanCreateDto.getMealTypes(), vendorId)) {
+            throw new DuplicateResourceException("Vendor Plan already exists.");
+        }
         Vendor vendor = vendorRepository.findById(vendorId)
                 .orElseThrow(() -> new ResourceNotFoundException("Vendor not found."));
         VendorPlan vendorPlan = vendorPlanMapper.fromCreateDto(vendorPlanCreateDto, vendor);
@@ -56,7 +62,7 @@ public class VendorPlanAdminServiceImpl implements VendorPlanAdminService {
     @Override
     public VendorPlanResponseDto updateVendorPlan(VendorPlanUpdateDto vendorPlanUpdateDto, Long id) {
         VendorPlan vendorPlan = vendorPlanRepository.findById(id)
-                        .orElseThrow(() -> ResourceNotFoundException());
+                        .orElseThrow(() -> new ResourceNotFoundException("Vendor Plan not found."));
         if (vendorPlanUpdateDto.getPlanName() == null || vendorPlanUpdateDto.getPlanName().isEmpty()) {
             throw new IllegalArgumentException("Plan name cannot be empty");
         }
@@ -74,7 +80,7 @@ public class VendorPlanAdminServiceImpl implements VendorPlanAdminService {
     @Override
     public VendorPlanResponseDto partialUpdateVendorPlan(VendorPlanUpdateDto vendorPlanUpdateDto, Long id) {
         VendorPlan vendorPlan = vendorPlanRepository.findById(id)
-                .orElseThrow(() -> ResourceNotFoundException());
+                .orElseThrow(() -> new ResourceNotFoundException("Vendor Plan not found."));
         vendorPlan = vendorPlanMapper.fromUpdateDto(vendorPlanUpdateDto, vendorPlan);
         VendorPlan savedVendorPlan = vendorPlanRepository.save(vendorPlan);
         return vendorPlanMapper.toResponseDto(savedVendorPlan);
@@ -82,6 +88,9 @@ public class VendorPlanAdminServiceImpl implements VendorPlanAdminService {
 
     @Override
     public void deleteVendorPlan(Long id) {
+        if (!vendorPlanRepository.existsById(id)) {
+            throw new ResourceNotFoundException("Vendor Plan not found.");
+        }
         vendorPlanRepository.deleteById(id);
     }
 }

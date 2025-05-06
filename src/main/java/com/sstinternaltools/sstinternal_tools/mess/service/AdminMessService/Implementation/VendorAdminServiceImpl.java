@@ -5,6 +5,8 @@ import com.sstinternaltools.sstinternal_tools.mess.dto.vendorDtos.VendorResponse
 import com.sstinternaltools.sstinternal_tools.mess.dto.vendorDtos.VendorSummaryDto;
 import com.sstinternaltools.sstinternal_tools.mess.dto.vendorDtos.VendorUpdateDto;
 import com.sstinternaltools.sstinternal_tools.mess.entity.Vendor;
+import com.sstinternaltools.sstinternal_tools.mess.exception.DuplicateResourceException;
+import com.sstinternaltools.sstinternal_tools.mess.exception.ResourceNotFoundException;
 import com.sstinternaltools.sstinternal_tools.mess.mapper.implementation.VendorMapper;
 import com.sstinternaltools.sstinternal_tools.mess.repository.VendorRepository;
 import com.sstinternaltools.sstinternal_tools.mess.service.AdminMessService.Interface.VendorAdminService;
@@ -27,7 +29,7 @@ public class VendorAdminServiceImpl implements VendorAdminService {
     @Override
     public VendorSummaryDto getVendorById(Long id) {
         Vendor vendor = vendorRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException());
+                .orElseThrow(() -> new ResourceNotFoundException("Vendor not found."));
         return vendorMapper.toSummaryDto(vendor);
     }
 
@@ -43,6 +45,9 @@ public class VendorAdminServiceImpl implements VendorAdminService {
 
     @Override
     public VendorResponseDto createVendor(VendorCreateDto vendorCreateDto) {
+        if (vendorRepository.existsByVendorName(vendorCreateDto.getVendorName())) {
+            throw new DuplicateResourceException("Vendor already exists.");
+        };
         Vendor vendor = vendorMapper.fromCreateDto(vendorCreateDto);
         Vendor savedVendor = vendorRepository.save(vendor);
         return vendorMapper.toResponseDto(savedVendor);
@@ -51,7 +56,7 @@ public class VendorAdminServiceImpl implements VendorAdminService {
     @Override
     public VendorResponseDto updateVendor(VendorUpdateDto vendorUpdateDto, Long id) {
         Vendor vendor = vendorRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException());
+                .orElseThrow(() -> new ResourceNotFoundException("Vendor not found."));
         vendor = vendorMapper.fromUpdateDto(vendorUpdateDto, vendor);
         Vendor savedVendor = vendorRepository.save(vendor);
         return vendorMapper.toResponseDto(savedVendor);
@@ -59,6 +64,9 @@ public class VendorAdminServiceImpl implements VendorAdminService {
 
     @Override
     public void deleteVendor(Long id) {
+        if (!vendorRepository.existsById(id)) {
+            throw new ResourceNotFoundException("Vendor not found.");
+        }
         vendorRepository.deleteById(id);
     }
 }

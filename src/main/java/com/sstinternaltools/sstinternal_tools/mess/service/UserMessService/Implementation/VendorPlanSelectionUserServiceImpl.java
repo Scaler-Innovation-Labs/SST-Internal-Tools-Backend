@@ -6,6 +6,7 @@ import com.sstinternaltools.sstinternal_tools.mess.dto.vendorPlanSelectionDtos.V
 import com.sstinternaltools.sstinternal_tools.mess.dto.vendorPlanSelectionDtos.VendorPlanSelectionUpdateDto;
 import com.sstinternaltools.sstinternal_tools.mess.entity.VendorPlan;
 import com.sstinternaltools.sstinternal_tools.mess.entity.VendorPlanSelection;
+import com.sstinternaltools.sstinternal_tools.mess.exception.ResourceNotFoundException;
 import com.sstinternaltools.sstinternal_tools.mess.mapper.implementation.VendorPlanSelectionMapper;
 import com.sstinternaltools.sstinternal_tools.mess.repository.VendorPlanRepository;
 import com.sstinternaltools.sstinternal_tools.mess.repository.VendorPlanSelectionRepository;
@@ -104,6 +105,9 @@ public class VendorPlanSelectionUserServiceImpl implements VendorPlanSelectionUs
 
     @Override
     public void deleteVendorPlanSelection(Long id) {
+        if (!vendorPlanSelectionRepository.existsById(id)) {
+            throw new ResourceNotFoundException("Vendor Plan Selection not found.");
+        }
         vendorPlanSelectionRepository.deleteById(id);
     }
 }

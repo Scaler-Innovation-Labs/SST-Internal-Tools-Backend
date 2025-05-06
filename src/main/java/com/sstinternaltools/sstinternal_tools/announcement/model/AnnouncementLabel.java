@@ -1,6 +1,5 @@
-package com.sstinternaltools.sstinternal_tools.announcement.entity;
-
-public enum LabelType {
+package com.sstinternaltools.sstinternal_tools.announcement.model;
+public enum AnnouncementLabel {
     MANAGEMENT,
     STUDENT_COUNCIL,
     COMMITTEE,
@@ -8,3 +7,4 @@ public enum LabelType {
     COMPETITIVE_PROGRAMMING_CLUB,
     SPORTS_CLUB
 }
+

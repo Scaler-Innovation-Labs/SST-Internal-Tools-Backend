@@ -50,9 +50,10 @@ public class JwtFilter extends OncePerRequestFilter {
         } catch (Exception e) {
             throw new JwtAuthenticationException("Invalid JWT token.");
         }
-
+        
         if (userEmail != null && SecurityContextHolder.getContext().getAuthentication() == null) {
             User user = userRepository.findByEmail(userEmail)
+                    
                     .orElseThrow(() -> new UserNotFoundException("User not found with email: " + userEmail));
 
             if (!jwtService.validateAccessToken(token, user)) {

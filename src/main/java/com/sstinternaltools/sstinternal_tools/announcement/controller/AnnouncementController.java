@@ -7,6 +7,7 @@ import com.sstinternaltools.sstinternal_tools.announcement.model.AnnouncementLab
 import com.sstinternaltools.sstinternal_tools.announcement.service.template.AnnouncementService;
 import org.springframework.data.domain.*;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
@@ -25,33 +26,38 @@ public class AnnouncementController {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     @PreAuthorize("hasAnyRole('STUDENT_ADMIN','ADMIN','SUPER_ADMIN')")
-    public AnnouncementResponse post(@RequestBody AnnouncementRequest dto) {
-        return svc.create(dto);
+    public ResponseEntity<AnnouncementResponse> post(@RequestBody AnnouncementRequest dto) {
+        AnnouncementResponse response = svc.create(dto);
+        return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
     @GetMapping
-    public Page<AnnouncementResponse> list(
+    public ResponseEntity<Page<AnnouncementResponse>> list(
             @RequestParam(required = false) Set<AnnouncementLabel> labels,
             Pageable pageable) {
-        return svc.search(labels, pageable);
+        Page<AnnouncementResponse> responses = svc.search(labels, pageable);
+        return ResponseEntity.ok(responses);
     }
 
     @GetMapping("/{id}")
-    public AnnouncementResponse get(@PathVariable Long id) {
-        return svc.findById(id);
+    public ResponseEntity<AnnouncementResponse> get(@PathVariable Long id) {
+        AnnouncementResponse response = svc.findById(id);
+        return ResponseEntity.ok(response);
     }
 
     @PutMapping("/{id}")
     @PreAuthorize("hasAnyRole('STUDENT_ADMIN','ADMIN','SUPER_ADMIN')")
-    public AnnouncementResponse put(@PathVariable Long id,
-                                    @RequestBody AnnouncementUpdateRequest dto) {
-        return svc.update(id, dto);
+    public ResponseEntity<AnnouncementResponse> put(@PathVariable Long id,
+                                                    @RequestBody AnnouncementUpdateRequest dto) {
+        AnnouncementResponse response = svc.update(id, dto);
+        return ResponseEntity.ok(response);
     }
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @PreAuthorize("hasAnyRole('STUDENT_ADMIN','ADMIN','SUPER_ADMIN')")
-    public void delete(@PathVariable Long id) {
+    public ResponseEntity<Void> delete(@PathVariable Long id) {
         svc.delete(id);
+        return ResponseEntity.noContent().build();
     }
 }

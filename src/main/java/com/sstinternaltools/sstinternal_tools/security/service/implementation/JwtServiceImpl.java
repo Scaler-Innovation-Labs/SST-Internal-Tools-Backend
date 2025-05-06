@@ -6,7 +6,6 @@ import com.sstinternaltools.sstinternal_tools.security.exception.JwtAuthenticati
 import com.sstinternaltools.sstinternal_tools.security.repository.JwtTokenRepository;
 import com.sstinternaltools.sstinternal_tools.security.service.interfaces.JwtService;
 import com.sstinternaltools.sstinternal_tools.user.entity.User;
-import com.sstinternaltools.sstinternal_tools.user.entity.UserRole;
 import com.sstinternaltools.sstinternal_tools.user.repository.UserRepository;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;

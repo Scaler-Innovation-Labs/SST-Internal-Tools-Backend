@@ -2,6 +2,7 @@ package com.sstinternaltools.sstinternal_tools.mess.service.AdminMessService.Imp
 
 import com.sstinternaltools.sstinternal_tools.mess.dto.vendorPlanSelectionDtos.VendorPlanSelectionCreateDto;
 import com.sstinternaltools.sstinternal_tools.mess.dto.vendorPlanSelectionDtos.VendorPlanSelectionResponseDto;
+import com.sstinternaltools.sstinternal_tools.mess.dto.vendorPlanSelectionDtos.VendorPlanSelectionUpdateDto;
 import com.sstinternaltools.sstinternal_tools.mess.entity.VendorPlan;
 import com.sstinternaltools.sstinternal_tools.mess.entity.VendorPlanSelection;
 import com.sstinternaltools.sstinternal_tools.mess.mapper.implementation.VendorPlanSelectionMapper;
@@ -35,6 +36,16 @@ public class VendorPlanSelectionAdminServiceImpl implements VendorPlanSelectionA
         VendorPlanSelection vendorPlanSelection = vendorPlanSelectionMapper.fromCreateDto(vendorPlanSelectionCreateDto, vendorPlan, user);
         VendorPlanSelection savedVendorPlanSelection = vendorPlanSelectionRepository.save(vendorPlanSelection);
         return vendorPlanSelectionMapper.toResponseDto(savedVendorPlanSelection);
+    }
+
+    @Override
+    public VendorPlanSelectionResponseDto updateVendorPlanSelection(VendorPlanSelectionUpdateDto vendorPlanSelectionUpdateDto, Long vendorPlanSelectionId) {
+        VendorPlanSelection vendorPlanSelection = vendorPlanSelectionRepository.findById(vendorPlanSelectionId)
+                .orElseThrow(() -> new ResourceNotFoundException("Vendor Plan Selection not found"));
+        VendorPlan vendorPlan = vendorPlanRepository.findById(vendorPlanSelectionUpdateDto.getPlan())
+                .orElseThrow(() -> new ResourceNotFoundException("Vendor Plan not found"));
+        vendorPlanSelection = vendorPlanSelectionMapper.fromUpdateDto(vendorPlanSelectionUpdateDto, vendorPlanSelection, vendorPlan);
+        return vendorPlanSelectionMapper.toResponseDto(vendorPlanSelectionRepository.save(vendorPlanSelection));
     }
 
     @Override

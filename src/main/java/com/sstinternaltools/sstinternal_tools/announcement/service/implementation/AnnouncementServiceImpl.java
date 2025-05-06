@@ -27,7 +27,7 @@ import java.util.Set;
 
 @Service
 @Transactional
-class AnnouncementServiceImpl implements AnnouncementService {
+public class AnnouncementServiceImpl implements AnnouncementService {
 
     private final AnnouncementRepository repo;
     private final UserRepository userRepo;

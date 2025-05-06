@@ -28,9 +28,6 @@ public class VendorPlanMapper implements VendorPlanDtoMapper<VendorPlan, Vendor,
         if (vendorPlanUpdateDto.getFee() != null) {
             vendorPlan.setFee(vendorPlanUpdateDto.getFee());
         }
-        if (vendorPlanUpdateDto.getMealTypes() != null) {
-            vendorPlan.setMealTypes(vendorPlanUpdateDto.getMealTypes());
-        }
         if (vendorPlanUpdateDto.getPlanName() != null) {
             vendorPlan.setPlanName(vendorPlanUpdateDto.getPlanName());
         }

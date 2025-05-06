@@ -24,13 +24,9 @@ public class VendorPlanSelectionMapper implements VendorPlanSelectionDtoMapper <
 
     @Override
     public VendorPlanSelection fromUpdateDto(VendorPlanSelectionUpdateDto vendorPlanSelectionUpdateDto, VendorPlanSelection vendorPlanSelection,VendorPlan vendorPlan) {
-        if(vendorPlanSelectionUpdateDto.getSelectedMonth() != null){
-            vendorPlanSelection.setMonth(vendorPlanSelectionUpdateDto.getSelectedMonth());
-        }
         if(vendorPlan != null){
             vendorPlanSelection.setPlan(vendorPlan);
         }
-
         return vendorPlanSelection;
     }
 

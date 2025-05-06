@@ -4,6 +4,7 @@ import com.sstinternaltools.sstinternal_tools.mess.controller.UserMessController
 import com.sstinternaltools.sstinternal_tools.mess.dto.vendorPlanSelectionDtos.VendorPlanSelectionCreateDto;
 import com.sstinternaltools.sstinternal_tools.mess.dto.vendorPlanSelectionDtos.VendorPlanSelectionResponseDto;
 import com.sstinternaltools.sstinternal_tools.mess.dto.vendorPlanSelectionDtos.VendorPlanSelectionSummaryDto;
+import com.sstinternaltools.sstinternal_tools.mess.dto.vendorPlanSelectionDtos.VendorPlanSelectionUpdateDto;
 import com.sstinternaltools.sstinternal_tools.mess.service.UserMessService.Interface.VendorPlanSelectionUserService;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
@@ -13,7 +14,7 @@ import java.time.YearMonth;
 import java.util.List;
 
 @RestController
-@RequestMapping("/mess/admin/vendorPlanSelection")
+@RequestMapping("/mess/vendorPlanSelection")
 public class VendorPlanSelectionUserControllerImpl implements VendorPlanSelectionUserController {
 
     private final VendorPlanSelectionUserService vendorPlanSelectionUserService;
@@ -63,7 +64,18 @@ public class VendorPlanSelectionUserControllerImpl implements VendorPlanSelectio
         VendorPlanSelectionResponseDto vendorPlanSelectionResponseDto = vendorPlanSelectionUserService.createVendorPlanSelection(vendorPlanSelectionCreateDto, vendorPlanId, userId);
         return ResponseEntity.ok("User created successfully!");
     }
+
+    @Override
+    @PutMapping("/update")
+    public ResponseEntity<VendorPlanSelectionResponseDto> updateVendorPlanSelection(VendorPlanSelectionUpdateDto vendorPlanSelectionUpdateDto, Long vendorPlanSelectionId) {
+        VendorPlanSelectionResponseDto vendorPlanSelectionResponseDto = vendorPlanSelectionUserService.updateVendorPlanSelection(vendorPlanSelectionUpdateDto, vendorPlanSelectionId);
+        return ResponseEntity.ok(vendorPlanSelectionResponseDto);
+    }
+
+    @Override
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<String> deleteVendorPlanSelection(@Valid @PathVariable Long id) {
+        vendorPlanSelectionUserService.deleteVendorPlanSelection(id);
+        return ResponseEntity.ok("Vendor Plan Selection deleted successfully!");
+    }
 }
-
-
-// Delete tbd ondelete cascade tbd.

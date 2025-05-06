@@ -1,7 +1,9 @@
 package com.sstinternaltools.sstinternal_tools.mess.controller.UserMessController.Interface;
 
 import com.sstinternaltools.sstinternal_tools.mess.dto.vendorPlanSelectionDtos.VendorPlanSelectionCreateDto;
+import com.sstinternaltools.sstinternal_tools.mess.dto.vendorPlanSelectionDtos.VendorPlanSelectionResponseDto;
 import com.sstinternaltools.sstinternal_tools.mess.dto.vendorPlanSelectionDtos.VendorPlanSelectionSummaryDto;
+import com.sstinternaltools.sstinternal_tools.mess.dto.vendorPlanSelectionDtos.VendorPlanSelectionUpdateDto;
 import org.springframework.http.ResponseEntity;
 
 import java.time.YearMonth;
@@ -14,4 +16,6 @@ public interface VendorPlanSelectionUserController {
     public ResponseEntity<List<VendorPlanSelectionSummaryDto>> getVendorPlanSelectionsByMonthAndVendorId(YearMonth month, Long vendorId);
     public ResponseEntity<List<VendorPlanSelectionSummaryDto>> getVendorPlanSelectionsByUserIdAndMonth(Long userId, YearMonth month);
     public ResponseEntity<String> createVendorPlanSelection(VendorPlanSelectionCreateDto vendorPlanSelectionCreateDto, Long vendorPlanId, Long userId);
+    public ResponseEntity<VendorPlanSelectionResponseDto> updateVendorPlanSelection(VendorPlanSelectionUpdateDto vendorPlanSelectionUpdateDto, Long vendorPlanSelectionId);
+    public ResponseEntity<String> deleteVendorPlanSelection(Long id);
 }

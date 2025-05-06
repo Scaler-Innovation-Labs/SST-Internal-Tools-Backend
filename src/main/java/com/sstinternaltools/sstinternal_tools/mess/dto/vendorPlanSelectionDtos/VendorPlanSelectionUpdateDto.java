@@ -6,13 +6,11 @@ import java.time.YearMonth;
 
 public class VendorPlanSelectionUpdateDto {
 
-    private YearMonth selectedMonth;
     private Long planId;
 
     public VendorPlanSelectionUpdateDto() {}
 
     public VendorPlanSelectionUpdateDto(YearMonth selectedMonth,Long planId) {
-        this.selectedMonth = selectedMonth;
         this.planId = planId;
     }
 
@@ -22,13 +20,5 @@ public class VendorPlanSelectionUpdateDto {
 
     public void setPlan(Long planId) {
         this.planId = planId;
-    }
-
-    public YearMonth getSelectedMonth() {
-        return selectedMonth;
-    }
-
-    public void setSelectedMonth(YearMonth selectedMonth) {
-        this.selectedMonth = selectedMonth;
     }
 }

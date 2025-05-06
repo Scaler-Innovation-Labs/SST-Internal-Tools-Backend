@@ -15,6 +15,5 @@ public interface VendorPlanAdminController {
     public ResponseEntity<VendorPlanResponseDto> createVendorPlan(VendorPlanCreateDto vendorPlanCreateDto, Long vendorId);
     public ResponseEntity<VendorPlanResponseDto> updateVendorPlan(VendorPlanUpdateDto vendorPlanUpdateDto, Long id);
     ResponseEntity<VendorPlanResponseDto> partialUpdateVendorPlan(VendorPlanUpdateDto vendorPlanUpdateDto, Long id);
-
     public ResponseEntity<String> deleteVendorPlan(Long id);
 }

@@ -98,7 +98,8 @@ public class VendorPlanSelectionUserServiceImpl implements VendorPlanSelectionUs
         VendorPlan vendorPlan = vendorPlanRepository.findById(vendorPlanSelectionUpdateDto.getPlan())
                 .orElseThrow(() -> new ResourceNotFoundException("Vendor Plan not found"));
         vendorPlanSelection = vendorPlanSelectionMapper.fromUpdateDto(vendorPlanSelectionUpdateDto, vendorPlanSelection, vendorPlan);
-        return vendorPlanSelectionMapper.toResponseDto(vendorPlanSelectionRepository.save(vendorPlanSelection));
+        VendorPlanSelection savedVendorPlanSelection = vendorPlanSelectionRepository.save(vendorPlanSelection);
+        return vendorPlanSelectionMapper.toResponseDto(savedVendorPlanSelection);
     }
 
     @Override

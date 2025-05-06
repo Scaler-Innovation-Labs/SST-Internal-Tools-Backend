@@ -57,6 +57,15 @@ public class VendorPlanAdminServiceImpl implements VendorPlanAdminService {
     public VendorPlanResponseDto updateVendorPlan(VendorPlanUpdateDto vendorPlanUpdateDto, Long id) {
         VendorPlan vendorPlan = vendorPlanRepository.findById(id)
                         .orElseThrow(() -> ResourceNotFoundException());
+        if (vendorPlanUpdateDto.getPlanName() == null || vendorPlanUpdateDto.getPlanName().isEmpty()) {
+            throw new IllegalArgumentException("Plan name cannot be empty");
+        }
+        if (vendorPlanUpdateDto.getFee() == null) {
+            throw new IllegalArgumentException("Fee cannot be null");
+        }
+        if (vendorPlanUpdateDto.getFee() < 0) {
+            throw new IllegalArgumentException("Fee cannot be negative");
+        }
         vendorPlan = vendorPlanMapper.fromUpdateDto(vendorPlanUpdateDto, vendorPlan);
         VendorPlan savedVendorPlan = vendorPlanRepository.save(vendorPlan);
         return vendorPlanMapper.toResponseDto(savedVendorPlan);

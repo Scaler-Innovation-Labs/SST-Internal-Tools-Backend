@@ -5,10 +5,9 @@ import com.sstinternaltools.sstinternal_tools.mess.controller.AdminMessControlle
 import com.sstinternaltools.sstinternal_tools.mess.dto.vendorPlanSelectionDtos.VendorPlanSelectionCreateDto;
 import com.sstinternaltools.sstinternal_tools.mess.dto.vendorPlanSelectionDtos.VendorPlanSelectionResponseDto;
 import com.sstinternaltools.sstinternal_tools.mess.service.AdminMessService.Interface.VendorPlanSelectionAdminService;
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/mess/vendorPlanSelection")
@@ -22,13 +21,14 @@ public class VendorPlanSelectionAdminControllerImpl implements VendorPlanSelecti
 
     @Override
     @PostMapping("/create")
-    public ResponseEntity<VendorPlanSelectionResponseDto> createVendorPlanSelection(VendorPlanSelectionCreateDto vendorPlanSelectionCreateDto) {
-        VendorPlanSelectionResponseDto vendorPlanSelectionResponseDto = vendorPlanSelectionAdminService.createVendorPlanSelection(vendorPlanSelectionCreateDto);
+    public ResponseEntity<VendorPlanSelectionResponseDto> createVendorPlanSelection(@Valid @RequestBody VendorPlanSelectionCreateDto vendorPlanSelectionCreateDto, @Valid @RequestBody Long vendorPlanId, @Valid @RequestBody Long userId) {
+        VendorPlanSelectionResponseDto vendorPlanSelectionResponseDto = vendorPlanSelectionAdminService.createVendorPlanSelection(vendorPlanSelectionCreateDto, vendorPlanId, userId);
         return ResponseEntity.ok(vendorPlanSelectionResponseDto);
     }
 
     @Override
-    public ResponseEntity<String> deleteVendorPlanSelection(Long id) {
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<String> deleteVendorPlanSelection(@Valid @PathVariable Long id) {
         vendorPlanSelectionAdminService.deleteVendorPlanSelectionDto(id);
         return ResponseEntity.ok("Vendor Plan Selection Deleted");
     }

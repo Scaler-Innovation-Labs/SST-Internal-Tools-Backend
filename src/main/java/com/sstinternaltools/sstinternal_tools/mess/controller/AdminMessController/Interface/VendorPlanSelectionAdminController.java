@@ -5,6 +5,6 @@ import com.sstinternaltools.sstinternal_tools.mess.dto.vendorPlanSelectionDtos.V
 import org.springframework.http.ResponseEntity;
 
 public interface VendorPlanSelectionAdminController {
-    public ResponseEntity<VendorPlanSelectionResponseDto> createVendorPlanSelection(VendorPlanSelectionCreateDto vendorPlanSelectionCreateDto);
+    public ResponseEntity<VendorPlanSelectionResponseDto> createVendorPlanSelection(VendorPlanSelectionCreateDto vendorPlanSelectionCreateDto, Long vendorPlanId, Long userId);
     public ResponseEntity<String> deleteVendorPlanSelection(Long id);
 }

@@ -1,7 +1,6 @@
 package com.sstinternaltools.sstinternal_tools.mess.dto.vendorPlanDtos;
 
 import com.sstinternaltools.sstinternal_tools.mess.entity.MealType;
-import jakarta.validation.constraints.NotBlank;
 
 import java.util.Set;
 
@@ -11,13 +10,10 @@ public class VendorPlanUpdateDto {
 
     private Double fee;
 
-    private Set<MealType> mealTypes;
-
     public VendorPlanUpdateDto() {}
 
     public VendorPlanUpdateDto(String planName, Set<MealType> mealTypes, Double fee) {
         this.planName = planName;
-        this.mealTypes = mealTypes;
         this.fee = fee;
     }
 
@@ -35,13 +31,5 @@ public class VendorPlanUpdateDto {
 
     public void setFee(Double fee) {
         this.fee = fee;
-    }
-
-    public Set<MealType> getMealTypes() {
-        return mealTypes;
-    }
-
-    public void setMealTypes(Set<MealType> mealTypes) {
-        this.mealTypes = mealTypes;
     }
 }

@@ -12,7 +12,7 @@ import java.util.List;
 public interface VendorPlanAdminController {
     public ResponseEntity<VendorPlanSummaryDto> getVendorPlanById(Long id);
     public ResponseEntity<List<VendorPlanSummaryDto>> getAllVendorPlans();
-    public ResponseEntity<VendorPlanResponseDto> createVendorPlan(VendorPlanCreateDto vendorPlanCreateDto);
+    public ResponseEntity<VendorPlanResponseDto> createVendorPlan(VendorPlanCreateDto vendorPlanCreateDto, Long vendorId);
     public ResponseEntity<VendorPlanResponseDto> updateVendorPlan(VendorPlanUpdateDto vendorPlanUpdateDto, Long id);
     ResponseEntity<VendorPlanResponseDto> partialUpdateVendorPlan(VendorPlanUpdateDto vendorPlanUpdateDto, Long id);
 

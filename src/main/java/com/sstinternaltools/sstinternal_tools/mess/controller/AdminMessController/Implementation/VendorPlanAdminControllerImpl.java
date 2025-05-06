@@ -40,8 +40,8 @@ public class VendorPlanAdminControllerImpl implements VendorPlanAdminController 
 
     @Override
     @PostMapping("/create")
-    public ResponseEntity<VendorPlanResponseDto> createVendorPlan(@Valid @RequestBody VendorPlanCreateDto vendorPlanCreateDto) {
-        VendorPlanResponseDto vendorPlanResponseDto = vendorPlanAdminService.createVendorPlan(vendorPlanCreateDto);
+    public ResponseEntity<VendorPlanResponseDto> createVendorPlan(@Valid @RequestBody VendorPlanCreateDto vendorPlanCreateDto, @Valid @RequestBody Long vendorId) {
+        VendorPlanResponseDto vendorPlanResponseDto = vendorPlanAdminService.createVendorPlan(vendorPlanCreateDto, vendorId);
         return ResponseEntity.ok(vendorPlanResponseDto);
     }
 

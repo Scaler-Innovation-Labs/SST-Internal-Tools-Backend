@@ -27,6 +27,6 @@ public class MessExceptionHandler {
 
     @ExceptionHandler(DuplicateResourceException.class)
     public ResponseEntity<Map<String, Object>> handleDuplicateResourceException(DuplicateResourceException ex) {
-        return buildResponse(HttpStatus.NOT_FOUND, "This resource already exists.", ex.getMessage());
+        return buildResponse(HttpStatus.CONFLICT, "This resource already exists.", ex.getMessage());
     }
 }

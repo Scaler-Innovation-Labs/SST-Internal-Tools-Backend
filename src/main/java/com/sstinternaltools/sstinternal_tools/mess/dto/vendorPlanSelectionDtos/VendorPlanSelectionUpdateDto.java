@@ -1,7 +1,5 @@
 package com.sstinternaltools.sstinternal_tools.mess.dto.vendorPlanSelectionDtos;
 
-import com.sstinternaltools.sstinternal_tools.mess.entity.VendorPlan;
-
 import java.time.YearMonth;
 
 public class VendorPlanSelectionUpdateDto {

@@ -1,6 +1,5 @@
 package com.sstinternaltools.sstinternal_tools.mess.mapper.implementation;
 
-import com.sstinternaltools.sstinternal_tools.mess.dto.vendorDtos.VendorResponseDto;
 import com.sstinternaltools.sstinternal_tools.mess.dto.vendorPlanDtos.VendorPlanCreateDto;
 import com.sstinternaltools.sstinternal_tools.mess.dto.vendorPlanDtos.VendorPlanResponseDto;
 import com.sstinternaltools.sstinternal_tools.mess.dto.vendorPlanDtos.VendorPlanSummaryDto;

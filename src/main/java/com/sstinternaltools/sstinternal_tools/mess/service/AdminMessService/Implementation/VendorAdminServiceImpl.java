@@ -47,7 +47,7 @@ public class VendorAdminServiceImpl implements VendorAdminService {
     public VendorResponseDto createVendor(VendorCreateDto vendorCreateDto) {
         if (vendorRepository.existsByVendorName(vendorCreateDto.getVendorName())) {
             throw new DuplicateResourceException("Vendor already exists.");
-        };
+        }
         Vendor vendor = vendorMapper.fromCreateDto(vendorCreateDto);
         Vendor savedVendor = vendorRepository.save(vendor);
         return vendorMapper.toResponseDto(savedVendor);

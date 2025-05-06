@@ -3,10 +3,14 @@ package com.sstinternaltools.sstinternal_tools.mess.service.UserMessService.Impl
 import com.sstinternaltools.sstinternal_tools.mess.dto.vendorPlanSelectionDtos.VendorPlanSelectionCreateDto;
 import com.sstinternaltools.sstinternal_tools.mess.dto.vendorPlanSelectionDtos.VendorPlanSelectionResponseDto;
 import com.sstinternaltools.sstinternal_tools.mess.dto.vendorPlanSelectionDtos.VendorPlanSelectionSummaryDto;
+import com.sstinternaltools.sstinternal_tools.mess.entity.VendorPlan;
 import com.sstinternaltools.sstinternal_tools.mess.entity.VendorPlanSelection;
 import com.sstinternaltools.sstinternal_tools.mess.mapper.implementation.VendorPlanSelectionMapper;
+import com.sstinternaltools.sstinternal_tools.mess.repository.VendorPlanRepository;
 import com.sstinternaltools.sstinternal_tools.mess.repository.VendorPlanSelectionRepository;
 import com.sstinternaltools.sstinternal_tools.mess.service.UserMessService.Interface.VendorPlanSelectionUserService;
+import com.sstinternaltools.sstinternal_tools.user.entity.User;
+import com.sstinternaltools.sstinternal_tools.user.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
 import java.time.YearMonth;
@@ -18,16 +22,20 @@ public class VendorPlanSelectionUserServiceImpl implements VendorPlanSelectionUs
 
     private final VendorPlanSelectionRepository vendorPlanSelectionRepository;
     private final VendorPlanSelectionMapper vendorPlanSelectionMapper;
+    private final VendorPlanRepository vendorPlanRepository;
+    private final UserRepository userRepository;
 
-    public VendorPlanSelectionUserServiceImpl(VendorPlanSelectionRepository vendorPlanSelectionRepository, VendorPlanSelectionMapper vendorPlanSelectionMapper) {
+    public VendorPlanSelectionUserServiceImpl(VendorPlanSelectionRepository vendorPlanSelectionRepository, VendorPlanSelectionMapper vendorPlanSelectionMapper, VendorPlanRepository vendorPlanRepository, UserRepository userRepository) {
         this.vendorPlanSelectionRepository = vendorPlanSelectionRepository;
         this.vendorPlanSelectionMapper = vendorPlanSelectionMapper;
+        this.vendorPlanRepository = vendorPlanRepository;
+        this.userRepository = userRepository;
     }
 
     @Override
     public VendorPlanSelectionSummaryDto getVendorPlanSelectionById(Long id) {
         VendorPlanSelection vendorPlanSelection = vendorPlanSelectionRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Vendor Plan Selection Not Found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Vendor Plan Selection not found"));
         return vendorPlanSelectionMapper.toSummaryDto(vendorPlanSelection);
     }
 
@@ -72,7 +80,13 @@ public class VendorPlanSelectionUserServiceImpl implements VendorPlanSelectionUs
     }
 
     @Override
-    public VendorPlanSelectionResponseDto createVendorPlanSelection(VendorPlanSelectionCreateDto vendorPlanSelectionCreateDto) {
-        return null;
+    public VendorPlanSelectionResponseDto createVendorPlanSelection(VendorPlanSelectionCreateDto vendorPlanSelectionCreateDto, Long vendorPlanId, Long userId) {
+        VendorPlan vendorPlan = vendorPlanRepository.findById(vendorPlanId)
+                .orElseThrow(() -> new ResourceNotFoundException("Vendor Plan not found."));
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new ResourceNotFoundException("User not found."));
+        VendorPlanSelection vendorPlanSelection = vendorPlanSelectionMapper.fromCreateDto(vendorPlanSelectionCreateDto, vendorPlan, user);
+        VendorPlanSelection savedVendorPlanSelection = vendorPlanSelectionRepository.save(vendorPlanSelection);
+        return vendorPlanSelectionMapper.toResponseDto(savedVendorPlanSelection);
     }
 }

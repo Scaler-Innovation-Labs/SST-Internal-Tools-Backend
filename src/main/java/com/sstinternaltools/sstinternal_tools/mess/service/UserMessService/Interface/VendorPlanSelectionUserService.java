@@ -12,5 +12,5 @@ public interface VendorPlanSelectionUserService {
     public List<VendorPlanSelectionSummaryDto> getVendorPlanSelectionsByMonth(YearMonth month);
     public List<VendorPlanSelectionSummaryDto> getVendorPlanSelectionsByMonthAndVendorId(YearMonth month, Long vendorId);
     public List<VendorPlanSelectionSummaryDto> getVendorPlanSelectionsByUserIdAndMonth(Long userId, YearMonth month);
-    public VendorPlanSelectionResponseDto createVendorPlanSelection(VendorPlanSelectionCreateDto vendorPlanSelectionCreateDto);
+    public VendorPlanSelectionResponseDto createVendorPlanSelection(VendorPlanSelectionCreateDto vendorPlanSelectionCreateDto, Long vendorPlanId, Long userId);
 }

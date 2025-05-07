@@ -1,9 +1,10 @@
 package com.sstinternaltools.sstinternal_tools.mess.dto.vendorDtos;
 
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 
 public class VendorResponseDto {
-    @NotBlank(message = "Vendor Id cannot be blank")
+    @NotNull(message = "Vendor Id cannot be blank")
     private Long vendorId;
     @NotBlank(message = "Vendor name cannot be blank")
     private String vendorName;

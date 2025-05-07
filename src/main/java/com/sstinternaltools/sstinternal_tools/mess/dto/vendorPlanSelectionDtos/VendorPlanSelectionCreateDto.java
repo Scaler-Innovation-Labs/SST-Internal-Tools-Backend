@@ -1,18 +1,19 @@
 package com.sstinternaltools.sstinternal_tools.mess.dto.vendorPlanSelectionDtos;
 
-import jakarta.validation.constraints.NotBlank;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.validation.constraints.NotNull;
 
-import java.time.YearMonth;
+import java.time.LocalDate;
 
 public class VendorPlanSelectionCreateDto {
 
-    @NotBlank(message = "Vendor plan id cannot be blank")
+    @NotNull(message = "Vendor plan id cannot be blank")
     private Long vendorPlanId;
-    @NotBlank(message = "User id cannot be blank")
+    @NotNull(message = "User id cannot be blank")
     private Long userId;
+    @JsonFormat(pattern = "yyyy-MM-dd")
     @NotNull(message = "Month cannot be blank")
-    private YearMonth selectedMonth;
+    private LocalDate selectedMonth;
 
     public Long getUserId() {
         return userId;
@@ -30,11 +31,11 @@ public class VendorPlanSelectionCreateDto {
         this.vendorPlanId = vendorPlanId;
     }
 
-    public YearMonth getSelectedMonth() {
+    public LocalDate getSelectedMonth() {
         return selectedMonth;
     }
 
-    public void setSelectedMonth(YearMonth selectedMonth) {
-        this.selectedMonth = selectedMonth;
+    public void setSelectedMonth(LocalDate selectedMonth) {
+        this.selectedMonth = LocalDate.of(selectedMonth.getYear(), selectedMonth.getMonth(), 1);
     }
 }

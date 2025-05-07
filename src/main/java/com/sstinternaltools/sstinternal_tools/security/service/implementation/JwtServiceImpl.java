@@ -59,6 +59,7 @@ public class JwtServiceImpl implements JwtService {
 
         Map<String, Object> claims = new HashMap<>();
         claims.put("role", roleNames);
+        claims.put("tokenType", TokenType.ACCESS.name());
         return Jwts.builder()
                 .claims()
                 .add(claims)
@@ -109,13 +110,22 @@ public class JwtServiceImpl implements JwtService {
 
     //generic method to extract claims from the token
     private Claims extractAllClaims(String token) {
+//        System.out.println("Extracting claims from token: " + token);
         try {
-            return Jwts.parser().verifyWith(getKey())
+            return Jwts.parser()
+                    .verifyWith(getKey())
                     .build()
                     .parseSignedClaims(token)
                     .getPayload();
-        } catch (Exception e) {
-            throw new JwtAuthenticationException("Error in extracting claims");
+        } catch (io.jsonwebtoken.security.SignatureException ex) {
+//            System.err.println("Signature verification failed: " + ex.getMessage());
+            throw new JwtAuthenticationException("Invalid JWT signature");
+        } catch (io.jsonwebtoken.ExpiredJwtException ex) {
+//            System.err.println("Token expired: " + ex.getMessage());
+            throw new JwtAuthenticationException("JWT token has expired");
+        } catch (Exception ex) {
+//            System.err.println("General JWT parsing error: " + ex.getMessage());
+            throw new JwtAuthenticationException("Error extracting claims from JWT");
         }
     }
 
@@ -147,7 +157,10 @@ public class JwtServiceImpl implements JwtService {
     //method to validate access token
     public boolean validateAccessToken(String token, User user) {
         final String email = extractEmail(token);
-        return (email.equals(user.getEmail()) && !isTokenExpired(token));
+        final String tokenType = extractClaim(token, claims -> claims.get("tokenType", String.class));
+        return (email.equals(user.getEmail())
+                && !isTokenExpired(token)
+                && TokenType.ACCESS.name().equals(tokenType));
     }
 
     //method to check the token is expired or not

@@ -35,6 +35,13 @@ public class JwtFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
 
+        String path = request.getRequestURI();
+
+        if (path.startsWith("/auth")) {
+            filterChain.doFilter(request, response); // Skip JWT check
+            return;
+        }
+
         final String authHeader = request.getHeader("Authorization");
 
         if (authHeader == null || !authHeader.startsWith("Bearer ")) {
@@ -52,8 +59,7 @@ public class JwtFilter extends OncePerRequestFilter {
         }
         
         if (userEmail != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-            User user = userRepository.findByEmail(userEmail)
-                    
+            User user = userRepository.findByEmailWithRoles(userEmail)
                     .orElseThrow(() -> new UserNotFoundException("User not found with email: " + userEmail));
 
             if (!jwtService.validateAccessToken(token, user)) {

@@ -2,14 +2,9 @@ package com.sstinternaltools.sstinternal_tools.security.controller.Implementatio
 
 import com.sstinternaltools.sstinternal_tools.security.controller.Interface.AuthController;
 import com.sstinternaltools.sstinternal_tools.security.service.interfaces.AuthService;
-import jakarta.servlet.http.Cookie;
-import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CookieValue;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
 
@@ -25,16 +20,16 @@ public class AuthControllerImpl implements AuthController {
 
     @Override
     @PostMapping("/refresh")
-    public ResponseEntity<Map<String, String>> rotateRefreshToken(@CookieValue("refreshToken") Cookie refreshCookie, HttpServletResponse response) {
-        Map<String, String> map = authService.rotateRefreshToken(refreshCookie, response);
+    public ResponseEntity<Map<String, String>> rotateRefreshToken(@RequestHeader("Authorization") String refreshToken) {
+        Map<String, String> map = authService.rotateRefreshToken(refreshToken);
         return new ResponseEntity<>(map, HttpStatus.OK);
     }
 
     @Override
     @PostMapping("/logout")
-    public ResponseEntity<String> logout(@CookieValue("refreshToken") Cookie refreshCookie) {
-        authService.logout(refreshCookie);
+    public ResponseEntity<String> logout(@RequestHeader("Authorization") String refreshToken) {
+        authService.logout(refreshToken);
         return ResponseEntity.ok("✅ User logged out successfully");
     }
-}
 
+}

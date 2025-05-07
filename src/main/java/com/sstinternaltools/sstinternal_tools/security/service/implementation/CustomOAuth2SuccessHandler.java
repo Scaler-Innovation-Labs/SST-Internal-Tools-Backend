@@ -9,7 +9,6 @@ import com.sstinternaltools.sstinternal_tools.user.entity.User;
 import com.sstinternaltools.sstinternal_tools.user.entity.UserRole;
 import com.sstinternaltools.sstinternal_tools.user.repository.UserRepository;
 import jakarta.servlet.ServletException;
-import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.security.core.Authentication;
@@ -24,62 +23,63 @@ import java.util.Map;
 
 @Component
 public class CustomOAuth2SuccessHandler implements AuthenticationSuccessHandler {
-   private final JwtService jwtService;
-   private final UserRepository userRepository;
-   private final CustomLogicService customLogicService;
-   private final AuthService authService;
+    private final JwtService jwtService;
+    private final UserRepository userRepository;
+    private final CustomLogicService customLogicService;
+    private final AuthService authService;
     private final ObjectMapper objectMapper;
 
-   public CustomOAuth2SuccessHandler(JwtService jwtService, UserRepository userRepository, CustomLogicService customLogicService, AuthService authService, ObjectMapper objectMapper) {
-       this.jwtService = jwtService;
-       this.userRepository = userRepository;
-       this.customLogicService = customLogicService;
-       this.authService = authService;
-       this.objectMapper = objectMapper;
-   }
+    public CustomOAuth2SuccessHandler(JwtService jwtService, UserRepository userRepository, CustomLogicService customLogicService, AuthService authService, ObjectMapper objectMapper) {
+        this.jwtService = jwtService;
+        this.userRepository = userRepository;
+        this.customLogicService = customLogicService;
+        this.authService = authService;
+        this.objectMapper = objectMapper;
+    }
 
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
-       try {
-           OAuth2User oAuth2User = (OAuth2User) authentication.getPrincipal();
-           String email = oAuth2User.getAttribute("email");
+        try {
+            OAuth2User oAuth2User = (OAuth2User) authentication.getPrincipal();
+            String email = oAuth2User.getAttribute("email");
 
-           String domain = email.split("@")[1];
+            String domain = email.split("@")[1];
 
-           if (!domain.equals("sst.scaler.com") && !domain.equals("scaler.com")) {
-               throw new InvalidCredentialsException("Invalid domain: " + domain);
-           }
+            if (!domain.equals("sst.scaler.com") && !domain.equals("scaler.com")) {
+                throw new InvalidCredentialsException("Invalid domain: " + domain);
+            }
 
-           if (userRepository.findByEmail(email).isEmpty()) {
+            if (userRepository.findByEmail(email).isEmpty()) {
 
-               authService.register(email);
+                authService.register(email);
 
-               List<UserRole> roles = customLogicService.assignRoles(email);
+                List<UserRole> roles = customLogicService.assignRoles(email);
 
-               if (roles.isEmpty()) {
-                   throw new InvalidCredentialsException("You are not allowed to access");
-               }
+                if (roles.isEmpty()) {
+                    throw new InvalidCredentialsException("You are not allowed to access");
+                }
 
-               User user = userRepository.findByEmail(email).get();
-               user.setUserRoles(roles);
-               userRepository.save(user);
-           }
+                User user = userRepository.findByEmail(email).get();
+                user.setUserRoles(roles);
+                userRepository.save(user);
+            }
 
-           String accessToken = jwtService.generateAccessToken(email);
-           String refreshToken = jwtService.generateRefreshToken(email);
+            String accessToken = jwtService.generateAccessToken(email);
+            String refreshToken = jwtService.generateRefreshToken(email);
 
-           Map<String, String> tokens = new HashMap<>();
-           tokens.put("accessToken", accessToken); //access token send in the json format
-           tokens.put("refreshToken", refreshToken);
+            Map<String, String> tokens = new HashMap<>();
+            tokens.put("accessToken", accessToken); //access token send in the json format
+            tokens.put("refreshToken", refreshToken);
 
-           response.setContentType("application/json");//Tells browser that the server response will be in JSON format
-           response.setCharacterEncoding("UTF-8");//: Specifies that the characters in the response body will use UTF-8 encoding(to avoid character corruption)
-           response.getWriter().write(objectMapper.writeValueAsString(tokens));// Converts the tokens Map<String, String> into a JSON string using Jackson's ObjectMapper
+            response.setContentType("application/json");//Tells browser that the server response will be in JSON format
+            response.setCharacterEncoding("UTF-8");//: Specifies that the characters in the response body will use UTF-8 encoding(to avoid character corruption)
+            response.getWriter().write(objectMapper.writeValueAsString(tokens));// Converts the tokens Map<String, String> into a JSON string using Jackson's ObjectMapper
+            response.sendRedirect("/");
 
-       } catch(Exception e){
-           e.printStackTrace();
-           response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "OAuth2 login failed. Please try again.");
-       }
+        } catch(Exception e){
+            e.printStackTrace();
+            response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "OAuth2 login failed. Please try again.");
+        }
     }
 }

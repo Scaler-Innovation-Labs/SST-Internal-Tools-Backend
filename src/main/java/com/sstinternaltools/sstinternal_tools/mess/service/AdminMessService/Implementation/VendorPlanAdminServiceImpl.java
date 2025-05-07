@@ -49,11 +49,23 @@ public class VendorPlanAdminServiceImpl implements VendorPlanAdminService {
 
     @Override
     public VendorPlanResponseDto createVendorPlan(VendorPlanCreateDto vendorPlanCreateDto, Long vendorId) {
-        if (vendorPlanRepository.existsByMealTypesAndVendor_Id(vendorPlanCreateDto.getMealTypes(), vendorId)) {
-            throw new DuplicateResourceException("Vendor Plan already exists.");
-        }
         Vendor vendor = vendorRepository.findById(vendorId)
                 .orElseThrow(() -> new ResourceNotFoundException("Vendor not found."));
+        List<VendorPlan> vendorPlans = vendorPlanRepository.findByVendorId(vendorId);
+        for (VendorPlan vendorPlan : vendorPlans) {
+            if (vendorPlan.getMealTypes().equals(vendorPlanCreateDto.getMealTypes())) {
+                throw new DuplicateResourceException("Vendor Plan already exists.");
+            }
+        }
+        if (vendorPlanCreateDto.getPlanName() == null || vendorPlanCreateDto.getPlanName().isEmpty()) {
+            throw new IllegalArgumentException("Plan name cannot be empty");
+        }
+        if (vendorPlanCreateDto.getFee() == null) {
+            throw new IllegalArgumentException("Fee cannot be null");
+        }
+        if (vendorPlanCreateDto.getFee() < 0) {
+            throw new IllegalArgumentException("Fee cannot be negative");
+        }
         VendorPlan vendorPlan = vendorPlanMapper.fromCreateDto(vendorPlanCreateDto, vendor);
         VendorPlan savedVendorPlan = vendorPlanRepository.save(vendorPlan);
         return vendorPlanMapper.toResponseDto(savedVendorPlan);

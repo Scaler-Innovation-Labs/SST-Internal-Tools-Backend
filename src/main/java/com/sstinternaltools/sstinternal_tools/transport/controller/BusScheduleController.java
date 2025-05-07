@@ -28,7 +28,7 @@ public class BusScheduleController {
         return ResponseEntity.ok(responseDto);
     }
 
-    @PostMapping("/update/{scheduleId}")
+    @PutMapping("/update/{scheduleId}")
     public ResponseEntity<BusScheduleResponseDto> updateBusSchedule(@RequestBody @Valid BusScheduleUpdateDto busScheduleUpdateDto,@PathVariable @Valid Long scheduleId) {
         BusScheduleResponseDto updateDto=busScheduleFacade.updateBusSchedule(busScheduleUpdateDto,scheduleId);
         return ResponseEntity.ok(updateDto);

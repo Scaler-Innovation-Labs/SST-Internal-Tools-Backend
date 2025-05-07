@@ -26,7 +26,7 @@ public class AnnouncementController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    @PreAuthorize("hasAnyRole('STUDENT_ADMIN','ADMIN','SUPER_ADMIN')")
+//    @PreAuthorize("hasAnyRole('STUDENT_ADMIN','ADMIN','SUPER_ADMIN')")
     public ResponseEntity<AnnouncementResponse> post(@Valid @RequestBody AnnouncementRequest dto) {
         AnnouncementResponse response = svc.create(dto);
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
@@ -47,7 +47,7 @@ public class AnnouncementController {
     }
 
     @PutMapping("/{id}")
-    @PreAuthorize("hasAnyRole('STUDENT_ADMIN','ADMIN','SUPER_ADMIN')")
+//    @PreAuthorize("hasAnyRole('STUDENT_ADMIN','ADMIN','SUPER_ADMIN')")
     public ResponseEntity<AnnouncementResponse> put(@PathVariable Long id,
                                                     @RequestBody AnnouncementUpdateRequest dto) {
         AnnouncementResponse response = svc.update(id, dto);
@@ -56,7 +56,7 @@ public class AnnouncementController {
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    @PreAuthorize("hasAnyRole('STUDENT_ADMIN','ADMIN','SUPER_ADMIN')")
+//    @PreAuthorize("hasAnyRole('STUDENT_ADMIN','ADMIN','SUPER_ADMIN')")
     public ResponseEntity<Void> delete(@PathVariable Long id) {
         svc.delete(id);
         return ResponseEntity.noContent().build();

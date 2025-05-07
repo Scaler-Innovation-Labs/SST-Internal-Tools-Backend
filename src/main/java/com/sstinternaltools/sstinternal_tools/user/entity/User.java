@@ -52,10 +52,6 @@ public class User
         this.email = email;
     }
 
-    public Long getId() {
-        return id;
-    }
-
     public User(String username, String email, List<UserRole> userRoles, LocalDateTime createdAt, LocalDateTime updatedAt) {
         this.username = username;
         this.email = email;

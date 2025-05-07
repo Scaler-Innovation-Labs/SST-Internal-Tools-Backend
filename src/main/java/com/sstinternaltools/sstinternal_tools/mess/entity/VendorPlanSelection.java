@@ -20,13 +20,13 @@ public class VendorPlanSelection {
     @JoinColumn(name="vendor_plan_id")
     private VendorPlan plan;
 
-    private YearMonth selectedMonth;
+    private LocalDate selectedMonth;
 
     public VendorPlanSelection() {}
 
-    public VendorPlanSelection(User user, YearMonth selectedMonth, VendorPlan plan) {
+    public VendorPlanSelection(User user, LocalDate selectedMonth, VendorPlan plan) {
         this.user = user;
-        this.selectedMonth = selectedMonth;
+        this.selectedMonth = LocalDate.of(selectedMonth.getYear(), selectedMonth.getMonth(), 1);
         this.plan = plan;
     }
 
@@ -50,11 +50,11 @@ public class VendorPlanSelection {
         this.plan = plan;
     }
 
-    public YearMonth getMonth() {
+    public LocalDate getMonth() {
         return selectedMonth;
     }
 
-    public void setMonth(YearMonth month) {
+    public void setMonth(LocalDate selectedMonth) {
         this.selectedMonth = selectedMonth;
     }
 }

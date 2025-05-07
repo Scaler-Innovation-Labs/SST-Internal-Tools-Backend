@@ -11,7 +11,7 @@ import java.util.List;
 public interface VendorPlanAdminController {
     ResponseEntity<VendorPlanSummaryDto> getVendorPlanById(Long id);
     ResponseEntity<List<VendorPlanSummaryDto>> getAllVendorPlans();
-    ResponseEntity<VendorPlanResponseDto> createVendorPlan(VendorPlanCreateDto vendorPlanCreateDto, Long vendorId);
+    ResponseEntity<VendorPlanResponseDto> createVendorPlan(VendorPlanCreateDto vendorPlanCreateDto);
     ResponseEntity<VendorPlanResponseDto> updateVendorPlan(VendorPlanUpdateDto vendorPlanUpdateDto, Long id);
     ResponseEntity<VendorPlanResponseDto> partialUpdateVendorPlan(VendorPlanUpdateDto vendorPlanUpdateDto, Long id);
     ResponseEntity<String> deleteVendorPlan(Long id);

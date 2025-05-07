@@ -22,14 +22,14 @@ public class VendorPlanSelectionAdminControllerImpl implements VendorPlanSelecti
 
     @Override
     @PostMapping("/create")
-    public ResponseEntity<VendorPlanSelectionResponseDto> createVendorPlanSelection(@Valid @RequestBody VendorPlanSelectionCreateDto vendorPlanSelectionCreateDto, @Valid @RequestBody Long vendorPlanId, @Valid @RequestBody Long userId) {
-        VendorPlanSelectionResponseDto vendorPlanSelectionResponseDto = vendorPlanSelectionAdminService.createVendorPlanSelection(vendorPlanSelectionCreateDto, vendorPlanId, userId);
+    public ResponseEntity<VendorPlanSelectionResponseDto> createVendorPlanSelection(@Valid @RequestBody VendorPlanSelectionCreateDto vendorPlanSelectionCreateDto) {
+        VendorPlanSelectionResponseDto vendorPlanSelectionResponseDto = vendorPlanSelectionAdminService.createVendorPlanSelection(vendorPlanSelectionCreateDto, vendorPlanSelectionCreateDto.getVendorPlanId(), vendorPlanSelectionCreateDto.getUserId());
         return ResponseEntity.ok(vendorPlanSelectionResponseDto);
     }
 
     @Override
-    @PutMapping("/update")
-    public ResponseEntity<VendorPlanSelectionResponseDto> updateVendorPlanSelection(VendorPlanSelectionUpdateDto vendorPlanSelectionUpdateDto, Long vendorPlanSelectionId) {
+    @PutMapping("/update/{vendorPlanSelectionId}")
+    public ResponseEntity<VendorPlanSelectionResponseDto> updateVendorPlanSelection(@Valid @PathVariable Long vendorPlanSelectionId, @Valid @RequestBody VendorPlanSelectionUpdateDto vendorPlanSelectionUpdateDto) {
         VendorPlanSelectionResponseDto vendorPlanSelectionResponseDto = vendorPlanSelectionAdminService.updateVendorPlanSelection(vendorPlanSelectionUpdateDto, vendorPlanSelectionId);
         return ResponseEntity.ok(vendorPlanSelectionResponseDto);
     }

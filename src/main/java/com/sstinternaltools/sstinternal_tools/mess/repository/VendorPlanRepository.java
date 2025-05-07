@@ -12,5 +12,5 @@ import java.util.Set;
 public interface VendorPlanRepository extends JpaRepository<VendorPlan, Long> {
     List<VendorPlan> findByVendorId(Long vendorId);
     List<VendorPlan> findByVendorIdAndMealTypesContaining(Long vendorId, MealType mealType);
-    Boolean existsByMealTypesAndVendor_Id(Set<MealType> mealTypes, Long vendorId);
+
 }

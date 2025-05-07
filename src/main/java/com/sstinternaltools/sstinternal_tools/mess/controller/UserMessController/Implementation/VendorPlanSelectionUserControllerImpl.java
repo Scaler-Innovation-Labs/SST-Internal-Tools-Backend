@@ -37,37 +37,37 @@ public class VendorPlanSelectionUserControllerImpl implements VendorPlanSelectio
         return ResponseEntity.ok(vendorPlanSelections);
     }
 
-    @Override
-    @GetMapping("/fetch/{month}")
-    public ResponseEntity<List<VendorPlanSelectionSummaryDto>> getVendorPlanSelectionsByMonth(@PathVariable YearMonth month) {
-        List<VendorPlanSelectionSummaryDto> vendorPlanSelections = vendorPlanSelectionUserService.getVendorPlanSelectionsByMonth(month);
-        return ResponseEntity.ok(vendorPlanSelections);
-    }
-
-    @Override
-    @GetMapping("/fetchByMonthAndVendor/{month}/{vendorId}")
-    public ResponseEntity<List<VendorPlanSelectionSummaryDto>> getVendorPlanSelectionsByMonthAndVendorId(@PathVariable YearMonth month, @PathVariable Long vendorId) {
-        List<VendorPlanSelectionSummaryDto> vendorPlanSelections = vendorPlanSelectionUserService.getVendorPlanSelectionsByMonthAndVendorId(month, vendorId);
-        return ResponseEntity.ok(vendorPlanSelections);
-    }
-
-    @Override
-    @GetMapping("/fetchByUserAndMonth/{userId}/{month}")
-    public ResponseEntity<List<VendorPlanSelectionSummaryDto>> getVendorPlanSelectionsByUserIdAndMonth(@PathVariable Long userId, @PathVariable YearMonth month) {
-        List<VendorPlanSelectionSummaryDto> vendorPlanSelections = vendorPlanSelectionUserService.getVendorPlanSelectionsByUserIdAndMonth(userId, month);
-        return ResponseEntity.ok(vendorPlanSelections);
-    }
+//    @Override
+//    @GetMapping("/fetch/{month}")
+//    public ResponseEntity<List<VendorPlanSelectionSummaryDto>> getVendorPlanSelectionsByMonth(@PathVariable YearMonth month) {
+//        List<VendorPlanSelectionSummaryDto> vendorPlanSelections = vendorPlanSelectionUserService.getVendorPlanSelectionsByMonth(month);
+//        return ResponseEntity.ok(vendorPlanSelections);
+//    }
+//
+//    @Override
+//    @GetMapping("/fetchByMonthAndVendor/{month}/{vendorId}")
+//    public ResponseEntity<List<VendorPlanSelectionSummaryDto>> getVendorPlanSelectionsByMonthAndVendorId(@PathVariable YearMonth month, @PathVariable Long vendorId) {
+//        List<VendorPlanSelectionSummaryDto> vendorPlanSelections = vendorPlanSelectionUserService.getVendorPlanSelectionsByMonthAndVendorId(month, vendorId);
+//        return ResponseEntity.ok(vendorPlanSelections);
+//    }
+//
+//    @Override
+//    @GetMapping("/fetchByUserAndMonth/{userId}/{month}")
+//    public ResponseEntity<List<VendorPlanSelectionSummaryDto>> getVendorPlanSelectionsByUserIdAndMonth(@PathVariable Long userId, @PathVariable YearMonth month) {
+//        List<VendorPlanSelectionSummaryDto> vendorPlanSelections = vendorPlanSelectionUserService.getVendorPlanSelectionsByUserIdAndMonth(userId, month);
+//        return ResponseEntity.ok(vendorPlanSelections);
+//    }
 
     @Override
     @PostMapping("/create")
-    public ResponseEntity<String> createVendorPlanSelection(@Valid @RequestBody VendorPlanSelectionCreateDto vendorPlanSelectionCreateDto, @Valid @RequestBody Long vendorPlanId, @Valid @RequestBody Long userId) {
-        VendorPlanSelectionResponseDto vendorPlanSelectionResponseDto = vendorPlanSelectionUserService.createVendorPlanSelection(vendorPlanSelectionCreateDto, vendorPlanId, userId);
-        return ResponseEntity.ok("User created successfully!");
+    public ResponseEntity<VendorPlanSelectionResponseDto> createVendorPlanSelection(@Valid @RequestBody VendorPlanSelectionCreateDto vendorPlanSelectionCreateDto) {
+        VendorPlanSelectionResponseDto vendorPlanSelectionResponseDto = vendorPlanSelectionUserService.createVendorPlanSelection(vendorPlanSelectionCreateDto, vendorPlanSelectionCreateDto.getVendorPlanId(), vendorPlanSelectionCreateDto.getUserId());
+        return ResponseEntity.ok(vendorPlanSelectionResponseDto);
     }
 
     @Override
-    @PutMapping("/update")
-    public ResponseEntity<VendorPlanSelectionResponseDto> updateVendorPlanSelection(VendorPlanSelectionUpdateDto vendorPlanSelectionUpdateDto, Long vendorPlanSelectionId) {
+    @PutMapping("/update/{vendorPlanSelectionId}")
+    public ResponseEntity<VendorPlanSelectionResponseDto> updateVendorPlanSelection(@Valid @RequestBody VendorPlanSelectionUpdateDto vendorPlanSelectionUpdateDto, @Valid @PathVariable Long vendorPlanSelectionId) {
         VendorPlanSelectionResponseDto vendorPlanSelectionResponseDto = vendorPlanSelectionUserService.updateVendorPlanSelection(vendorPlanSelectionUpdateDto, vendorPlanSelectionId);
         return ResponseEntity.ok(vendorPlanSelectionResponseDto);
     }
@@ -76,6 +76,6 @@ public class VendorPlanSelectionUserControllerImpl implements VendorPlanSelectio
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<String> deleteVendorPlanSelection(@Valid @PathVariable Long id) {
         vendorPlanSelectionUserService.deleteVendorPlanSelection(id);
-        return ResponseEntity.ok("Vendor Plan Selection deleted successfully!");
+        return ResponseEntity.ok("Vendor Plan Selection Deleted");
     }
 }

@@ -24,6 +24,10 @@ public class User
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 
+    public Long getId() {
+        return id;
+    }
+
     public String getUsername() {
         return username;
     }
@@ -46,6 +50,10 @@ public class User
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public Long getId() {
+        return id;
     }
 
     public User(String username, String email, List<UserRole> userRoles, LocalDateTime createdAt, LocalDateTime updatedAt) {

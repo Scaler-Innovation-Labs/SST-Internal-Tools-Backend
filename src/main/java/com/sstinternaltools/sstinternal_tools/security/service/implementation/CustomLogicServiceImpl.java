@@ -52,7 +52,6 @@ public class CustomLogicServiceImpl implements CustomLogicService {
         } catch (Exception e) {
             throw new RoleAssignmentException("Role assignment failed.");
         }
-
         return roles;
     }
 }

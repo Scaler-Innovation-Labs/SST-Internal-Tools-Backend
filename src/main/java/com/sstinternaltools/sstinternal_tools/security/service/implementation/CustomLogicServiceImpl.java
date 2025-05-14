@@ -35,7 +35,7 @@ public class CustomLogicServiceImpl implements CustomLogicService {
             User user = userRepository.findByEmail(email)
                     .orElseThrow(() -> new RuntimeException("User not found with email: " + email));
 
-            if (domain.equals("sst.scaler.com") || email.endsWith("scaler.com")) { // Need to change this after getting a priveleged email.
+            if (domain.equals("scaler.com") || email.equals("arnav.24bcs10063@sst.scaler.com")) { // Need to change this after getting a priveleged email.
                 if (excelEmailChecker.isEmailInExcel(email, excelFilePath)) {
                     UserRole adminRole = new UserRole();
                     adminRole.setRole(Role.valueOf("admin".toUpperCase()));// Assign admin role if found in the Excel sheet
@@ -47,7 +47,7 @@ public class CustomLogicServiceImpl implements CustomLogicService {
 //                studentRole.setUser(user);
 //                roles.add(studentRole);
             }
-            else if (domain.equals("student.scaler.com")) {
+            else if (domain.equals("sst.scaler.com")) {
                 UserRole studentRole = new UserRole();
                 studentRole.setRole(Role.valueOf("student".toUpperCase()));// Assign student role
                 studentRole.setUser(user);

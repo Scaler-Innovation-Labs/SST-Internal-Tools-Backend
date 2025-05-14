@@ -15,6 +15,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -68,14 +69,16 @@ public class CustomOAuth2SuccessHandler implements AuthenticationSuccessHandler 
             String accessToken = jwtService.generateAccessToken(email);
             String refreshToken = jwtService.generateRefreshToken(email);
 
-            Map<String, String> tokens = new HashMap<>();
-            tokens.put("accessToken", accessToken); //access token send in the json format
-            tokens.put("refreshToken", refreshToken);
+            // 2. Construct redirect URL with tokens
+            String redirectUrl = UriComponentsBuilder
+                    .fromUriString("http://localhost:3000/oauth-success")
+                    .queryParam("accessToken", accessToken)
+                    .queryParam("refreshToken", refreshToken)
+                    .build()
+                    .toUriString();
 
-            response.setContentType("application/json");//Tells browser that the server response will be in JSON format
-            response.setCharacterEncoding("UTF-8");//: Specifies that the characters in the response body will use UTF-8 encoding(to avoid character corruption)
-            response.getWriter().write(objectMapper.writeValueAsString(tokens));// Converts the tokens Map<String, String> into a JSON string using Jackson's ObjectMapper
-            response.sendRedirect("/");
+            // 3. Redirect to frontend with tokens in URL
+            response.sendRedirect(redirectUrl);
 
         } catch(Exception e){
             e.printStackTrace();

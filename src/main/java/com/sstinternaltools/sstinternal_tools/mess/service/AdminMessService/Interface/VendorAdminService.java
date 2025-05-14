@@ -4,11 +4,9 @@ import com.sstinternaltools.sstinternal_tools.mess.dto.vendorDtos.VendorCreateDt
 import com.sstinternaltools.sstinternal_tools.mess.dto.vendorDtos.VendorResponseDto;
 import com.sstinternaltools.sstinternal_tools.mess.dto.vendorDtos.VendorSummaryDto;
 import com.sstinternaltools.sstinternal_tools.mess.dto.vendorDtos.VendorUpdateDto;
-import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-@Service
 public interface VendorAdminService {
 
     VendorSummaryDto getVendorById(Long id);

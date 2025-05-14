@@ -5,26 +5,31 @@ import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.stereotype.Service;
 
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 
 @Service
 public class ExcelEmailCheckerImpl implements ExcelEmailChecker {
 
-    public boolean isEmailInExcel(String emailToSearch,String EXCEL_FILE_PATH) {
-        try (FileInputStream fis = new FileInputStream(new File(EXCEL_FILE_PATH));
-             Workbook workbook = new XSSFWorkbook(fis)) {
+    @Override
+    public boolean isEmailInExcel(String emailToSearch, String excelFilePath) {
+        try (InputStream fis = getClass().getClassLoader().getResourceAsStream(excelFilePath)) {
 
-            Sheet sheet = workbook.getSheetAt(0); // Read the first sheet
+            if (fis == null) {
+                throw new IOException("Excel file not found in classpath: " + excelFilePath);
+            }
 
-            for (Row row : sheet) {
-                Cell cell = row.getCell(0); // Assuming emails are in the first column (index 0)
+            try (Workbook workbook = new XSSFWorkbook(fis)) {
+                Sheet sheet = workbook.getSheetAt(0); // Read the first sheet
 
-                if (cell != null && cell.getCellType() == CellType.STRING) {
-                    String email = cell.getStringCellValue().trim();
-                    if (email.equalsIgnoreCase(emailToSearch)) {
-                        return true; // Email found
+                for (Row row : sheet) {
+                    Cell cell = row.getCell(0); // Assuming emails are in the first column (index 0)
+
+                    if (cell != null && cell.getCellType() == CellType.STRING) {
+                        String email = cell.getStringCellValue().trim();
+                        if (email.equalsIgnoreCase(emailToSearch)) {
+                            return true; // Email found
+                        }
                     }
                 }
             }

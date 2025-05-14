@@ -1,11 +1,9 @@
 package com.sstinternaltools.sstinternal_tools.user.entity;
 
 import jakarta.persistence.*;
-import org.springframework.context.annotation.Lazy;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.UUID;
 
 @Entity
 @Table(name = "users")

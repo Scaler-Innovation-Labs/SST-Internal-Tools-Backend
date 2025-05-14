@@ -71,7 +71,7 @@ public class CustomOAuth2SuccessHandler implements AuthenticationSuccessHandler 
 
             // 2. Construct redirect URL with tokens
             String redirectUrl = UriComponentsBuilder
-                    .fromUriString("http://localhost:3000/oauth-success")
+                    .fromUriString("https://sst-internal-tools.onrender.com/oauth-success")
                     .queryParam("accessToken", accessToken)
                     .queryParam("refreshToken", refreshToken)
                     .build()

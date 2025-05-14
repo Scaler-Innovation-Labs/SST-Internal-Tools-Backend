@@ -8,6 +8,7 @@ import com.sstinternaltools.sstinternal_tools.mess.dto.vendorPlanSelectionDtos.V
 import com.sstinternaltools.sstinternal_tools.mess.service.AdminMessService.Interface.VendorPlanSelectionAdminService;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -22,6 +23,7 @@ public class VendorPlanSelectionAdminControllerImpl implements VendorPlanSelecti
 
     @Override
     @PostMapping("/create")
+    @PreAuthorize("hasAnyRole('STUDENT_ADMIN','ADMIN','SUPER_ADMIN')")
     public ResponseEntity<VendorPlanSelectionResponseDto> createVendorPlanSelection(@Valid @RequestBody VendorPlanSelectionCreateDto vendorPlanSelectionCreateDto) {
         VendorPlanSelectionResponseDto vendorPlanSelectionResponseDto = vendorPlanSelectionAdminService.createVendorPlanSelection(vendorPlanSelectionCreateDto, vendorPlanSelectionCreateDto.getVendorPlanId(), vendorPlanSelectionCreateDto.getUserId());
         return ResponseEntity.ok(vendorPlanSelectionResponseDto);
@@ -29,6 +31,7 @@ public class VendorPlanSelectionAdminControllerImpl implements VendorPlanSelecti
 
     @Override
     @PutMapping("/update/{vendorPlanSelectionId}")
+    @PreAuthorize("hasAnyRole('STUDENT_ADMIN','ADMIN','SUPER_ADMIN')")
     public ResponseEntity<VendorPlanSelectionResponseDto> updateVendorPlanSelection(@Valid @PathVariable Long vendorPlanSelectionId, @Valid @RequestBody VendorPlanSelectionUpdateDto vendorPlanSelectionUpdateDto) {
         VendorPlanSelectionResponseDto vendorPlanSelectionResponseDto = vendorPlanSelectionAdminService.updateVendorPlanSelection(vendorPlanSelectionUpdateDto, vendorPlanSelectionId);
         return ResponseEntity.ok(vendorPlanSelectionResponseDto);
@@ -36,6 +39,7 @@ public class VendorPlanSelectionAdminControllerImpl implements VendorPlanSelecti
 
     @Override
     @DeleteMapping("/delete/{id}")
+    @PreAuthorize("hasAnyRole('STUDENT_ADMIN','ADMIN','SUPER_ADMIN')")
     public ResponseEntity<String> deleteVendorPlanSelection(@Valid @PathVariable Long id) {
         vendorPlanSelectionAdminService.deleteVendorPlanSelectionDto(id);
         return ResponseEntity.ok("Vendor Plan Selection Deleted");

@@ -4,21 +4,10 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
-import jakarta.persistence.Column;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ElementCollection;
-import jakarta.persistence.FetchType;
-import java.util.*;
-
 import com.sstinternaltools.sstinternal_tools.user.entity.User;
-import com.sstinternaltools.sstinternal_tools.Issues.entity.TicketPriority;
-import com.sstinternaltools.sstinternal_tools.Issues.entity.TicketStatus;
-import com.sstinternaltools.sstinternal_tools.Issues.entity.CampusType;
-
 import java.time.LocalDateTime;
-import java.util.List;
-import java.util.ArrayList;
 
 
 @Entity
@@ -27,11 +16,9 @@ public class Comment {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-
     @ManyToOne
     @JoinColumn(name = "ticket_id")
     private Ticket ticket;
-
 
     @ManyToOne
     @JoinColumn(name = "author_id")

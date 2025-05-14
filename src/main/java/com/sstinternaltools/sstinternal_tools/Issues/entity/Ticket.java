@@ -4,21 +4,14 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
-import jakarta.persistence.Column;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ElementCollection;
 import jakarta.persistence.FetchType;
-import java.util.*;
-
 import com.sstinternaltools.sstinternal_tools.user.entity.User;
-import com.sstinternaltools.sstinternal_tools.Issues.entity.TicketPriority;
-import com.sstinternaltools.sstinternal_tools.Issues.entity.TicketStatus;
-import com.sstinternaltools.sstinternal_tools.Issues.entity.CampusType;
-
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.ArrayList;
+
 
 
 @Entity
@@ -29,18 +22,14 @@ public class Ticket {
     private String title;
     private String description;
     private TicketPriority priority;
-
-
     private TicketStatus status;
     private CampusType campus;
 
     @ElementCollection(fetch = FetchType.LAZY)
     private List<String> imageUrl;
-
     private long upvote;
     private LocalDateTime createdAt = LocalDateTime.now();
     private LocalDateTime updatedAt = LocalDateTime.now();
-
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User createdby;
@@ -58,6 +47,9 @@ public class Ticket {
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
         this.createdby = createdby;
+    }
+
+    public Ticket() {
     }
 
 
@@ -133,8 +125,7 @@ public class Ticket {
     public void setTitle(String title) {
         this.title = title;
     }
-    public Ticket() {
-    }
+
 
 
 

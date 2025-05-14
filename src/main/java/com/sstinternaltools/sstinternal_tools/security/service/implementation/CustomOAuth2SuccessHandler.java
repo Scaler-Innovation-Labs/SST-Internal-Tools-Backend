@@ -69,7 +69,6 @@ public class CustomOAuth2SuccessHandler implements AuthenticationSuccessHandler 
             String accessToken = jwtService.generateAccessToken(email);
             String refreshToken = jwtService.generateRefreshToken(email);
 
-            // 2. Construct redirect URL with tokens
             String redirectUrl = UriComponentsBuilder
                     .fromUriString("https://sst-internal-tools.onrender.com/oauth-success")
                     .queryParam("accessToken", accessToken)
@@ -77,7 +76,6 @@ public class CustomOAuth2SuccessHandler implements AuthenticationSuccessHandler 
                     .build()
                     .toUriString();
 
-            // 3. Redirect to frontend with tokens in URL
             response.sendRedirect(redirectUrl);
 
         } catch(Exception e){

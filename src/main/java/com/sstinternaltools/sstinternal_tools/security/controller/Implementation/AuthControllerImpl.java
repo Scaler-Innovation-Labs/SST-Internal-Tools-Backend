@@ -32,4 +32,22 @@ public class AuthControllerImpl implements AuthController {
         return ResponseEntity.ok("✅ User logged out successfully");
     }
 
+
+    @GetMapping("/oauth-success")
+    public String showTokens(
+            @RequestParam String accessToken,
+            @RequestParam String refreshToken
+    ) {
+        return """
+            <html>
+            <body>
+                <h2>✅ Login Successful</h2>
+                <p><strong>Access Token:</strong></p>
+                <code>%s</code>
+                <p><strong>Refresh Token:</strong></p>
+                <code>%s</code>
+            </body>
+            </html>
+        """.formatted(accessToken, refreshToken);
+    }
 }

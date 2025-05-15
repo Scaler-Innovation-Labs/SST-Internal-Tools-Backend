@@ -9,6 +9,7 @@ import com.sstinternaltools.sstinternal_tools.gallery.exception.EventNotFoundExc
 import com.sstinternaltools.sstinternal_tools.gallery.mapper.interfaces.EventDtoMapper;
 import com.sstinternaltools.sstinternal_tools.gallery.repository.EventRepository;
 import com.sstinternaltools.sstinternal_tools.gallery.service.interfaces.EventService;
+import com.sstinternaltools.sstinternal_tools.security.exception.InvalidCredentialsException;
 import com.sstinternaltools.sstinternal_tools.security.exception.UserNotFoundException;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
@@ -55,23 +56,37 @@ public class EventServiceImpl implements EventService {
 
     @Override
     public List<Event> searchEventsByDateRange(LocalDate start, LocalDate end) {
+        if(start == null || end == null){
+            throw new InvalidCredentialsException("Start date cannot be null");
+        }
         return eventRepository.findByDateBetween(start, end);
     }
 
     @Override
     public Event getEventById(Long id) {
+
+        if(id==null){
+            throw new InvalidCredentialsException("Id cannot be null");
+        }
+
         Event event = eventRepository.findById(id).orElseThrow(()-> new EventNotFoundException("Event with this id ("+id+") is not found"));
         return event;
     }
 
     @Override
     public List<Event> searchEventsByDate(LocalDate date) {
+        if(date==null){
+            throw new InvalidCredentialsException("Date cannot be null");
+        }
         return eventRepository.findByDate(date);
     }
 
     @Override
     @Transactional
     public void deleteEvent(Long id) {
+        if(id==null){
+            throw new InvalidCredentialsException("Id cannot be null");
+        }
         eventRepository.deleteById(id);
     }
 }

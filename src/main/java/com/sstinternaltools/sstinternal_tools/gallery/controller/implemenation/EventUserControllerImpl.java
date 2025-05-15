@@ -8,7 +8,6 @@ import com.sstinternaltools.sstinternal_tools.gallery.dto.EventUpdateDto;
 import com.sstinternaltools.sstinternal_tools.gallery.entity.Event;
 import com.sstinternaltools.sstinternal_tools.gallery.facade.interfaces.EventServiceFacade;
 import com.sstinternaltools.sstinternal_tools.gallery.mapper.interfaces.EventDtoMapper;
-import jakarta.validation.Valid;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -38,7 +37,7 @@ public class EventUserControllerImpl implements EventUserController {
     }
 
     @GetMapping("/search")
-    public ResponseEntity<List<EventSummaryDto>> searchByName(@RequestParam @Valid String name) {
+    public ResponseEntity<List<EventSummaryDto>> searchByName(@RequestParam String name) {
         List<EventSummaryDto> events= eventServiceFacade.searchEventsByName(name)
                 .stream()
                 .map(event -> eventDtoMapper.toSummaryDto(event))
@@ -47,9 +46,9 @@ public class EventUserControllerImpl implements EventUserController {
     }
 
     @GetMapping("/getBy/date-range")
-    public ResponseEntity<List<EventSummaryDto>> searchByDateRange(@Valid
+    public ResponseEntity<List<EventSummaryDto>> searchByDateRange(
             @RequestParam("start") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate start,
-           @Valid @RequestParam("end") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate end) {
+            @RequestParam("end") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate end) {
         List<EventSummaryDto> events= eventServiceFacade.searchEventsByDateRange(start, end)
                 .stream()
                 .map(event -> eventDtoMapper.toSummaryDto(event))
@@ -58,7 +57,7 @@ public class EventUserControllerImpl implements EventUserController {
     }
 
     @GetMapping("/getByDate")
-    public ResponseEntity<List<EventSummaryDto>> searchByDate(@Valid
+    public ResponseEntity<List<EventSummaryDto>> searchByDate(
             @RequestParam("date") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date) {
         List<EventSummaryDto> events= eventServiceFacade.searchEventsByDate(date)
                 .stream()

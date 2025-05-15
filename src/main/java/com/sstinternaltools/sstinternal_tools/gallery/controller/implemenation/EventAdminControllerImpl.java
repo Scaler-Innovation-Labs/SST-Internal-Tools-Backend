@@ -36,20 +36,20 @@ public class EventAdminControllerImpl implements EventAdminController {
     }
 
     @PutMapping("/update/{id}")
-    public ResponseEntity<EventResponseDto> updateEvent(@PathVariable @Valid Long id, @RequestBody @Valid EventUpdateDto eventUpdateDto) {
+    public ResponseEntity<EventResponseDto> updateEvent(@PathVariable  Long id, @RequestBody @Valid EventUpdateDto eventUpdateDto) {
            EventResponseDto eventResponseDto=eventServiceFacade.updateEvent(id, eventUpdateDto);
            return ResponseEntity.ok(eventResponseDto);
     }
 
     @GetMapping("/getById/{id}")
-    public ResponseEntity<EventResponseDto> getEventById(@PathVariable @Valid Long id) {
+    public ResponseEntity<EventResponseDto> getEventById(@PathVariable  Long id) {
         Event event=eventServiceFacade.getEventById(id);
         EventResponseDto eventResponseDto=eventDtoMapper.toResponseDto(event);
         return ResponseEntity.ok(eventResponseDto);
     }
 
     @DeleteMapping("/delete/{id}")
-    public ResponseEntity<String> deleteEvent(@PathVariable @Valid Long id) {
+    public ResponseEntity<String> deleteEvent(@PathVariable  Long id) {
         eventServiceFacade.deleteEvent(id);
         return ResponseEntity.ok("Event deleted successfully");
     }
@@ -64,7 +64,7 @@ public class EventAdminControllerImpl implements EventAdminController {
     }
 
     @GetMapping("/search")
-    public ResponseEntity<List<EventResponseDto>> searchByName(@RequestParam @Valid String name) {
+    public ResponseEntity<List<EventResponseDto>> searchByName(@RequestParam String name) {
         List<EventResponseDto> events= eventServiceFacade.searchEventsByName(name)
                 .stream()
                 .map(event -> eventDtoMapper.toResponseDto(event))
@@ -73,8 +73,8 @@ public class EventAdminControllerImpl implements EventAdminController {
     }
 
     @GetMapping("/getBy/date-range")
-    public ResponseEntity<List<EventResponseDto>> searchByDateRange(@Valid
-            @RequestParam("start") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate start,@Valid
+    public ResponseEntity<List<EventResponseDto>> searchByDateRange(
+            @RequestParam("start") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate start,
             @RequestParam("end") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate end) {
         List<EventResponseDto> events= eventServiceFacade.searchEventsByDateRange(start, end)
                 .stream()
@@ -84,7 +84,7 @@ public class EventAdminControllerImpl implements EventAdminController {
     }
 
     @GetMapping("/getByDate")
-    public ResponseEntity<List<EventResponseDto>> searchByDate(@Valid
+    public ResponseEntity<List<EventResponseDto>> searchByDate(
             @RequestParam("date") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date) {
         List<EventResponseDto> events= eventServiceFacade.searchEventsByDate(date)
                 .stream()

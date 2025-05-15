@@ -1,6 +1,7 @@
 package com.sstinternaltools.sstinternal_tools.gallery.controller.interfaces;
 
 import com.sstinternaltools.sstinternal_tools.gallery.dto.EventSummaryDto;
+import jakarta.validation.Valid;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,15 +17,15 @@ public interface EventUserController {
     ResponseEntity<List<EventSummaryDto>> getAllEvents();
 
     @GetMapping("/search")
-    ResponseEntity<List<EventSummaryDto>> searchByName(@RequestParam String name);
+    ResponseEntity<List<EventSummaryDto>> searchByName(@RequestParam @Valid String name);
 
     @GetMapping("getBy/date-range")
-    ResponseEntity<List<EventSummaryDto>> searchByDateRange(
-            @RequestParam("start") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate start,
+    ResponseEntity<List<EventSummaryDto>> searchByDateRange(@Valid
+            @RequestParam("start") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate start,@Valid
             @RequestParam("end") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate end);
 
     @GetMapping("/getByDate")
-    ResponseEntity<List<EventSummaryDto>> searchByDate(
+    ResponseEntity<List<EventSummaryDto>> searchByDate(@Valid
             @RequestParam("date") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date);
 
 }

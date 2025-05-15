@@ -6,10 +6,10 @@ import com.sstinternaltools.sstinternal_tools.gallery.dto.EventUpdateDto;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import java.time.LocalDate;
 import java.util.List;
 
+@RequestMapping("event/admin")
 public interface EventAdminController {
     @PostMapping("create")
     ResponseEntity<EventResponseDto> createEvent(@RequestBody EventCreateDto eventCreateDto);

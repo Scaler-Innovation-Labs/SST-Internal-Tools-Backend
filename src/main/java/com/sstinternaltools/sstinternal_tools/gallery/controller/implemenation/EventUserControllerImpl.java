@@ -17,6 +17,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
+@RequestMapping("event/user")
 public class EventUserControllerImpl implements EventUserController {
     private EventServiceFacade eventServiceFacade;
     private EventDtoMapper<Event, EventResponseDto, EventCreateDto, EventUpdateDto, EventSummaryDto> eventDtoMapper;

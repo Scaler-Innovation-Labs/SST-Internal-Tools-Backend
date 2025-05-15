@@ -17,7 +17,7 @@ public interface EventAdminController {
     @PutMapping("/update/{id}")
     ResponseEntity<EventResponseDto> updateEvent(@PathVariable Long id, @RequestBody EventUpdateDto eventUpdateDto);
 
-    @GetMapping("/getById")
+    @GetMapping("/getById/{id}")
     ResponseEntity<EventResponseDto> getEventById(@PathVariable Long id);
 
     @DeleteMapping("/delete/{id}")
@@ -34,7 +34,7 @@ public interface EventAdminController {
             @RequestParam("start") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate start,
             @RequestParam("end") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate end);
 
-    @GetMapping("/getBydate")
+    @GetMapping("/getByDate")
     ResponseEntity<List<EventResponseDto>> searchByDate(
             @RequestParam("date") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date);
 

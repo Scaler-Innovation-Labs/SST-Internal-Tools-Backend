@@ -1,9 +1,11 @@
 package com.sstinternaltools.sstinternal_tools.transport.service.implementation;
 
+import com.sstinternaltools.sstinternal_tools.security.exception.InvalidCredentialsException;
 import com.sstinternaltools.sstinternal_tools.transport.dto.BusScheduleCreateDto;
 import com.sstinternaltools.sstinternal_tools.transport.dto.BusScheduleResponseDto;
 import com.sstinternaltools.sstinternal_tools.transport.dto.BusScheduleUpdateDto;
 import com.sstinternaltools.sstinternal_tools.transport.entity.BusSchedule;
+import com.sstinternaltools.sstinternal_tools.transport.exception.TransportScheduleNotFound;
 import com.sstinternaltools.sstinternal_tools.transport.mapper.implementation.BusScheduleMapper;
 import com.sstinternaltools.sstinternal_tools.transport.repository.BusScheduleRepository;
 import com.sstinternaltools.sstinternal_tools.transport.service.interfaces.BusScheduleService;
@@ -38,11 +40,11 @@ public class BusScheduleServiceImpl implements BusScheduleService {
     @Transactional
     public BusScheduleResponseDto updateBusSchedule(BusScheduleUpdateDto updateDto,Long scheduleId) {
         if(scheduleId == null){
-            throw new IllegalArgumentException("Schedule id cannot be null");
+            throw new InvalidCredentialsException("Schedule id cannot be null");
         }
 
         BusSchedule busSchedule = busScheduleRepository.findById(scheduleId)
-                .orElseThrow(() -> new ResourceAccessException("Schedule does not exist"));
+                .orElseThrow(() -> new TransportScheduleNotFound("Schedule does not exist"));
 
         BusSchedule updatedBusSchedule=busScheduleMapper.fromUpdateDto(updateDto,busSchedule);
         busScheduleRepository.save(updatedBusSchedule);
@@ -53,11 +55,11 @@ public class BusScheduleServiceImpl implements BusScheduleService {
     @Transactional
     public void deleteBusSchedule(Long scheduleId) {
         if(scheduleId == null){
-            throw new IllegalArgumentException("Schedule id cannot be null");
+            throw new InvalidCredentialsException("Schedule id cannot be null");
         }
 
         if(!busScheduleRepository.existsById(scheduleId)) {
-            throw new ResourceAccessException("Schedule does not exist");
+            throw new TransportScheduleNotFound("Schedule does not exist");
         }
 
         busScheduleRepository.deleteById(scheduleId);
@@ -66,11 +68,11 @@ public class BusScheduleServiceImpl implements BusScheduleService {
     @Override
     public List<BusScheduleResponseDto> getSchedulesForDate(LocalDate date) {
         if(date == null){
-            throw new IllegalArgumentException("Date cannot be null");
+            throw new InvalidCredentialsException("Date cannot be null");
         }
 
         if(!busScheduleRepository.existsByDate(date)){
-            throw new ResourceAccessException("Schedule does not exist for "+date+".");
+            throw new TransportScheduleNotFound("Schedule does not exist for "+date+".");
         }
 
         return busScheduleRepository.findAllByDateOrderByDepartureTimeAsc(date)

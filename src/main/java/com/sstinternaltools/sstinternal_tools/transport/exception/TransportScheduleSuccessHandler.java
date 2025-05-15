@@ -7,10 +7,10 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 @RestControllerAdvice
-public class TranportScheduleSuccessHandler {
+public class TransportScheduleSuccessHandler {
 
     @ExceptionHandler(TransportScheduleNotFound.class)
-    public ResponseEntity<String> handleScheduleNotFound(EventNotFoundException ex) {
+    public ResponseEntity<String> handleScheduleNotFound(TransportScheduleNotFound ex) {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
     }
 }

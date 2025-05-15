@@ -5,9 +5,12 @@ import com.sstinternaltools.sstinternal_tools.gallery.dto.EventResponseDto;
 import com.sstinternaltools.sstinternal_tools.gallery.dto.EventSummaryDto;
 import com.sstinternaltools.sstinternal_tools.gallery.dto.EventUpdateDto;
 import com.sstinternaltools.sstinternal_tools.gallery.entity.Event;
+import com.sstinternaltools.sstinternal_tools.gallery.exception.EventNotFoundException;
 import com.sstinternaltools.sstinternal_tools.gallery.mapper.interfaces.EventDtoMapper;
 import com.sstinternaltools.sstinternal_tools.gallery.repository.EventRepository;
 import com.sstinternaltools.sstinternal_tools.gallery.service.interfaces.EventService;
+import com.sstinternaltools.sstinternal_tools.security.exception.UserNotFoundException;
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.ResourceAccessException;
 import java.time.LocalDate;
@@ -33,34 +36,41 @@ public class EventServiceImpl implements EventService {
 
     @Override
     public EventResponseDto updateEvent(Long id,EventUpdateDto eventUpdateDto) {
-        Event event = eventRepository.findById(id).orElseThrow(()->new ResourceAccessException("Event not found"));
+        Event event = eventRepository.findById(id).orElseThrow(()->new EventNotFoundException("Event not found"));
         Event updatedEvent= eventDtoMapper.fromUpdateDto(eventUpdateDto, event);
         Event savedEvent = eventRepository.save(updatedEvent);
         EventResponseDto eventResponseDto = eventDtoMapper.toResponseDto(savedEvent);
         return eventResponseDto;
     }
 
+    @Override
     public List<Event> getAllEvents() {
         return eventRepository.findAll();
     }
 
+    @Override
     public List<Event> searchEventsByName(String name) {
         return eventRepository.findByNameContainingIgnoreCase(name);
     }
 
+    @Override
     public List<Event> searchEventsByDateRange(LocalDate start, LocalDate end) {
         return eventRepository.findByDateBetween(start, end);
     }
 
+    @Override
     public Event getEventById(Long id) {
-        Event event = eventRepository.findById(id).orElseThrow(()-> new ResourceAccessException("Event with this "+id+" not found"));
+        Event event = eventRepository.findById(id).orElseThrow(()-> new EventNotFoundException("Event with this id ("+id+") is not found"));
         return event;
     }
 
+    @Override
     public List<Event> searchEventsByDate(LocalDate date) {
         return eventRepository.findByDate(date);
     }
 
+    @Override
+    @Transactional
     public void deleteEvent(Long id) {
         eventRepository.deleteById(id);
     }

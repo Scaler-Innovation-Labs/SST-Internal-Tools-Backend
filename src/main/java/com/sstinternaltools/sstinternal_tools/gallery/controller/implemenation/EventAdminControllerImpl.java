@@ -8,13 +8,12 @@ import com.sstinternaltools.sstinternal_tools.gallery.dto.EventUpdateDto;
 import com.sstinternaltools.sstinternal_tools.gallery.entity.Event;
 import com.sstinternaltools.sstinternal_tools.gallery.facade.interfaces.EventServiceFacade;
 import com.sstinternaltools.sstinternal_tools.gallery.mapper.interfaces.EventDtoMapper;
+import jakarta.validation.Valid;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import java.time.LocalDate;
 import java.util.List;
-
 import java.util.stream.Collectors;
 
 @RestController
@@ -30,27 +29,27 @@ public class EventAdminControllerImpl implements EventAdminController {
     }
 
     @PostMapping("/create")
-    public ResponseEntity<EventResponseDto> createEvent(@RequestBody EventCreateDto eventCreateDto) {
+    public ResponseEntity<EventResponseDto> createEvent(@RequestBody @Valid EventCreateDto eventCreateDto) {
         Event event= eventServiceFacade.addEvent(eventCreateDto);
         EventResponseDto eventResponseDto= eventDtoMapper.toResponseDto(event);
         return ResponseEntity.ok(eventResponseDto);
     }
 
     @PutMapping("/update/{id}")
-    public ResponseEntity<EventResponseDto> updateEvent(@PathVariable Long id, @RequestBody EventUpdateDto eventUpdateDto) {
+    public ResponseEntity<EventResponseDto> updateEvent(@PathVariable @Valid Long id, @RequestBody @Valid EventUpdateDto eventUpdateDto) {
            EventResponseDto eventResponseDto=eventServiceFacade.updateEvent(id, eventUpdateDto);
            return ResponseEntity.ok(eventResponseDto);
     }
 
     @GetMapping("/getById/{id}")
-    public ResponseEntity<EventResponseDto> getEventById(@PathVariable Long id) {
+    public ResponseEntity<EventResponseDto> getEventById(@PathVariable @Valid Long id) {
         Event event=eventServiceFacade.getEventById(id);
         EventResponseDto eventResponseDto=eventDtoMapper.toResponseDto(event);
         return ResponseEntity.ok(eventResponseDto);
     }
 
     @DeleteMapping("/delete/{id}")
-    public ResponseEntity<String> deleteEvent(@PathVariable Long id) {
+    public ResponseEntity<String> deleteEvent(@PathVariable @Valid Long id) {
         eventServiceFacade.deleteEvent(id);
         return ResponseEntity.ok("Event deleted successfully");
     }
@@ -65,7 +64,7 @@ public class EventAdminControllerImpl implements EventAdminController {
     }
 
     @GetMapping("/search")
-    public ResponseEntity<List<EventResponseDto>> searchByName(@RequestParam String name) {
+    public ResponseEntity<List<EventResponseDto>> searchByName(@RequestParam @Valid String name) {
         List<EventResponseDto> events= eventServiceFacade.searchEventsByName(name)
                 .stream()
                 .map(event -> eventDtoMapper.toResponseDto(event))
@@ -74,8 +73,8 @@ public class EventAdminControllerImpl implements EventAdminController {
     }
 
     @GetMapping("/getBy/date-range")
-    public ResponseEntity<List<EventResponseDto>> searchByDateRange(
-            @RequestParam("start") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate start,
+    public ResponseEntity<List<EventResponseDto>> searchByDateRange(@Valid
+            @RequestParam("start") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate start,@Valid
             @RequestParam("end") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate end) {
         List<EventResponseDto> events= eventServiceFacade.searchEventsByDateRange(start, end)
                 .stream()
@@ -85,7 +84,7 @@ public class EventAdminControllerImpl implements EventAdminController {
     }
 
     @GetMapping("/getByDate")
-    public ResponseEntity<List<EventResponseDto>> searchByDate(
+    public ResponseEntity<List<EventResponseDto>> searchByDate(@Valid
             @RequestParam("date") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date) {
         List<EventResponseDto> events= eventServiceFacade.searchEventsByDate(date)
                 .stream()

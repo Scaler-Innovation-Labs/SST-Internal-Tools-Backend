@@ -11,30 +11,30 @@ import java.util.List;
 
 @RequestMapping("event/admin")
 public interface EventAdminController {
-    @PostMapping("create")
+    @PostMapping("/create")
     ResponseEntity<EventResponseDto> createEvent(@RequestBody EventCreateDto eventCreateDto);
 
-    @PutMapping("update/{id}")
+    @PutMapping("/update/{id}")
     ResponseEntity<EventResponseDto> updateEvent(@PathVariable Long id, @RequestBody EventUpdateDto eventUpdateDto);
 
-    @GetMapping("getById")
+    @GetMapping("/getById")
     ResponseEntity<EventResponseDto> getEventById(@PathVariable Long id);
 
-    @DeleteMapping("delete/{id}")
+    @DeleteMapping("/delete/{id}")
     ResponseEntity<String> deleteEvent(@PathVariable Long id);
 
-    @GetMapping
+    @GetMapping("/getAllEvents")
     ResponseEntity<List<EventResponseDto>> getAllEvents();
 
     @GetMapping("/search")
     ResponseEntity<List<EventResponseDto>> searchByName(@RequestParam String name);
 
-    @GetMapping("/date-range")
+    @GetMapping("/getBy/date-range")
     ResponseEntity<List<EventResponseDto>> searchByDateRange(
             @RequestParam("start") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate start,
             @RequestParam("end") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate end);
 
-    @GetMapping("/date")
+    @GetMapping("/getBydate")
     ResponseEntity<List<EventResponseDto>> searchByDate(
             @RequestParam("date") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date);
 

@@ -18,12 +18,12 @@ public interface EventUserController {
     @GetMapping("/search")
     ResponseEntity<List<EventSummaryDto>> searchByName(@RequestParam String name);
 
-    @GetMapping("/date-range")
+    @GetMapping("getBy/date-range")
     ResponseEntity<List<EventSummaryDto>> searchByDateRange(
             @RequestParam("start") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate start,
             @RequestParam("end") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate end);
 
-    @GetMapping("/date")
+    @GetMapping("/getByDate")
     ResponseEntity<List<EventSummaryDto>> searchByDate(
             @RequestParam("date") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date);
 

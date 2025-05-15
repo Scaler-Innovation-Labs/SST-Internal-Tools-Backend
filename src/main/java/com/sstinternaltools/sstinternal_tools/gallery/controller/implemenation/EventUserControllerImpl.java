@@ -27,7 +27,7 @@ public class EventUserControllerImpl implements EventUserController {
         this.eventDtoMapper = eventDtoMapper;
     }
 
-    @GetMapping
+    @GetMapping("/getAllEvents")
     public ResponseEntity<List<EventSummaryDto>> getAllEvents() {
         List<EventSummaryDto> events= eventServiceFacade. getAllEvents()
                 .stream()
@@ -45,7 +45,7 @@ public class EventUserControllerImpl implements EventUserController {
         return ResponseEntity.ok(events);
     }
 
-    @GetMapping("/date-range")
+    @GetMapping("/getBy/date-range")
     public ResponseEntity<List<EventSummaryDto>> searchByDateRange(
             @RequestParam("start") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate start,
             @RequestParam("end") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate end) {
@@ -56,7 +56,7 @@ public class EventUserControllerImpl implements EventUserController {
         return ResponseEntity.ok(events);
     }
 
-    @GetMapping("/date")
+    @GetMapping("/getByDate")
     public ResponseEntity<List<EventSummaryDto>> searchByDate(
             @RequestParam("date") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date) {
         List<EventSummaryDto> events= eventServiceFacade.searchEventsByDate(date)

@@ -8,74 +8,90 @@ import com.sstinternaltools.sstinternal_tools.user.entity.User;
 import com.sstinternaltools.sstinternal_tools.user.repository.UserRepository;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.springframework.http.HttpHeaders;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
+import org.springframework.web.util.WebUtils;
 
 import java.io.IOException;
-import java.util.List;
 
 @Component
 public class JwtFilter extends OncePerRequestFilter {
 
     private final JwtService jwtService;
     private final UserRepository userRepository;
-    private final MyUserDetailService myUserDetailsService;
+    private final MyUserDetailService myUserDetailService;
 
-    public JwtFilter(JwtService jwtService, UserRepository userRepository, MyUserDetailService myUserDetailsService) {
+    public JwtFilter(JwtService jwtService,
+                     UserRepository userRepository,
+                     MyUserDetailService myUserDetailService) {
         this.jwtService = jwtService;
         this.userRepository = userRepository;
-        this.myUserDetailsService = myUserDetailsService;
+        this.myUserDetailService = myUserDetailService;
     }
 
     @Override
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+    protected void doFilterInternal(HttpServletRequest request,
+                                    HttpServletResponse response,
+                                    FilterChain chain)
+            throws ServletException, IOException {
 
         String path = request.getServletPath();
         System.out.println("Request path: " + path);
 
-        if (path.startsWith("/auth") || path.startsWith("/oauth2")) {
-            System.out.println("🛂  -> PUBLIC, skipping JWT check");
-            filterChain.doFilter(request, response);
+        /* 1️⃣  Bypass EVERYTHING that is not an API endpoint */
+        if (!path.startsWith("/api/")) {          // <— key change
+            chain.doFilter(request, response);
             return;
         }
 
-        final String authHeader = request.getHeader("Authorization");
+        /* 2️⃣  Try header first, then secure cookie */
+        String authHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
+        if (authHeader == null) {
+            Cookie cookie = WebUtils.getCookie(request, "accessToken");
+            if (cookie != null)
+                authHeader = "Bearer " + cookie.getValue();
+        }
         System.out.println("🛂  -> Authorization = " + authHeader);
 
         if (authHeader == null || !authHeader.startsWith("Bearer ")) {
-            filterChain.doFilter(request, response);
+            chain.doFilter(request, response);   // leads to clean 401 JSON
             return;
         }
 
-        final String token = authHeader.substring(7);
-        final String userEmail;
-
+        String token = authHeader.substring(7);
+        String userEmail;
         try {
             userEmail = jwtService.extractEmail(token);
         } catch (Exception e) {
             throw new JwtAuthenticationException("Invalid JWT token.");
         }
-        
-        if (userEmail != null && SecurityContextHolder.getContext().getAuthentication() == null) {
+
+        if (userEmail != null &&
+                SecurityContextHolder.getContext().getAuthentication() == null) {
+
             User user = userRepository.findByEmailWithRoles(userEmail)
-                    .orElseThrow(() -> new UserNotFoundException("User not found with email: " + userEmail));
+                    .orElseThrow(() ->
+                            new UserNotFoundException("User not found: " + userEmail));
 
             if (!jwtService.validateAccessToken(token, user)) {
                 throw new JwtAuthenticationException("Invalid or expired access token.");
             }
 
-            UserDetails userDetails = myUserDetailsService.loadUserByEmail(userEmail);
-            UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
-            authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-            SecurityContextHolder.getContext().setAuthentication(authToken);
+            UserDetails ud = myUserDetailService.loadUserByEmail(userEmail);
+            UsernamePasswordAuthenticationToken at =
+                    new UsernamePasswordAuthenticationToken(ud, null, ud.getAuthorities());
+            at.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+            SecurityContextHolder.getContext().setAuthentication(at);
         }
 
-        filterChain.doFilter(request, response);
+        chain.doFilter(request, response);
     }
 }

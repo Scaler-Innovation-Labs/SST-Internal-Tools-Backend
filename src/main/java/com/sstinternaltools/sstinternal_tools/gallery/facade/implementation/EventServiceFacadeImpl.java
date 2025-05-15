@@ -1,6 +1,8 @@
 package com.sstinternaltools.sstinternal_tools.gallery.facade.implementation;
 
 import com.sstinternaltools.sstinternal_tools.gallery.dto.EventCreateDto;
+import com.sstinternaltools.sstinternal_tools.gallery.dto.EventResponseDto;
+import com.sstinternaltools.sstinternal_tools.gallery.dto.EventUpdateDto;
 import com.sstinternaltools.sstinternal_tools.gallery.entity.Event;
 import com.sstinternaltools.sstinternal_tools.gallery.facade.interfaces.EventServiceFacade;
 import com.sstinternaltools.sstinternal_tools.gallery.service.interfaces.EventService;
@@ -19,7 +21,14 @@ public class EventServiceFacadeImpl implements EventServiceFacade {
 
     public Event addEvent(EventCreateDto eventCreateDto){
         return eventService.addEvent(eventCreateDto);
-    };
+    }
+
+    @Override
+    public EventResponseDto updateEvent(Long id, EventUpdateDto eventUpdateDto) {
+        return eventService.updateEvent(id, eventUpdateDto);
+    }
+
+    ;
     public List<Event> getAllEvents(){
         return eventService.getAllEvents();
     };

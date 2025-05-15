@@ -31,8 +31,15 @@ public class EventAdminControllerImpl implements EventAdminController {
     }
 
     @PutMapping("update/{id}")
-    public ResponseEntity<EventUpdateDto> updateEvent(@PathVariable Long id, @RequestBody EventUpdateDto eventUpdateDto) {
+    public ResponseEntity<EventResponseDto> updateEvent(@PathVariable Long id, @RequestBody EventUpdateDto eventUpdateDto) {
+           EventResponseDto eventResponseDto=eventServiceFacade.updateEvent(id, eventUpdateDto);
+           return ResponseEntity.ok(eventResponseDto);
+    }
 
+    @DeleteMapping("/{id}")
+    public ResponseEntity<String> deleteEvent(@PathVariable Long id) {
+        eventServiceFacade.deleteEvent(id);
+        return ResponseEntity.ok("Event deleted successfully");
     }
 
     @GetMapping
@@ -58,8 +65,5 @@ public class EventAdminControllerImpl implements EventAdminController {
         return eventService.searchEventsByDate(date);
     }
 
-    @DeleteMapping("/{id}")
-    public void deleteEvent(@PathVariable Long id) {
-        eventService.deleteEvent(id);
-    }
+
 }

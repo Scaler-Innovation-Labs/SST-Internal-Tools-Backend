@@ -19,7 +19,7 @@ public class EventServiceImpl implements EventService {
     private EventRepository eventRepository;
     private EventDtoMapper<Event, EventResponseDto, EventCreateDto, EventUpdateDto, EventSummaryDto> eventDtoMapper;
 
-    public EventServiceImpl(EventRepository eventRepository, EventDtoMapper eventDtoMapper) {
+    public EventServiceImpl(EventRepository eventRepository, EventDtoMapper<Event, EventResponseDto, EventCreateDto, EventUpdateDto, EventSummaryDto> eventDtoMapper) {
         this.eventRepository = eventRepository;
         this.eventDtoMapper = eventDtoMapper;
     }
@@ -29,6 +29,15 @@ public class EventServiceImpl implements EventService {
         Event savedEvent = eventRepository.save(event);
         return savedEvent;
 
+    }
+
+    @Override
+    public EventResponseDto updateEvent(Long id,EventUpdateDto eventUpdateDto) {
+        Event event = eventRepository.findById(id).orElseThrow(()->new ResourceAccessException("Event not found"));
+        Event updatedEvent= eventDtoMapper.fromUpdateDto(eventUpdateDto, event);
+        Event savedEvent = eventRepository.save(updatedEvent);
+        EventResponseDto eventResponseDto = eventDtoMapper.toResponseDto(savedEvent);
+        return eventResponseDto;
     }
 
     public List<Event> getAllEvents() {

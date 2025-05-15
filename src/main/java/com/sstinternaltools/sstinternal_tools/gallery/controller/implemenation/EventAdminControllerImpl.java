@@ -8,8 +8,14 @@ import com.sstinternaltools.sstinternal_tools.gallery.dto.EventUpdateDto;
 import com.sstinternaltools.sstinternal_tools.gallery.entity.Event;
 import com.sstinternaltools.sstinternal_tools.gallery.facade.interfaces.EventServiceFacade;
 import com.sstinternaltools.sstinternal_tools.gallery.mapper.interfaces.EventDtoMapper;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.time.LocalDate;
+import java.util.List;
+
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/event/admin")
@@ -44,26 +50,43 @@ public class EventAdminControllerImpl implements EventAdminController {
 
     @GetMapping
     public ResponseEntity<List<EventResponseDto>> getAllEvents() {
-
+        List<EventResponseDto> events= eventServiceFacade. getAllEvents()
+                .stream()
+                .map(event -> eventDtoMapper.toResponseDto(event))
+                .collect(Collectors.toList());
+        return ResponseEntity.ok(events);
     }
 
     @GetMapping("/search")
-    public List<Event> searchByName(@RequestParam String name) {
-        return eventService.searchEventsByName(name);
+    public ResponseEntity<List<EventResponseDto>> searchByName(@RequestParam String name) {
+        List<EventResponseDto> events= eventServiceFacade.searchEventsByName(name)
+                .stream()
+                .map(event -> eventDtoMapper.toResponseDto(event))
+                .collect(Collectors.toList());
+        return ResponseEntity.ok(events);
     }
 
     @GetMapping("/date-range")
-    public List<Event> searchByDateRange(
+    public ResponseEntity<List<EventResponseDto>> searchByDateRange(
             @RequestParam("start") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate start,
             @RequestParam("end") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate end) {
-        return eventService.searchEventsByDateRange(start, end);
+        List<EventResponseDto> events= eventServiceFacade.searchEventsByDateRange(start, end)
+                .stream()
+                .map(event -> eventDtoMapper.toResponseDto(event))
+                .collect(Collectors.toList());
+        return ResponseEntity.ok(events);
     }
 
     @GetMapping("/date")
-    public List<Event> searchByDate(
+    public ResponseEntity<List<EventResponseDto>> searchByDate(
             @RequestParam("date") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date) {
-        return eventService.searchEventsByDate(date);
+        List<EventResponseDto> events= eventServiceFacade.searchEventsByDate(date)
+                .stream()
+                .map(event -> eventDtoMapper.toResponseDto(event))
+                .collect(Collectors.toList());
+        return ResponseEntity.ok(events);
     }
 
+//    /api/events/date-range?start=2025-01-01&end=2025-01-31
 
 }

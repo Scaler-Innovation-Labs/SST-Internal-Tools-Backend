@@ -1,4 +1,4 @@
 package com.sstinternaltools.sstinternal_tools.gallery.exception;
 
-public class demo {
+public class EventNotFoundException {
 }

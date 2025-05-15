@@ -70,7 +70,7 @@ public class CustomOAuth2SuccessHandler implements AuthenticationSuccessHandler 
             String refreshToken = jwtService.generateRefreshToken(email);
 
             String redirectUrl = UriComponentsBuilder
-                    .fromUriString("https://sst-internal-tools.onrender.com/oauth-success")
+                    .fromUriString("https://sst-internal-tools.onrender.com/auth/oauth-success")
                     .queryParam("accessToken", accessToken)
                     .queryParam("refreshToken", refreshToken)
                     .build()

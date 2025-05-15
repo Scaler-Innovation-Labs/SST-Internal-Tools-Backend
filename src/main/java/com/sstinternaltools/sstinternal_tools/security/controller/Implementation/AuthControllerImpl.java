@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Map;
 
 @RestController
-//@RequestMapping("/auth")
+@RequestMapping("/auth")
 public class AuthControllerImpl implements AuthController {
 
     private final AuthService authService;
@@ -51,3 +51,4 @@ public class AuthControllerImpl implements AuthController {
         """.formatted(accessToken, refreshToken);
     }
 }
+

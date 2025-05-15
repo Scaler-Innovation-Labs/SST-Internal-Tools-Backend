@@ -42,7 +42,14 @@ public class EventAdminControllerImpl implements EventAdminController {
            return ResponseEntity.ok(eventResponseDto);
     }
 
-    @DeleteMapping("/{id}")
+    @GetMapping("getById")
+    public ResponseEntity<EventResponseDto> getEventById(@PathVariable Long id) {
+        Event event=eventServiceFacade.getEventById(id);
+        EventResponseDto eventResponseDto=eventDtoMapper.toResponseDto(event);
+        return ResponseEntity.ok(eventResponseDto);
+    }
+
+    @DeleteMapping("delete/{id}")
     public ResponseEntity<String> deleteEvent(@PathVariable Long id) {
         eventServiceFacade.deleteEvent(id);
         return ResponseEntity.ok("Event deleted successfully");

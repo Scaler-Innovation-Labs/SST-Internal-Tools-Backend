@@ -3,6 +3,7 @@ package com.sstinternaltools.sstinternal_tools.transport.dto;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
+import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
@@ -14,17 +15,39 @@ public class BusScheduleSummaryDto {
     private String destination;
     @NotNull(message = "Departure time cannot be blank")
     private LocalTime departureTime;
+    @NotNull(message = "Arrival time cannot be blank")
+    private LocalTime arrivalTime;
+    @NotNull(message = "Day cannot be blank")
+    private DayOfWeek dayofWeek;
     @NotNull(message = "Date cannot be blank")
     private LocalDate date;
 
-    public BusScheduleSummaryDto(String source, String destination, LocalTime departureTime, LocalDate date) {
+    public BusScheduleSummaryDto(String source, String destination, LocalTime departureTime,LocalTime arrivalTime,DayOfWeek dayofWeek, LocalDate date) {
         this.source = source;
         this.destination = destination;
         this.departureTime = departureTime;
+        this.arrivalTime = arrivalTime;
+        this.dayofWeek = dayofWeek;
         this.date = date;
     }
 
     public BusScheduleSummaryDto() {}
+
+    public LocalTime getArrivalTime() {
+        return arrivalTime;
+    }
+
+    public void setArrivalTime( LocalTime arrivalTime) {
+        this.arrivalTime = arrivalTime;
+    }
+
+    public DayOfWeek getDayofWeek() {
+        return dayofWeek;
+    }
+
+    public void setDayofWeek( DayOfWeek dayofWeek) {
+        this.dayofWeek = dayofWeek;
+    }
 
     public String getSource() {
         return source;

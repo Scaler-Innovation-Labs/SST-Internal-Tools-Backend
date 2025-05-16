@@ -13,9 +13,18 @@ public class BusScheduleCreateDto {
     private String destination;
     @NotNull(message = "Departure time cannot be blank")
     private LocalTime departureTime;
+    @NotNull(message = "Arrival time cannot be blank")
+    private LocalTime arrivalTime;
     @NotNull(message = "Date cannot be blank")
     private LocalDate date;
 
+    public LocalTime getArrivalTime() {
+        return arrivalTime;
+    }
+
+    public void setArrivalTime(LocalTime arrivalTime) {
+        this.arrivalTime = arrivalTime;
+    }
 
     public String getSource() {
         return source;

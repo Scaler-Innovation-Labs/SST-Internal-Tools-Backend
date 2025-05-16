@@ -114,14 +114,6 @@ The application exposes RESTful endpoints organized by domain:
 - **Maven** - Dependency management
 - **JUnit & Mockito** - Testing framework
 
-## 🧪 Testing
-
-Run the test suite:
-
-```bash
-./mvnw test
-```
-
 ## 📁 Project Configuration
 
 The project uses environment variables for configuration, which provides several benefits:
@@ -146,9 +138,8 @@ Key configuration files:
 We welcome contributions to the SST Internal Tools project. To maintain code quality:
 
 1. **Follow naming conventions** and project structure
-2. **Write unit tests** for new functionality
-3. **Document your code** with appropriate comments
-4. **Submit a pull request** for review
+2. **Document your code** with appropriate comments
+3. **Submit a pull request** for review
 
 ### Code Style
 
@@ -167,11 +158,9 @@ This project is proprietary software for internal use only.
 ## 🚧 Future Roadmap
 
 - **API Documentation**: Implement Swagger/OpenAPI
-- **Authentication Enhancements**: OAuth2 integration
 - **Monitoring**: Add Actuator endpoints
 - **Caching**: Implement Redis for improved performance
 - **CI/CD Pipeline**: Automated testing and deployment
-- **Container Orchestration**: Kubernetes deployment configuration
 
 ---
 

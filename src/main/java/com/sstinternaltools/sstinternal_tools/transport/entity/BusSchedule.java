@@ -2,6 +2,7 @@ package com.sstinternaltools.sstinternal_tools.transport.entity;
 
 import jakarta.persistence.*;
 
+import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
@@ -15,12 +16,16 @@ public class BusSchedule {
     private String source;
     private String destination;
     private LocalTime departureTime;
+    private LocalTime arrivalTime;
+    @Enumerated(EnumType.STRING)
+    private DayOfWeek dayOfWeek;
     private LocalDate date;
 
-    public BusSchedule(String source, String destination, LocalTime departureTime, LocalDate date) {
+    public BusSchedule(String source, String destination, LocalTime departureTime,LocalTime arrivalTime, LocalDate date) {
         this.source = source;
         this.destination = destination;
         this.departureTime = departureTime;
+        this.arrivalTime = arrivalTime;
         this.date = date;
     }
 
@@ -28,6 +33,22 @@ public class BusSchedule {
 
     public Long getId() {
         return id;
+    }
+
+    public LocalTime getArrivalTime() {
+        return arrivalTime;
+    }
+
+    public void setArrivalTime(LocalTime arrivalTime) {
+        this.arrivalTime = arrivalTime;
+    }
+
+    public DayOfWeek getDayOfWeek() {
+        return dayOfWeek;
+    }
+
+    public void setDayOfWeek(DayOfWeek dayOfWeek) {
+        this.dayOfWeek = dayOfWeek;
     }
 
     public String getSource() {

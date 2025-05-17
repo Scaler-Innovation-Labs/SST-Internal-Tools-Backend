@@ -50,22 +50,7 @@ public class CustomOAuth2SuccessHandler implements AuthenticationSuccessHandler 
                 throw new InvalidCredentialsException("Invalid domain: " + domain);
             }
 
-            if (userRepository.findByEmail(email).isEmpty()) {
-
-                authService.register(email);
-
-                List<UserRole> roles = customLogicService.assignRoles(email);
-
-                if (roles.isEmpty()) {
-                    throw new InvalidCredentialsException("You are not allowed to access");
-                }
-
-                User user = userRepository.findByEmail(email).get();
-                user.setUserRoles(roles);
-                userRepository.save(user);
-            }
-
-            String accessToken = jwtService.generateAccessToken(email);
+ Token = jwtService.generateAccessToken(email);
             String refreshToken = jwtService.generateRefreshToken(email);
 
             Map<String, String> tokens = new HashMap<>();

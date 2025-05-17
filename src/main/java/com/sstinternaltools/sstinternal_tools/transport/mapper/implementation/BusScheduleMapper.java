@@ -8,15 +8,19 @@ import com.sstinternaltools.sstinternal_tools.transport.entity.BusSchedule;
 import com.sstinternaltools.sstinternal_tools.transport.mapper.interfaces.DtoMapper;
 import org.springframework.stereotype.Component;
 
+import java.time.DayOfWeek;
+
 @Component
 public class BusScheduleMapper implements DtoMapper <BusSchedule, BusScheduleResponseDto, BusScheduleCreateDto, BusScheduleUpdateDto, BusScheduleSummaryDto> {
     @Override
-    public BusSchedule fromCreateDto(BusScheduleCreateDto createDto) {
+    public BusSchedule fromCreateDto(BusScheduleCreateDto createDto, DayOfWeek dayOfWeek) {
         BusSchedule busSchedule = new BusSchedule();
         busSchedule.setSource(createDto.getSource());
         busSchedule.setDestination(createDto.getDestination());
         busSchedule.setDepartureTime(createDto.getDepartureTime());
         busSchedule.setDate(createDto.getDate());
+        busSchedule.setArrivalTime(createDto.getArrivalTime());
+        busSchedule.setDayOfWeek(dayOfWeek);
         return busSchedule;
     }
 
@@ -30,9 +34,13 @@ public class BusScheduleMapper implements DtoMapper <BusSchedule, BusScheduleRes
         }
         if(updateDto.getDate() != null) {
             busSchedule.setDate(updateDto.getDate());
+            busSchedule.setDayOfWeek();
         }
         if(updateDto.getSource() != null) {
             busSchedule.setSource(updateDto.getSource());
+        }
+        if(updateDto.getArrivalTime() != null) {
+            busSchedule.setArrivalTime(updateDto.getArrivalTime());
         }
         return busSchedule;
     }

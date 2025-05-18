@@ -2,7 +2,6 @@ package com.sstinternaltools.sstinternal_tools.security.service.interfaces;
 
 import com.sstinternaltools.sstinternal_tools.user.entity.User;
 import jakarta.servlet.http.Cookie;
-import org.springframework.stereotype.Service;
 
 public interface JwtService {
     Cookie generateAccessCookie(String email);

@@ -9,9 +9,9 @@ import org.springframework.http.ResponseEntity;
 import java.util.List;
 
 public interface VendorAdminController {
-    public ResponseEntity<VendorSummaryDto> getVendorById(Long id);
-    public ResponseEntity<List<VendorSummaryDto>> getAllVendors();
-    public ResponseEntity<VendorResponseDto> createVendor(VendorCreateDto vendorCreateDto);
-    public ResponseEntity<VendorResponseDto> updateVendor(VendorUpdateDto vendorUpdateDto, Long id);
-    public ResponseEntity<String> deleteVendor(Long id);
+    ResponseEntity<VendorSummaryDto> getVendorById(Long id);
+    ResponseEntity<List<VendorSummaryDto>> getAllVendors();
+    ResponseEntity<VendorResponseDto> createVendor(VendorCreateDto vendorCreateDto);
+    ResponseEntity<VendorResponseDto> updateVendor(VendorUpdateDto vendorUpdateDto, Long id);
+    ResponseEntity<String> deleteVendor(Long id);
 }

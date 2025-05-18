@@ -5,8 +5,8 @@ import jakarta.servlet.http.Cookie;
 import org.springframework.stereotype.Service;
 
 public interface JwtService {
-    String generateAccessToken(String email);
-    String generateRefreshToken(String email);
+    Cookie generateAccessCookie(String email);
+    Cookie generateRefreshCookie(String email);
     boolean isRefreshTokenValid(String token);
     void revokeRefreshToken(String token);
     void revokeAllTokensForUser(String email);

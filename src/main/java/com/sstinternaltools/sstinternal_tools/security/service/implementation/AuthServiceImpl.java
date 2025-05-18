@@ -5,6 +5,9 @@ import com.sstinternaltools.sstinternal_tools.security.service.interfaces.AuthSe
 import com.sstinternaltools.sstinternal_tools.security.service.interfaces.JwtService;
 import com.sstinternaltools.sstinternal_tools.user.entity.User;
 import com.sstinternaltools.sstinternal_tools.user.repository.UserRepository;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletResponse;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.Map;
@@ -21,7 +24,7 @@ public class AuthServiceImpl implements AuthService {
     }
 
     @Override
-    public ResponseEntity<Map<String, String>> rotateRefreshToken(String refreshToken,  HttpServletResponse response) {
+    public void rotateRefreshToken(String refreshToken, HttpServletResponse response) {
 
         if (refreshToken == null || !refreshToken.startsWith("Bearer ")) {
             throw new JwtAuthenticationException("Invalid refresh token");
@@ -36,11 +39,11 @@ public class AuthServiceImpl implements AuthService {
         String email = jwtService.extractEmail(refreshToken);
         jwtService.revokeRefreshToken(refreshToken);
 
-        String newAccessToken = jwtService.generateAccessToken(email);
-        Cookie newRefreshToken = jwtService.generateRefreshToken(email);
+        Cookie newAccessToken = jwtService.generateAccessCookie(email);
+        Cookie newRefreshToken = jwtService.generateRefreshCookie(email);
 
         response.addCookie(newRefreshToken);
-        return ResponseEntity.ok(Map.of("accessToken", newAccessToken));
+        response.addCookie(newAccessToken);
 
     }
 

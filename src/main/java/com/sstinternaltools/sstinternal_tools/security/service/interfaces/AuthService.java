@@ -1,9 +1,9 @@
 package com.sstinternaltools.sstinternal_tools.security.service.interfaces;
 
-import java.util.Map;
+import jakarta.servlet.http.HttpServletResponse;
 
 public interface AuthService {
-    public ResponseEntity<Map<String, String>> rotateRefreshToken(String refreshToken, HttpServletResponse response);
+    public void rotateRefreshToken(String refreshToken, HttpServletResponse response);
     public void logout(String refreshToken);
     void register(String email);
 }

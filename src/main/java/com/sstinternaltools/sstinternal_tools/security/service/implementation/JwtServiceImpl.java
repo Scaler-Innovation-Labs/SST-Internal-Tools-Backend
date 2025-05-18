@@ -11,6 +11,7 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
+import jakarta.servlet.http.Cookie;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import javax.crypto.SecretKey;
@@ -46,7 +47,7 @@ public class JwtServiceImpl implements JwtService {
 
 
     //method to generate access token
-    public String generateAccessToken(String email) {
+    public Cookie generateAccessCookie(String email) {
 
         User user = userRepository.findByEmailWithRoles(email)
                 .orElseThrow(() -> new RuntimeException("User with email " + email + " not found."));
@@ -60,7 +61,7 @@ public class JwtServiceImpl implements JwtService {
         Map<String, Object> claims = new HashMap<>();
         claims.put("role", roleNames);
         claims.put("tokenType", TokenType.ACCESS.name());
-        return Jwts.builder()
+        String token = Jwts.builder()
                 .claims()
                 .add(claims)
                 .subject(email)
@@ -69,14 +70,23 @@ public class JwtServiceImpl implements JwtService {
                 .and()
                 .signWith(getKey())
                 .compact();
+
+        //Added the access token in httpOnly cookie
+        Cookie accessCookie = new Cookie("accessToken", token);
+        accessCookie.setHttpOnly(true);
+        accessCookie.setSecure(true);
+        accessCookie.setPath("/");
+        accessCookie.setMaxAge((int)accessTokenExpiration/1000);
+
+        return accessCookie;
     }
 
     //method to generate refresh token
-    public Cookie generateRefreshToken(String email) {
+    public Cookie generateRefreshCookie(String email) {
         User user=userRepository.findByEmail(email)
                 .orElseThrow(()->new RuntimeException("User with email " + email + " not found."));
 
-        String token= Jwts.builder()
+        String token = Jwts.builder()
                 .claims()
                 .subject(email)
                 .issuedAt(new Date(System.currentTimeMillis()))

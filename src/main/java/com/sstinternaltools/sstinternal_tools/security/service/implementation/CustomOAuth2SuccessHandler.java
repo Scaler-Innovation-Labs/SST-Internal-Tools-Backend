@@ -9,18 +9,16 @@ import com.sstinternaltools.sstinternal_tools.user.entity.User;
 import com.sstinternaltools.sstinternal_tools.user.entity.UserRole;
 import com.sstinternaltools.sstinternal_tools.user.repository.UserRepository;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
-import org.springframework.web.util.UriComponentsBuilder;
 
 import java.io.IOException;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @Component
 public class CustomOAuth2SuccessHandler implements AuthenticationSuccessHandler {
@@ -66,16 +64,17 @@ public class CustomOAuth2SuccessHandler implements AuthenticationSuccessHandler 
                 userRepository.save(user);
             }
 
-            String accessToken = jwtService.generateAccessToken(email);
-            Cookie refreshToken = jwtService.generateRefreshToken(email);
-            response.addCookie(refreshToken); //send cookie in response to frontend
+            Cookie accessCookie = jwtService.generateAccessCookie(email);
+            Cookie refreshCookie = jwtService.generateRefreshCookie(email);
+            response.addCookie(accessCookie); // send access cookie in response to frontend
+            response.addCookie(refreshCookie); // send refresh cookie in response to frontend
 
-            Map<String, String> tokens = new HashMap<>();
-            tokens.put("accessToken", accessToken); //access token send in the json format
-
-            response.setContentType("application/json");//Tells browser that the server response will be in JSON format
-            response.setCharacterEncoding("UTF-8");//: Specifies that the characters in the response body will use UTF-8 encoding(to avoid character corruption)
-            response.getWriter().write(objectMapper.writeValueAsString(tokens));// Converts the tokens Map<String, String> into a JSON string using Jackson's ObjectMapper
+//            Map<String, String> tokens = new HashMap<>();
+//            tokens.put("accessToken", accessToken); // access token send in the json format
+//
+//            response.setContentType("application/json");// Tells browser that the server response will be in JSON format
+//            response.setCharacterEncoding("UTF-8");//: Specifies that the characters in the response body will use UTF-8 encoding(to avoid character corruption)
+//            response.getWriter().write(objectMapper.writeValueAsString(tokens));// Converts the tokens Map<String, String> into a JSON string using Jackson's ObjectMapper
 //            response.sendRedirect("/");
 
         } catch(Exception e){

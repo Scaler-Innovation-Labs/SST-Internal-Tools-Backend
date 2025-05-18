@@ -1,17 +1,21 @@
 package com.sstinternaltools.sstinternal_tools.Issues.dto.ticket;
 
+import com.sstinternaltools.sstinternal_tools.Issues.entity.TicketPriority;
+import com.sstinternaltools.sstinternal_tools.Issues.entity.TicketStatus;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
-public class TicketResponceDto {
+public class TicketResponseDto {
+    @NotBlank (message = "Ticket ID cannot be blank")
+    private long id;
     @NotBlank (message = "Title cannot be blank")
     private String title;
     @NotBlank (message = "Description cannot be blank")
     private String description;
     @NotBlank (message = "Priority cannot be blank")
-    private String priority;
+    private TicketPriority priority;
     @NotBlank (message = "Status cannot be blank")
-    private String status;
+    private TicketStatus status;
     @NotBlank (message = "Campus cannot be blank")
     private String campus;
     @NotBlank (message = "Upvote cannot be blank")
@@ -26,6 +30,27 @@ public class TicketResponceDto {
     @NotBlank (message = "Updated at cannot be blank")
     private String updatedAt;
 
+
+    public TicketResponseDto(long id, String title, String description, TicketPriority priority, TicketStatus status, String campus, long upvote, String imageUrl, String createdBy, String createdAt, String updatedAt) {
+        this.id = id;
+        this.title = title;
+        this.description = description;
+        this.priority = priority;
+        this.status = status;
+        this.campus = campus;
+        this.upvote = upvote;
+        this.imageUrl = imageUrl;
+        this.createdBy = createdBy;
+
+    }
+    public TicketResponseDto() {
+    }
+    public long getId() {
+        return id;
+    }
+    public void setId(long id) {
+        this.id = id;
+    }
 
     public String getTitle() {
         return title;
@@ -43,19 +68,19 @@ public class TicketResponceDto {
         this.description = description;
     }
 
-    public String getPriority() {
+    public TicketPriority getPriority() {
         return priority;
     }
 
-    public void setPriority(String priority) {
+    public void setPriority(TicketPriority priority) {
         this.priority = priority;
     }
 
-    public String getStatus() {
+    public TicketStatus getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(TicketStatus status) {
         this.status = status;
     }
 

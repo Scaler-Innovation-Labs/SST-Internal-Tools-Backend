@@ -23,6 +23,7 @@ public class Ticket {
     private String description;
     private TicketPriority priority;
     private TicketStatus status;
+
     private CampusType campus;
 
     @ElementCollection(fetch = FetchType.LAZY)

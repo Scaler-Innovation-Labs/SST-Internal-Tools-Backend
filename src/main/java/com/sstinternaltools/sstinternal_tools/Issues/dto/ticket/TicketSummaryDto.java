@@ -1,15 +1,19 @@
 package com.sstinternaltools.sstinternal_tools.Issues.dto.ticket;
+import com.sstinternaltools.sstinternal_tools.Issues.entity.TicketPriority;
+import com.sstinternaltools.sstinternal_tools.Issues.entity.TicketStatus;
 import jakarta.validation.constraints.NotBlank;
 
 public class TicketSummaryDto {
+    private long id;
+    private TicketStatus ticketStatus;
     @NotBlank (message = "Title cannot be blank")
     private String title;
     @NotBlank (message = "Description cannot be blank")
     private String description;
     @NotBlank (message = "Priority cannot be blank")
-    private String priority;
+    private TicketPriority priority;
     @NotBlank (message = "Status cannot be blank")
-    private String status;
+    private TicketStatus status;
     @NotBlank (message = "Campus cannot be blank")
     private String campus;
     private long upvote;
@@ -30,19 +34,19 @@ public class TicketSummaryDto {
         this.description = description;
     }
 
-    public String getPriority() {
+    public TicketPriority getPriority() {
         return priority;
     }
 
-    public void setPriority(String priority) {
+    public void setPriority(TicketPriority priority) {
         this.priority = priority;
     }
 
-    public String getStatus() {
+    public TicketStatus getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(TicketStatus status) {
         this.status = status;
     }
 
@@ -62,4 +66,19 @@ public class TicketSummaryDto {
         this.upvote = upvote;
     }
 
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public TicketStatus getTicketStatus() {
+        return ticketStatus;
+    }
+
+    public void setTicketStatus(TicketStatus ticketStatus) {
+        this.ticketStatus = ticketStatus;
+    }
 }

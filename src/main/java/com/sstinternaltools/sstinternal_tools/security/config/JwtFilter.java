@@ -39,7 +39,7 @@ public class JwtFilter extends OncePerRequestFilter {
         String path = request.getRequestURI();
 
         // Skip filtering for auth endpoints
-        if (path.startsWith("/auth")) {
+        if (path.startsWith("/auth") || path.startsWith("/oauth2")) {
             filterChain.doFilter(request, response); // Skip JWT check
             return;
         }
@@ -75,7 +75,9 @@ public class JwtFilter extends OncePerRequestFilter {
                     .orElseThrow(() -> new UserNotFoundException("User not found with email: " + userEmail));
 
             if (!jwtService.validateAccessToken(token, user)) {
-                throw new JwtAuthenticationException("Invalid or expired access token.");
+                // Send 401 Unauthorized for invalid token, no redirect
+                response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Invalid or expired access token.");
+                return; // Stop filter chain
             }
 
             UserDetails userDetails = myUserDetailsService.loadUserByEmail(userEmail);

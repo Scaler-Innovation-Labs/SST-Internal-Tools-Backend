@@ -1,7 +1,6 @@
 package com.sstinternaltools.sstinternal_tools.security.config;
 
 import com.sstinternaltools.sstinternal_tools.security.service.implementation.CustomOAuth2SuccessHandler;
-import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -31,6 +30,9 @@ public class SecurityConfiguration {
                         .requestMatchers("/","/auth/**", "/oauth2/**").permitAll()
                         .anyRequest().authenticated()
                 )
+                .exceptionHandling(exceptionHandling -> exceptionHandling
+                        .authenticationEntryPoint(restAuthenticationEntryPoint())  // Set custom entry point here
+                )
                 .oauth2Login(oauth2 -> oauth2
                         .loginPage("/oauth2/authorization/google")
                         .successHandler(customOAuth2SuccessHandler)
@@ -38,5 +40,10 @@ public class SecurityConfiguration {
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .build();
+    }
+
+    @Bean
+    public RestAuthenticationEntryPoint restAuthenticationEntryPoint() {
+        return new RestAuthenticationEntryPoint();
     }
 }

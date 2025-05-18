@@ -44,13 +44,6 @@ public class JwtFilter extends OncePerRequestFilter {
             return;
         }
 
-//        final String authHeader = request.getHeader("Authorization");
-//
-//        if (authHeader == null || !authHeader.startsWith("Bearer ")) {
-//            filterChain.doFilter(request, response);
-//            return;
-//        }
-
         String token = null;
         if (request.getCookies() != null) {
             for (Cookie cookie : request.getCookies()) {
@@ -61,7 +54,6 @@ public class JwtFilter extends OncePerRequestFilter {
             }
         }
 
-//        final String token = authHeader.substring(7);
         final String userEmail;
 
         try {

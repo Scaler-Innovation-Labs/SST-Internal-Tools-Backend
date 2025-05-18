@@ -6,6 +6,7 @@ import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.List;
 
 public class UserResponseDto {
@@ -17,11 +18,11 @@ public class UserResponseDto {
     @NotBlank(message = "Email cannot be blank")
     private String email;
     @NotNull(message = "Time of creation cannot be null")
-    private Timestamp createdAt;
+    private LocalDateTime createdAt;
     @NotNull(message = "Time of update cannot be null")
-    private Timestamp updatedAt;
+    private LocalDateTime updatedAt;
     @NotEmpty(message = "Roles cannot be null")
-    private List<UserRole> roles;
+    private List<UserRole> userRoles;
 
     public Long getId() {
         return id;
@@ -47,27 +48,27 @@ public class UserResponseDto {
         this.email = email;
     }
 
-    public Timestamp getCreatedAt() {
+    public LocalDateTime getCreatedAt() {
         return createdAt;
     }
 
-    public void setCreatedAt(Timestamp createdAt) {
+    public void setCreatedAt(LocalDateTime createdAt) {
         this.createdAt = createdAt;
     }
 
-    public Timestamp getUpdatedAt() {
+    public LocalDateTime getUpdatedAt() {
         return updatedAt;
     }
 
-    public void setUpdatedAt(Timestamp updatedAt) {
+    public void setUpdatedAt(LocalDateTime updatedAt) {
         this.updatedAt = updatedAt;
     }
 
-    public List<UserRole> getRoles() {
-        return roles;
+    public List<UserRole> getUserRoles() {
+        return userRoles;
     }
 
-    public void setRoles(List<UserRole> roles) {
-        this.roles = roles;
+    public void setUserRoles(List<UserRole> userRoles) {
+        this.userRoles = userRoles;
     }
 }

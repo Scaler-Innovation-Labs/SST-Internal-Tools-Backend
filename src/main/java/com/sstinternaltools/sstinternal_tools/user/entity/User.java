@@ -50,6 +50,14 @@ public class User
         this.email = email;
     }
 
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public LocalDateTime getUpdatedAt() {
+        return updatedAt;
+    }
+
     public User(String username, String email, List<UserRole> userRoles, LocalDateTime createdAt, LocalDateTime updatedAt) {
         this.username = username;
         this.email = email;

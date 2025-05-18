@@ -13,7 +13,7 @@ public class UserSummaryDto {
     @NotBlank(message = "Email cannot be blank")
     private String email;
     @NotEmpty(message = "Roles cannot be null")
-    private List<UserRole> roles;
+    private List<UserRole> userRoles;
 
     public String getUsername() {
         return username;
@@ -31,11 +31,11 @@ public class UserSummaryDto {
         this.email = email;
     }
 
-    public List<UserRole> getRoles() {
-        return roles;
+    public List<UserRole> getUserRoles() {
+        return userRoles;
     }
 
-    public void setRoles(List<UserRole> roles) {
-        this.roles = roles;
+    public void setUserRoles(List<UserRole> userRoles) {
+        this.userRoles = userRoles;
     }
 }

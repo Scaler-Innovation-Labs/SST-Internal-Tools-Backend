@@ -21,7 +21,7 @@ public class AuthServiceImpl implements AuthService {
     }
 
     @Override
-    public Map<String, String> rotateRefreshToken(String refreshToken) {
+    public ResponseEntity<Map<String, String>> rotateRefreshToken(String refreshToken,  HttpServletResponse response) {
 
         if (refreshToken == null || !refreshToken.startsWith("Bearer ")) {
             throw new JwtAuthenticationException("Invalid refresh token");
@@ -37,9 +37,11 @@ public class AuthServiceImpl implements AuthService {
         jwtService.revokeRefreshToken(refreshToken);
 
         String newAccessToken = jwtService.generateAccessToken(email);
-        String newRefreshToken = jwtService.generateRefreshToken(email);
+        Cookie newRefreshToken = jwtService.generateRefreshToken(email);
 
-        return Map.of("accessToken", newAccessToken, "refreshToken", newRefreshToken);
+        response.addCookie(newRefreshToken);
+        return ResponseEntity.ok(Map.of("accessToken", newAccessToken));
+
     }
 
     @Override

@@ -35,14 +35,14 @@ public class UserControllerImpl implements UserController {
     }
 
     @Override
-    @GetMapping("/fetchBy/{id}")
+    @GetMapping("/fetchById/{id}")
     public ResponseEntity<UserSummaryDto> getUserById(@Valid @PathVariable Long id) {
         UserSummaryDto userSummaryDto = userService.getUserById(id);
         return ResponseEntity.ok(userSummaryDto);
     }
 
     @Override
-    @GetMapping("/fetchBy/{email}")
+    @GetMapping("/fetchByEmail/{email}")
     public ResponseEntity<UserSummaryDto> getUserByEmail(@Valid @PathVariable String email) {
         UserSummaryDto userSummaryDto = userService.getUserByEmail(email);
         return ResponseEntity.ok(userSummaryDto);

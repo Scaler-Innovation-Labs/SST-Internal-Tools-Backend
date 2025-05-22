@@ -1,6 +1,6 @@
 package com.sstinternaltools.sstinternal_tools.user.dto;
 
-import com.sstinternaltools.sstinternal_tools.user.entity.UserRole;
+import com.sstinternaltools.sstinternal_tools.user.entity.Role;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
@@ -21,7 +21,7 @@ public class UserResponseDto {
     @NotNull(message = "Time of update cannot be null")
     private LocalDateTime updatedAt;
     @NotEmpty(message = "Roles cannot be null")
-    private List<UserRole> userRoles;
+    private List<Role> userRoles;
 
     public Long getId() {
         return id;
@@ -63,11 +63,11 @@ public class UserResponseDto {
         this.updatedAt = updatedAt;
     }
 
-    public List<UserRole> getUserRoles() {
+    public List<Role> getUserRoles() {
         return userRoles;
     }
 
-    public void setUserRoles(List<UserRole> userRoles) {
+    public void setUserRoles(List<Role> userRoles) {
         this.userRoles = userRoles;
     }
 }

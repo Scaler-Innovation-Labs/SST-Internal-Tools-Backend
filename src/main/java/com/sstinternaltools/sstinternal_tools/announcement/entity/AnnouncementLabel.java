@@ -1,4 +1,4 @@
-package com.sstinternaltools.sstinternal_tools.announcement.model;
+package com.sstinternaltools.sstinternal_tools.announcement.entity;
 public enum AnnouncementLabel {
     MANAGEMENT,
     STUDENT_COUNCIL,

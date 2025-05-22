@@ -20,16 +20,6 @@ public class VendorPlanResponseDto {
     @NotEmpty(message = "Plan meal type set cannot be empty")
     private Set<MealType> mealTypes;
 
-    public VendorPlanResponseDto() {}
-
-    public VendorPlanResponseDto( Long vendorPlanId,String planName, Set<MealType> mealTypes, Long vendorId, Double fee) {
-        this.vendorPlanId = vendorPlanId;
-        this.planName = planName;
-        this.mealTypes = mealTypes;
-        this.vendorId = vendorId;
-        this.fee = fee;
-    }
-
     public Long getVendorPlanId() {
         return vendorPlanId;
     }

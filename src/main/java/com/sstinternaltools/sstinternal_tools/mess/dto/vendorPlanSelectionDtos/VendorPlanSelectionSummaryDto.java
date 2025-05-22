@@ -7,8 +7,6 @@ import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.YearMonth;
 import java.util.Set;
 
 public class VendorPlanSelectionSummaryDto {
@@ -25,16 +23,6 @@ public class VendorPlanSelectionSummaryDto {
     private Set<MealType> mealTypes;
     @NotNull(message = "Fee cannot be blank")
     private double fee;
-
-    public VendorPlanSelectionSummaryDto(){}
-
-    public VendorPlanSelectionSummaryDto(String vendorPlanName, String vendorName, LocalDate selectedMonth, Set<MealType> mealTypes, double fee) {
-        this.vendorPlanName = vendorPlanName;
-        this.vendorName = vendorName;
-        this.selectedMonth = selectedMonth;
-        this.mealTypes = mealTypes;
-        this.fee = fee;
-    }
 
     public String getVendorPlanName() {
         return vendorPlanName;

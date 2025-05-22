@@ -3,9 +3,14 @@ package com.sstinternaltools.sstinternal_tools.user.mapper.Implementation;
 import com.sstinternaltools.sstinternal_tools.user.dto.UserResponseDto;
 import com.sstinternaltools.sstinternal_tools.user.dto.UserSummaryDto;
 import com.sstinternaltools.sstinternal_tools.user.dto.UserUpdateDto;
+import com.sstinternaltools.sstinternal_tools.user.entity.Role;
 import com.sstinternaltools.sstinternal_tools.user.entity.User;
+import com.sstinternaltools.sstinternal_tools.user.entity.UserRole;
 import com.sstinternaltools.sstinternal_tools.user.mapper.Interface.UserDtoMapper;
 import org.springframework.stereotype.Component;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Component
 public class UserMapper implements UserDtoMapper<User, UserUpdateDto, UserResponseDto, UserSummaryDto> {
@@ -25,7 +30,12 @@ public class UserMapper implements UserDtoMapper<User, UserUpdateDto, UserRespon
         userResponseDto.setEmail(user.getEmail());
         userResponseDto.setCreatedAt(user.getCreatedAt());
         userResponseDto.setUpdatedAt(user.getUpdatedAt());
-        userResponseDto.setUserRoles(user.getUserRoles());
+        List<UserRole> userRoles = user.getUserRoles();
+        List<Role> userRolesNames = new ArrayList<>();
+        for (UserRole userRole : userRoles) {
+            userRolesNames.add(userRole.getRole());
+        }
+        userResponseDto.setUserRoles(userRolesNames);
         return userResponseDto;
     }
 
@@ -34,7 +44,12 @@ public class UserMapper implements UserDtoMapper<User, UserUpdateDto, UserRespon
         UserSummaryDto userSummaryDto = new UserSummaryDto();
         userSummaryDto.setUsername(user.getUsername());
         userSummaryDto.setEmail(user.getEmail());
-        userSummaryDto.setUserRoles(user.getUserRoles());
+        List<UserRole> userRoles = user.getUserRoles();
+        List<Role> userRolesNames = new ArrayList<>();
+        for (UserRole userRole : userRoles) {
+            userRolesNames.add(userRole.getRole());
+        }
+        userSummaryDto.setUserRoles(userRolesNames);
         return userSummaryDto;
     }
 }

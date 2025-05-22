@@ -1,6 +1,6 @@
 package com.sstinternaltools.sstinternal_tools.user.dto;
 
-import com.sstinternaltools.sstinternal_tools.user.entity.UserRole;
+import com.sstinternaltools.sstinternal_tools.user.entity.Role;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 
@@ -13,7 +13,7 @@ public class UserSummaryDto {
     @NotBlank(message = "Email cannot be blank")
     private String email;
     @NotEmpty(message = "Roles cannot be null")
-    private List<UserRole> userRoles;
+    private List<Role> userRoles;
 
     public String getUsername() {
         return username;
@@ -31,11 +31,11 @@ public class UserSummaryDto {
         this.email = email;
     }
 
-    public List<UserRole> getUserRoles() {
+    public List<Role> getUserRoles() {
         return userRoles;
     }
 
-    public void setUserRoles(List<UserRole> userRoles) {
+    public void setUserRoles(List<Role> userRoles) {
         this.userRoles = userRoles;
     }
 }

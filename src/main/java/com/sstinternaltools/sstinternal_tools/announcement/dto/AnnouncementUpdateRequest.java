@@ -1,6 +1,6 @@
 package com.sstinternaltools.sstinternal_tools.announcement.dto;
 
-import com.sstinternaltools.sstinternal_tools.announcement.model.AnnouncementLabel;
+import com.sstinternaltools.sstinternal_tools.announcement.entity.AnnouncementLabel;
 
 import java.util.Set;
 

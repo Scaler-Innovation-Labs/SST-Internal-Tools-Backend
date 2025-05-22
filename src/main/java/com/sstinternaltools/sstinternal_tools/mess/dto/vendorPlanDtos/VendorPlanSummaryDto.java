@@ -19,16 +19,6 @@ public class VendorPlanSummaryDto {
     @NotEmpty(message = "Plan meal type set cannot be empty")
     private Set<MealType> mealTypes;
 
-    public VendorPlanSummaryDto() {}
-
-    public VendorPlanSummaryDto(String planName,String vendorName, Set<MealType> mealTypes, Double fee) {
-        this.planName = planName;
-        this.vendorName = vendorName;
-        this.mealTypes = mealTypes;
-        this.fee = fee;
-    }
-
-
     public String getPlanName() {
         return planName;
     }

@@ -1,5 +1,6 @@
 package com.sstinternaltools.sstinternal_tools.security.service.implementation;
 
+import ch.qos.logback.core.subst.Token;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sstinternaltools.sstinternal_tools.security.exception.InvalidCredentialsException;
 import com.sstinternaltools.sstinternal_tools.security.service.interfaces.AuthService;
@@ -50,7 +51,7 @@ public class CustomOAuth2SuccessHandler implements AuthenticationSuccessHandler 
                 throw new InvalidCredentialsException("Invalid domain: " + domain);
             }
 
- Token = jwtService.generateAccessToken(email);
+            String accessToken= jwtService.generateAccessToken(email);
             String refreshToken = jwtService.generateRefreshToken(email);
 
             Map<String, String> tokens = new HashMap<>();

@@ -34,7 +34,8 @@ public class BusScheduleMapper implements DtoMapper <BusSchedule, BusScheduleRes
         }
         if(updateDto.getDate() != null) {
             busSchedule.setDate(updateDto.getDate());
-            busSchedule.setDayOfWeek();
+            DayOfWeek day =busSchedule.getDayOfWeek();
+            busSchedule.setDayOfWeek(day);
         }
         if(updateDto.getSource() != null) {
             busSchedule.setSource(updateDto.getSource());

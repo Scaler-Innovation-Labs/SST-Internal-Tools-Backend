@@ -13,6 +13,7 @@ import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.ResourceAccessException;
 
+import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
@@ -31,7 +32,8 @@ public class BusScheduleServiceImpl implements BusScheduleService {
     @Override
     @Transactional
     public BusScheduleResponseDto createBusSchedule(BusScheduleCreateDto createDto) {
-        BusSchedule busSchedule = busScheduleMapper.fromCreateDto(createDto);
+        DayOfWeek dayOfWeek = createDto.getDate().getDayOfWeek();
+        BusSchedule busSchedule = busScheduleMapper.fromCreateDto(createDto,dayOfWeek);
         busScheduleRepository.save(busSchedule);
         return busScheduleMapper.toResponseDto(busSchedule);
     }

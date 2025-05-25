@@ -12,7 +12,6 @@ public class BusSchedule {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "bus_schedule_id",nullable = false)
     private Long id;
-
     private String source;
     private String destination;
     private LocalTime departureTime;

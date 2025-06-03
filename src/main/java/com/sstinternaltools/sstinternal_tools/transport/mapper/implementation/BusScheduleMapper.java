@@ -51,6 +51,8 @@ public class BusScheduleMapper implements DtoMapper <BusSchedule, BusScheduleRes
         BusScheduleResponseDto responseDto = new BusScheduleResponseDto();
         responseDto.setDepartureTime(busSchedule.getDepartureTime());
         responseDto.setDestination(busSchedule.getDestination());
+        responseDto.setArrivalTime(busSchedule.getArrivalTime());
+        responseDto.setDayofWeek(busSchedule.getDayOfWeek());
         responseDto.setSource(busSchedule.getSource());
         responseDto.setDate(busSchedule.getDate());
         responseDto.setId(busSchedule.getId());
@@ -63,6 +65,8 @@ public class BusScheduleMapper implements DtoMapper <BusSchedule, BusScheduleRes
         summaryDto.setDepartureTime(busSchedule.getDepartureTime());
         summaryDto.setDestination(busSchedule.getDestination());
         summaryDto.setSource(busSchedule.getSource());
+        summaryDto.setArrivalTime(busSchedule.getArrivalTime());
+        summaryDto.setDayofWeek(busSchedule.getDayOfWeek());
         summaryDto.setDate(busSchedule.getDate());
         return summaryDto;
     }

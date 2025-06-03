@@ -10,8 +10,16 @@ public class BusScheduleUpdateDto {
     private String source;
     private String destination;
     private LocalTime departureTime;
+    private LocalTime arrivalTime;
     private LocalDate date;
 
+    public LocalTime getArrivalTime() {
+        return arrivalTime;
+    }
+
+    public void setArrivalTime(LocalTime arrivalTime) {
+        this.arrivalTime = arrivalTime;
+    }
 
     public String getSource() {
         return source;

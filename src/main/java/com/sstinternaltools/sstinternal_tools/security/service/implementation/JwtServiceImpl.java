@@ -30,7 +30,7 @@ public class JwtServiceImpl implements JwtService {
     private final JwtTokenRepository jwtTokenRepository;
     private final UserRepository userRepository;
 
-    public JwtServiceImpl(JwtTokenRepository jwtTokenRepository, UserRepository userRepository, @Value("${JWT_SECRET_KEY}") String jwtSecretKey, @Value("${JWT_ACCESS_EXPIRATION_TIME}") long accessTokenExpiration, @Value("${JWT_REFRESH_EXPIRATION_TIME}") long refreshTokenExpiration) {
+    public JwtServiceImpl(JwtTokenRepository jwtTokenRepository, UserRepository userRepository, @Value("1234") String jwtSecretKey, @Value("1234") long accessTokenExpiration, @Value("1234") long refreshTokenExpiration) {
         this.jwtTokenRepository = jwtTokenRepository;
         this.userRepository = userRepository;
         this.jwtSecretKey=jwtSecretKey;

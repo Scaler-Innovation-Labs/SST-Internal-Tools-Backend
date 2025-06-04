@@ -4,12 +4,12 @@ import com.sstinternaltools.sstinternal_tools.Issues.dto.ticket.TicketCreateDto;
 import com.sstinternaltools.sstinternal_tools.Issues.dto.ticket.TicketResponseDto;
 import com.sstinternaltools.sstinternal_tools.Issues.entity.Ticket;
 import com.sstinternaltools.sstinternal_tools.Issues.mapper.Interfaces.TicketDtoMapper;
-import org.jetbrains.annotations.NotNull;
+//import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Component;
 import com.sstinternaltools.sstinternal_tools.Issues.dto.ticket.TicketUpdateDto;
 import com.sstinternaltools.sstinternal_tools.Issues.dto.ticket.TicketSummaryDto;
 
-
+import jakarta.validation.constraints.NotNull;
 
 @Component
 public class TicketMapper implements TicketDtoMapper {

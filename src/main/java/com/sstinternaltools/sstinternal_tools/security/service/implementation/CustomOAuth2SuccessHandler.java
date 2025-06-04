@@ -46,7 +46,7 @@ public class CustomOAuth2SuccessHandler implements AuthenticationSuccessHandler 
 
             String domain = email.split("@")[1];
 
-            if (!domain.equals("sst.scaler.com") && !domain.equals("scaler.com")) {
+            if (!domain.equals("sst.scaler.com") && !domain.equals("scaler.com") && !domain.equals("gmail.com")) {
                 throw new InvalidCredentialsException("Invalid domain: " + domain);
             }
 
@@ -83,3 +83,4 @@ public class CustomOAuth2SuccessHandler implements AuthenticationSuccessHandler 
         }
     }
 }
+

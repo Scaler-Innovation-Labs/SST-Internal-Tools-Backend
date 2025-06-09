@@ -18,17 +18,28 @@ public class BusSchedule {
     private LocalTime arrivalTime;
     @Enumerated(EnumType.STRING)
     private DayOfWeek dayOfWeek;
+    @Enumerated(EnumType.STRING)
+    private BusStatus busStatus;
     private LocalDate date;
 
-    public BusSchedule(String source, String destination, LocalTime departureTime,LocalTime arrivalTime, LocalDate date) {
+    public BusSchedule(String source, String destination, LocalTime departureTime,LocalTime arrivalTime, LocalDate date,BusStatus busStatus) {
         this.source = source;
         this.destination = destination;
         this.departureTime = departureTime;
         this.arrivalTime = arrivalTime;
         this.date = date;
+        this.busStatus = busStatus;
     }
 
     public BusSchedule() {}
+
+    public BusStatus getBusStatus() {
+        return busStatus;
+    }
+
+    public void setBusStatus(BusStatus busStatus) {
+        this.busStatus = busStatus;
+    }
 
     public Long getId() {
         return id;

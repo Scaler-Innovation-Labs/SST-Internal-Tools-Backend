@@ -4,7 +4,6 @@ import com.sstinternaltools.sstinternal_tools.transport.dto.BusScheduleCreateDto
 import com.sstinternaltools.sstinternal_tools.transport.dto.BusScheduleResponseDto;
 import com.sstinternaltools.sstinternal_tools.transport.dto.BusScheduleUpdateDto;
 import com.sstinternaltools.sstinternal_tools.transport.facade.interfaces.BusScheduleFacade;
-import com.sstinternaltools.sstinternal_tools.transport.service.interfaces.BusScheduleService;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -14,11 +13,11 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/transport/schedule")
-public class BusScheduleController {
+public class BusScheduleAdminController {
 
     private BusScheduleFacade busScheduleFacade;
 
-    public BusScheduleController(BusScheduleFacade busScheduleFacade) {
+    public BusScheduleAdminController(BusScheduleFacade busScheduleFacade) {
         this.busScheduleFacade = busScheduleFacade;
     }
 

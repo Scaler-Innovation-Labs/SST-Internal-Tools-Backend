@@ -1,5 +1,6 @@
 package com.sstinternaltools.sstinternal_tools.transport.service.implementation;
 
+import com.sstinternaltools.sstinternal_tools.gallery.entity.Event;
 import com.sstinternaltools.sstinternal_tools.gallery.exception.EventNotFoundException;
 import com.sstinternaltools.sstinternal_tools.security.exception.InvalidCredentialsException;
 import com.sstinternaltools.sstinternal_tools.transport.dto.BusScheduleCreateDto;
@@ -79,6 +80,14 @@ public class BusScheduleServiceImpl implements BusScheduleService {
         }
 
         return busScheduleRepository.findAllByDateOrderByDepartureTimeAsc(date);
+    }
+
+    @Override
+    public List<BusSchedule> searchBusScheduleByDateRange(LocalDate start, LocalDate end) {
+        if(start == null || end == null){
+            throw new InvalidCredentialsException("Start/end date cannot be null");
+        }
+        return busScheduleRepository.findAllByDateBetweenOrderByDateAsc(start, end);
     }
 
     @Override

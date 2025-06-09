@@ -16,4 +16,5 @@ public interface BusScheduleFacade {
     public BusScheduleResponseDto updateBusSchedule(BusScheduleUpdateDto busScheduleUpdateDto, Long scheduleId);
     public void deleteBusSchedule(Long scheduleId);
     public List<BusSchedule> getBusSchedule(LocalDate date);
+    public List<BusSchedule> searchBusScheduleByDateRange(LocalDate start, LocalDate end);
 }

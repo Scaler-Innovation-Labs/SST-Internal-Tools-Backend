@@ -19,20 +19,25 @@ public class BusScheduleFacadeImpl implements BusScheduleFacade {
     public BusScheduleFacadeImpl(BusScheduleService busScheduleService) {
         this.busScheduleService = busScheduleService;
     }
-
+    @Override
     public BusScheduleResponseDto createBusSchedule(BusScheduleCreateDto busScheduleCreateDto){
         return busScheduleService.createBusSchedule(busScheduleCreateDto);
     }
-
+    @Override
     public BusScheduleResponseDto updateBusSchedule(BusScheduleUpdateDto busScheduleUpdateDto,Long scheduleId){
         return busScheduleService.updateBusSchedule(busScheduleUpdateDto,scheduleId);
     }
-
+    @Override
     public void deleteBusSchedule(Long scheduleId){
         busScheduleService.deleteBusSchedule(scheduleId);
     }
-
+    @Override
     public List<BusSchedule> getBusSchedule(LocalDate date){
         return busScheduleService.getSchedulesForDate(date);
+    }
+
+    @Override
+    public List<BusSchedule> searchBusScheduleByDateRange(LocalDate start, LocalDate end) {
+        return busScheduleService.searchBusScheduleByDateRange(start, end);
     }
 }

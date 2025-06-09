@@ -15,4 +15,5 @@ public interface BusScheduleService {
      void deleteBusSchedule(Long id);
      List<BusSchedule> getSchedulesForDate(LocalDate date);
      public void deleteOldSchedules();
+     List<BusSchedule> searchBusScheduleByDateRange(LocalDate start, LocalDate end);
 }

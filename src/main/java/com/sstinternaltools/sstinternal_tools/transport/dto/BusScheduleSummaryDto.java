@@ -24,7 +24,7 @@ public class BusScheduleSummaryDto {
     @JsonFormat(pattern = "yyyy-MM-dd")
     @NotNull(message = "Date cannot be blank")
     private LocalDate date;
-    @NotBlank(message="Bus Status cannot be blank")
+    @NotNull(message="Bus Status cannot be blank")
     private BusStatus busStatus;
 
     public BusScheduleSummaryDto(String source, String destination, LocalTime departureTime,LocalTime arrivalTime,DayOfWeek dayofWeek, LocalDate date,BusStatus busStatus) {

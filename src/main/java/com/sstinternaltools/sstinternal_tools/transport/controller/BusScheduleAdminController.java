@@ -3,7 +3,9 @@ package com.sstinternaltools.sstinternal_tools.transport.controller;
 import com.sstinternaltools.sstinternal_tools.gallery.dto.EventResponseDto;
 import com.sstinternaltools.sstinternal_tools.transport.dto.BusScheduleCreateDto;
 import com.sstinternaltools.sstinternal_tools.transport.dto.BusScheduleResponseDto;
+import com.sstinternaltools.sstinternal_tools.transport.dto.BusScheduleSummaryDto;
 import com.sstinternaltools.sstinternal_tools.transport.dto.BusScheduleUpdateDto;
+import com.sstinternaltools.sstinternal_tools.transport.entity.BusSchedule;
 import com.sstinternaltools.sstinternal_tools.transport.facade.interfaces.BusScheduleFacade;
 import com.sstinternaltools.sstinternal_tools.transport.mapper.interfaces.BusDtoMapper;
 import jakarta.validation.Valid;
@@ -20,9 +22,9 @@ import java.util.stream.Collectors;
 public class BusScheduleAdminController {
 
     private BusScheduleFacade busScheduleFacade;
-    private BusDtoMapper dtoMapper;
+    private BusDtoMapper<BusSchedule, BusScheduleResponseDto, BusScheduleCreateDto, BusScheduleUpdateDto, BusScheduleSummaryDto> dtoMapper;
 
-    public BusScheduleAdminController(BusScheduleFacade busScheduleFacade,BusDtoMapper dtoMapper) {
+    public BusScheduleAdminController(BusScheduleFacade busScheduleFacade,BusDtoMapper<BusSchedule, BusScheduleResponseDto, BusScheduleCreateDto, BusScheduleUpdateDto, BusScheduleSummaryDto> dtoMapper) {
         this.busScheduleFacade = busScheduleFacade;
         this.dtoMapper = dtoMapper;
     }

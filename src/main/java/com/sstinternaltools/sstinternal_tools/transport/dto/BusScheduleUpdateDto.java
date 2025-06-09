@@ -1,5 +1,6 @@
 package com.sstinternaltools.sstinternal_tools.transport.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.validation.constraints.NotBlank;
 
 import java.time.LocalDate;
@@ -11,6 +12,7 @@ public class BusScheduleUpdateDto {
     private String destination;
     private LocalTime departureTime;
     private LocalTime arrivalTime;
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate date;
 
     public LocalTime getArrivalTime() {

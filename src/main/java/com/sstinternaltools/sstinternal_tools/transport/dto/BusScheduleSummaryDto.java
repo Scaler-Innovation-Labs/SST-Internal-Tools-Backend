@@ -1,5 +1,6 @@
 package com.sstinternaltools.sstinternal_tools.transport.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
@@ -19,6 +20,7 @@ public class BusScheduleSummaryDto {
     private LocalTime arrivalTime;
     @NotNull(message = "Day cannot be blank")
     private DayOfWeek dayofWeek;
+    @JsonFormat(pattern = "yyyy-MM-dd")
     @NotNull(message = "Date cannot be blank")
     private LocalDate date;
 

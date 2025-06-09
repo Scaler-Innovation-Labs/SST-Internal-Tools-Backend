@@ -27,8 +27,10 @@ public class BusScheduleResponseDto {
     private LocalDate date;
     @NotBlank(message="Bus Status cannot be blank")
     private BusStatus busStatus;
+    @NotBlank(message = "Number of students boarded cannot be blank")
+    private int studentsBoarded;
 
-    public BusScheduleResponseDto(Long id, String source, String destination, LocalTime departureTime,LocalTime arrivalTime,DayOfWeek dayofWeek, LocalDate date,BusStatus busStatus) {
+    public BusScheduleResponseDto(Long id, String source, String destination, LocalTime departureTime,LocalTime arrivalTime,DayOfWeek dayofWeek, LocalDate date,BusStatus busStatus,int studentsBoarded) {
         this.id = id;
         this.source = source;
         this.destination = destination;
@@ -37,6 +39,7 @@ public class BusScheduleResponseDto {
         this.dayofWeek = dayofWeek;
         this.date = date;
         this.busStatus = busStatus;
+        this.studentsBoarded = studentsBoarded;
     }
 
     public BusScheduleResponseDto() {}
@@ -47,6 +50,14 @@ public class BusScheduleResponseDto {
 
     public void setBusStatus(BusStatus busStatus) {
         this.busStatus = busStatus;
+    }
+
+    public int getStudentsBoarded() {
+        return studentsBoarded;
+    }
+
+    public void setStudentsBoarded(int studentsBoarded) {
+        this.studentsBoarded = studentsBoarded;
     }
 
     public LocalTime getArrivalTime() {

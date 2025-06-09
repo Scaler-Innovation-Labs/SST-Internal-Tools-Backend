@@ -5,13 +5,14 @@ import com.sstinternaltools.sstinternal_tools.transport.dto.BusScheduleResponseD
 import com.sstinternaltools.sstinternal_tools.transport.dto.BusScheduleSummaryDto;
 import com.sstinternaltools.sstinternal_tools.transport.dto.BusScheduleUpdateDto;
 import com.sstinternaltools.sstinternal_tools.transport.entity.BusSchedule;
-import com.sstinternaltools.sstinternal_tools.transport.mapper.interfaces.DtoMapper;
+import com.sstinternaltools.sstinternal_tools.transport.entity.BusStatus;
+import com.sstinternaltools.sstinternal_tools.transport.mapper.interfaces.BusDtoMapper;
 import org.springframework.stereotype.Component;
 
 import java.time.DayOfWeek;
 
 @Component
-public class BusScheduleMapper implements DtoMapper <BusSchedule, BusScheduleResponseDto, BusScheduleCreateDto, BusScheduleUpdateDto, BusScheduleSummaryDto> {
+public class BusScheduleMapper implements BusDtoMapper<BusSchedule, BusScheduleResponseDto, BusScheduleCreateDto, BusScheduleUpdateDto, BusScheduleSummaryDto> {
     @Override
     public BusSchedule fromCreateDto(BusScheduleCreateDto createDto, DayOfWeek dayOfWeek) {
         BusSchedule busSchedule = new BusSchedule();
@@ -21,6 +22,8 @@ public class BusScheduleMapper implements DtoMapper <BusSchedule, BusScheduleRes
         busSchedule.setDate(createDto.getDate());
         busSchedule.setArrivalTime(createDto.getArrivalTime());
         busSchedule.setDayOfWeek(dayOfWeek);
+        busSchedule.setStudentsBoarded(0);
+        busSchedule.setBusStatus(BusStatus.SCHEDULED);
         return busSchedule;
     }
 
@@ -34,7 +37,7 @@ public class BusScheduleMapper implements DtoMapper <BusSchedule, BusScheduleRes
         }
         if(updateDto.getDate() != null) {
             busSchedule.setDate(updateDto.getDate());
-            DayOfWeek day =busSchedule.getDayOfWeek();
+            DayOfWeek day = updateDto.getDate().getDayOfWeek();
             busSchedule.setDayOfWeek(day);
         }
         if(updateDto.getSource() != null) {
@@ -42,6 +45,12 @@ public class BusScheduleMapper implements DtoMapper <BusSchedule, BusScheduleRes
         }
         if(updateDto.getArrivalTime() != null) {
             busSchedule.setArrivalTime(updateDto.getArrivalTime());
+        }
+        if(updateDto.getBusStatus() != null) {
+            busSchedule.setBusStatus(updateDto.getBusStatus());
+        }
+        if(updateDto.getStudentsBoarded() > 0) {
+            busSchedule.setStudentsBoarded(updateDto.getStudentsBoarded());
         }
         return busSchedule;
     }
@@ -56,6 +65,8 @@ public class BusScheduleMapper implements DtoMapper <BusSchedule, BusScheduleRes
         responseDto.setSource(busSchedule.getSource());
         responseDto.setDate(busSchedule.getDate());
         responseDto.setId(busSchedule.getId());
+        responseDto.setBusStatus(busSchedule.getBusStatus());
+        responseDto.setStudentsBoarded(busSchedule.getStudentsBoarded());
         return responseDto;
     }
 
@@ -68,6 +79,7 @@ public class BusScheduleMapper implements DtoMapper <BusSchedule, BusScheduleRes
         summaryDto.setArrivalTime(busSchedule.getArrivalTime());
         summaryDto.setDayofWeek(busSchedule.getDayOfWeek());
         summaryDto.setDate(busSchedule.getDate());
+        summaryDto.setBusStatus(busSchedule.getBusStatus());
         return summaryDto;
     }
 }

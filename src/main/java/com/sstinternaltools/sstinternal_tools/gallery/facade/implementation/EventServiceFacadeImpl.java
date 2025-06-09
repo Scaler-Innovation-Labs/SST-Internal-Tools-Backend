@@ -26,26 +26,29 @@ public class EventServiceFacadeImpl implements EventServiceFacade {
     @Override
     public EventResponseDto updateEvent(Long id, EventUpdateDto eventUpdateDto) {
         return eventService.updateEvent(id, eventUpdateDto);
-    }
+    };
 
-    ;
+    @Override
     public List<Event> getAllEvents(){
         return eventService.getAllEvents();
     };
+    @Override
     public List<Event> searchEventsByName(String name){
         return eventService.searchEventsByName(name);
     };
-
+    @Override
     public List<Event> searchEventsByDateRange(LocalDate start, LocalDate end){
         return eventService.searchEventsByDateRange(start, end);
     };
+    @Override
     public Event getEventById(Long id){
         return eventService.getEventById(id);
     };
+    @Override
     public List<Event> searchEventsByDate(LocalDate date){
         return eventService.searchEventsByDate(date);
     };
-
+    @Override
     public void deleteEvent(Long id){
         eventService.deleteEvent(id);
     };

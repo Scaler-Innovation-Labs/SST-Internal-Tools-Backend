@@ -16,6 +16,7 @@ public class BusScheduleUpdateDto {
     @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate date;
     private BusStatus busStatus;
+    private int studentsBoarded;
 
     public BusStatus getBusStatus() {
         return busStatus;
@@ -23,6 +24,14 @@ public class BusScheduleUpdateDto {
 
     public void setBusStatus(BusStatus busStatus) {
         this.busStatus = busStatus;
+    }
+
+    public int getStudentsBoarded() {
+        return studentsBoarded;
+    }
+
+    public void setStudentsBoarded(int studentsBoarded) {
+        this.studentsBoarded = studentsBoarded;
     }
 
     public LocalTime getArrivalTime() {

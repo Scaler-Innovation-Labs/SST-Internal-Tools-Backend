@@ -21,14 +21,16 @@ public class BusSchedule {
     @Enumerated(EnumType.STRING)
     private BusStatus busStatus;
     private LocalDate date;
+    private int studentsBoarded;
 
-    public BusSchedule(String source, String destination, LocalTime departureTime,LocalTime arrivalTime, LocalDate date,BusStatus busStatus) {
+    public BusSchedule(String source, String destination, LocalTime departureTime,LocalTime arrivalTime, LocalDate date,BusStatus busStatus,int studentsBoarded) {
         this.source = source;
         this.destination = destination;
         this.departureTime = departureTime;
         this.arrivalTime = arrivalTime;
         this.date = date;
         this.busStatus = busStatus;
+        this.studentsBoarded = studentsBoarded;
     }
 
     public BusSchedule() {}
@@ -39,6 +41,14 @@ public class BusSchedule {
 
     public void setBusStatus(BusStatus busStatus) {
         this.busStatus = busStatus;
+    }
+
+    public int getStudentsBoarded() {
+        return studentsBoarded;
+    }
+
+    public void setStudentsBoarded(int studentsBoarded) {
+        this.studentsBoarded = studentsBoarded;
     }
 
     public Long getId() {

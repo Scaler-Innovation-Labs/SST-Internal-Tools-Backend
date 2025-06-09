@@ -4,21 +4,25 @@ import com.sstinternaltools.sstinternal_tools.transport.dto.BusScheduleCreateDto
 import com.sstinternaltools.sstinternal_tools.transport.dto.BusScheduleResponseDto;
 import com.sstinternaltools.sstinternal_tools.transport.dto.BusScheduleUpdateDto;
 import com.sstinternaltools.sstinternal_tools.transport.facade.interfaces.BusScheduleFacade;
+import com.sstinternaltools.sstinternal_tools.transport.mapper.interfaces.BusDtoMapper;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/transport/schedule")
 public class BusScheduleAdminController {
 
     private BusScheduleFacade busScheduleFacade;
+    private BusDtoMapper dtoMapper;
 
-    public BusScheduleAdminController(BusScheduleFacade busScheduleFacade) {
+    public BusScheduleAdminController(BusScheduleFacade busScheduleFacade,BusDtoMapper dtoMapper) {
         this.busScheduleFacade = busScheduleFacade;
+        this.dtoMapper = dtoMapper;
     }
 
     @PostMapping("/create")
@@ -41,7 +45,10 @@ public class BusScheduleAdminController {
 
     @GetMapping("/getByDate/{date}")
     public ResponseEntity<List<BusScheduleResponseDto>> getBusScheduleByDate(@PathVariable @Valid LocalDate date) {
-        List<BusScheduleResponseDto> listSchedule=busScheduleFacade.getBusSchedule(date);
+        List<BusScheduleResponseDto> listSchedule=busScheduleFacade.getBusSchedule(date)
+                .stream()
+                .map(event -> dtoMapper.toResponseDto(event))
+                .collect(Collectors.toList());
         return ResponseEntity.ok(listSchedule);
     }
 }

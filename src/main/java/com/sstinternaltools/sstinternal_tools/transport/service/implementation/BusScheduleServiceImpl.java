@@ -1,5 +1,6 @@
 package com.sstinternaltools.sstinternal_tools.transport.service.implementation;
 
+import com.sstinternaltools.sstinternal_tools.gallery.exception.EventNotFoundException;
 import com.sstinternaltools.sstinternal_tools.security.exception.InvalidCredentialsException;
 import com.sstinternaltools.sstinternal_tools.transport.dto.BusScheduleCreateDto;
 import com.sstinternaltools.sstinternal_tools.transport.dto.BusScheduleResponseDto;
@@ -68,7 +69,7 @@ public class BusScheduleServiceImpl implements BusScheduleService {
     }
 
     @Override
-    public List<BusScheduleResponseDto> getSchedulesForDate(LocalDate date) {
+    public List<BusSchedule> getSchedulesForDate(LocalDate date) {
         if(date == null){
             throw new InvalidCredentialsException("Date cannot be null");
         }
@@ -77,10 +78,7 @@ public class BusScheduleServiceImpl implements BusScheduleService {
             throw new TransportScheduleNotFound("Schedule does not exist for "+date+".");
         }
 
-        return busScheduleRepository.findAllByDateOrderByDepartureTimeAsc(date)
-                .stream()
-                .map(schedule -> busScheduleMapper.toResponseDto(schedule))
-                .collect(Collectors.toList());
+        return busScheduleRepository.findAllByDateOrderByDepartureTimeAsc(date);
     }
 
     @Override

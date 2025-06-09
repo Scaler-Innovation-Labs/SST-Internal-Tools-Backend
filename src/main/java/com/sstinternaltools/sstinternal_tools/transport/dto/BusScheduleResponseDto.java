@@ -1,6 +1,7 @@
 package com.sstinternaltools.sstinternal_tools.transport.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.sstinternaltools.sstinternal_tools.transport.entity.BusStatus;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
@@ -24,8 +25,10 @@ public class BusScheduleResponseDto {
     @JsonFormat(pattern = "yyyy-MM-dd")
     @NotNull(message = "Date cannot be blank")
     private LocalDate date;
+    @NotBlank(message="Bus Status cannot be blank")
+    private BusStatus busStatus;
 
-    public BusScheduleResponseDto(Long id, String source, String destination, LocalTime departureTime,LocalTime arrivalTime,DayOfWeek dayofWeek, LocalDate date) {
+    public BusScheduleResponseDto(Long id, String source, String destination, LocalTime departureTime,LocalTime arrivalTime,DayOfWeek dayofWeek, LocalDate date,BusStatus busStatus) {
         this.id = id;
         this.source = source;
         this.destination = destination;
@@ -33,9 +36,18 @@ public class BusScheduleResponseDto {
         this.arrivalTime = arrivalTime;
         this.dayofWeek = dayofWeek;
         this.date = date;
+        this.busStatus = busStatus;
     }
 
     public BusScheduleResponseDto() {}
+
+    public BusStatus getBusStatus() {
+        return busStatus;
+    }
+
+    public void setBusStatus(BusStatus busStatus) {
+        this.busStatus = busStatus;
+    }
 
     public LocalTime getArrivalTime() {
         return arrivalTime;

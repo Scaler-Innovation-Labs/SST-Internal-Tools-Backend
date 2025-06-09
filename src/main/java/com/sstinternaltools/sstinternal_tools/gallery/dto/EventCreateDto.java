@@ -1,5 +1,6 @@
 package com.sstinternaltools.sstinternal_tools.gallery.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import java.time.LocalDate;
@@ -9,6 +10,7 @@ public class EventCreateDto {
     private String name;
     @NotBlank(message = "Event description cannot be blank")
     private String description;
+    @JsonFormat(pattern = "yyyy-MM-dd")
     @NotNull(message = "Event date cannot be blank")
     private LocalDate date;
     @NotBlank(message = "Drive link cannot be blank")

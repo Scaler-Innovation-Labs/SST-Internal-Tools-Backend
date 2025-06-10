@@ -13,9 +13,6 @@ public class Document {
     @Column(nullable = false)
     private String title;
 
-    @Column(nullable = false, unique = true)
-    private String code; // e.g. EXAM_POLICY_2024
-
     @ManyToOne(optional = false)
     private DocumentCategory category;
 
@@ -26,9 +23,8 @@ public class Document {
     @OneToMany(mappedBy = "document", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<Tag> tags;
 
-    public Document(String title, String code, DocumentCategory category, Set<AllowedUsers> allowedUsers, Set<Tag> tags) {
+    public Document(String title, DocumentCategory category, Set<AllowedUsers> allowedUsers, Set<Tag> tags) {
         this.title = title;
-        this.code = code;
         this.category = category;
         this.allowedUsers = allowedUsers;
         this.tags = tags;
@@ -46,14 +42,6 @@ public class Document {
 
     public void setTitle(String title) {
         this.title = title;
-    }
-
-    public String getCode() {
-        return code;
-    }
-
-    public void setCode(String code) {
-        this.code = code;
     }
 
     public DocumentCategory getCategory() {

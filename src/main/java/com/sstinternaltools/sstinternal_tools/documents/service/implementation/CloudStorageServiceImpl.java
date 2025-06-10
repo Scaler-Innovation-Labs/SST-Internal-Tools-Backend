@@ -5,9 +5,9 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.multipart.MultipartFile;
-
 import java.io.IOException;
 import java.util.UUID;
+import org.springframework.http.*;
 
 @Service
 public class CloudStorageServiceImpl implements CloudStorageService {
@@ -30,16 +30,38 @@ public class CloudStorageServiceImpl implements CloudStorageService {
 
             String uploadUrl = supabaseUrl + "/storage/v1/object/" + bucket + "/" + fileName;
 
-            var headers = new org.springframework.http.HttpHeaders();
+            HttpHeaders headers = new HttpHeaders();
             headers.set("Authorization", "Bearer " + supabaseKey);
-            headers.set("Content-Type", file.getContentType());
 
-            var request = new org.springframework.http.HttpEntity<>(file.getBytes(), headers);
+            // Fallback for unknown content types
+//            String contentType = file.getContentType();
+//            if (contentType == null || contentType.isBlank()) {
+//                contentType = "application/octet-stream";
+//            }
+//            headers.set("Content-Type", contentType);
+            String contentType = file.getContentType();
+            if (file.getOriginalFilename().endsWith(".pdf")) {
+                contentType = "application/pdf";
+            }
+            if (contentType == null || contentType.isBlank()) {
+                contentType = "application/octet-stream";
+            }
+            headers.set("Content-Type", contentType);
 
-            // Perform PUT request to upload the file
-            restTemplate.put(uploadUrl, request);
+            HttpEntity<byte[]> request = new HttpEntity<>(file.getBytes(), headers);
 
-            // Return the public URL to access the file
+            ResponseEntity<String> response = restTemplate.exchange(
+                    uploadUrl,
+                    HttpMethod.PUT,
+                    request,
+                    String.class
+            );
+
+            if (!response.getStatusCode().is2xxSuccessful()) {
+                throw new RuntimeException("Failed to upload to Supabase: " + response.getBody());
+            }
+
+            // Return the URL to access the file
             return supabaseUrl + "/storage/v1/object/public/" + bucket + "/" + fileName;
 
         } catch (IOException e) {
@@ -47,3 +69,4 @@ public class CloudStorageServiceImpl implements CloudStorageService {
         }
     }
 }
+

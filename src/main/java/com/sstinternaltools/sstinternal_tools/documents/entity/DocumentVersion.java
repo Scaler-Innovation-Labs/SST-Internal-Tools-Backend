@@ -10,7 +10,7 @@ public class DocumentVersion {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne(optional = false)
+    @ManyToOne
     private Document document;
 
     private int versionNumber;

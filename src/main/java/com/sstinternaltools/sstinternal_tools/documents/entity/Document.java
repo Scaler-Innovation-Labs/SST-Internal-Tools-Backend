@@ -20,7 +20,7 @@ public class Document {
     @ElementCollection
     private Set<AllowedUsers> allowedUsers;
 
-    @OneToMany(mappedBy = "document", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany
     private Set<Tag> tags;
 
     public Document(String title, DocumentCategory category, Set<AllowedUsers> allowedUsers, Set<Tag> tags) {

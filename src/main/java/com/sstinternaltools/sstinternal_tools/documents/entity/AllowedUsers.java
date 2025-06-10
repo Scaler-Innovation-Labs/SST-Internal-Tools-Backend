@@ -2,6 +2,8 @@ package com.sstinternaltools.sstinternal_tools.documents.entity;
 
 public enum AllowedUsers {
     ALL,
+    SUPER_ADMIN,
+    ADMIN,
     FACULTY,
     STUDENT,
     BATCH2023,

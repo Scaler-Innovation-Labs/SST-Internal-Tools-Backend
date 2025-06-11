@@ -12,12 +12,12 @@ import com.sstinternaltools.sstinternal_tools.Issues.exception.TicketNotFoundExc
 import com.sstinternaltools.sstinternal_tools.Issues.repository.TicketRepository;
 import com.sstinternaltools.sstinternal_tools.user.entity.User;
 import com.sstinternaltools.sstinternal_tools.user.repository.UserRepository;
+import com.sstinternaltools.sstinternal_tools.Issues.mapper.Interfaces.TicketDtoMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -27,12 +27,13 @@ public class TicketServiceImpl implements TicketService {
 
     private final TicketRepository ticketRepository;
     private final UserRepository userRepository;
-    private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+    private final TicketDtoMapper ticketDtoMapper;
 
     @Autowired
-    public TicketServiceImpl(TicketRepository ticketRepository, UserRepository userRepository) {
+    public TicketServiceImpl(TicketRepository ticketRepository, UserRepository userRepository, TicketDtoMapper ticketDtoMapper) {
         this.ticketRepository = ticketRepository;
         this.userRepository = userRepository;
+        this.ticketDtoMapper = ticketDtoMapper;
     }
 
     @Override
@@ -41,62 +42,64 @@ public class TicketServiceImpl implements TicketService {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new RuntimeException("User not found with ID: " + userId));
 
-        Ticket ticket = new Ticket();
-        ticket.setTitle(ticketCreateDto.getTitle());
-        ticket.setDescription(ticketCreateDto.getDescription());
-        ticket.setPriority(ticketCreateDto.getPriority() != null ? ticketCreateDto.getPriority() : TicketPriority.MEDIUM);
-        ticket.setStatus(ticketCreateDto.getStatus() != null ? ticketCreateDto.getStatus() : TicketStatus.OPEN);
-        ticket.setCampus(ticketCreateDto.getCampus());
-        ticket.setImageUrl(new ArrayList<>()); // Initialize with empty list
+
+        Ticket ticket = ticketDtoMapper.fromCreateDto(ticketCreateDto);
+        if (ticket.getPriority() == null) {
+            ticket.setPriority(TicketPriority.MEDIUM);
+        }
+        if (ticket.getStatus() == null) {
+            ticket.setStatus(TicketStatus.OPEN);
+        }
+
+        ticket.setImageUrl(new ArrayList<>()); // creating new mpty list
         ticket.setUpvote(0);
         ticket.setCreatedAt(LocalDateTime.now());
         ticket.setUpdatedAt(LocalDateTime.now());
         ticket.setCreatedby(user);
 
         Ticket savedTicket = ticketRepository.save(ticket);
-        return convertToResponseDto(savedTicket);
+        return ticketDtoMapper.toResponseDto(savedTicket);
     }
 
     @Override
     public TicketResponseDto getTicketById(Long id) {
         Ticket ticket = ticketRepository.findById(id)
                 .orElseThrow(() -> new TicketNotFoundException("Ticket not found with ID: " + id));
-        return convertToResponseDto(ticket);
+        return ticketDtoMapper.toResponseDto(ticket);
     }
 
     @Override
     public List<TicketSummaryDto> getAllTickets() {
         return ticketRepository.findAll().stream()
-                .map(this::convertToSummaryDto)
+                .map(ticketDtoMapper::toSummaryDto)
                 .collect(Collectors.toList());
     }
 
     @Override
     public List<TicketSummaryDto> getTicketsByUserId(Long userId) {
-        return ticketRepository.findByUserId(userId).stream()
-                .map(this::convertToSummaryDto)
+        return ticketRepository.findByCreatedbyId(userId).stream()
+                .map(ticketDtoMapper::toSummaryDto)
                 .collect(Collectors.toList());
     }
 
     @Override
     public List<TicketSummaryDto> getTicketsByStatus(TicketStatus status) {
         return ticketRepository.findByStatus(status).stream()
-                .map(this::convertToSummaryDto)
+                .map(ticketDtoMapper::toSummaryDto)
                 .collect(Collectors.toList());
     }
 
     @Override
     public List<TicketSummaryDto> getTicketsByPriority(TicketPriority priority) {
         return ticketRepository.findByPriority(priority).stream()
-                .map(this::convertToSummaryDto)
+                .map(ticketDtoMapper::toSummaryDto)
                 .collect(Collectors.toList());
     }
 
     @Override
     public List<TicketSummaryDto> getTicketsByCampus(CampusType campus) {
-        // Using category field from repository since there's no findByCampus method
-        return ticketRepository.findByCategory(campus.toString()).stream()
-                .map(this::convertToSummaryDto)
+        return ticketRepository.findByCampus(campus).stream()
+                .map(ticketDtoMapper::toSummaryDto)
                 .collect(Collectors.toList());
     }
 
@@ -128,7 +131,7 @@ public class TicketServiceImpl implements TicketService {
 
         ticket.setUpdatedAt(LocalDateTime.now());
         Ticket updatedTicket = ticketRepository.save(ticket);
-        return convertToResponseDto(updatedTicket);
+        return ticketDtoMapper.toResponseDto(updatedTicket);
     }
 
     @Override
@@ -141,7 +144,7 @@ public class TicketServiceImpl implements TicketService {
         ticket.setUpdatedAt(LocalDateTime.now());
 
         Ticket updatedTicket = ticketRepository.save(ticket);
-        return convertToResponseDto(updatedTicket);
+        return ticketDtoMapper.toResponseDto(updatedTicket);
     }
 
     @Override
@@ -163,50 +166,6 @@ public class TicketServiceImpl implements TicketService {
         ticket.setUpdatedAt(LocalDateTime.now());
 
         Ticket updatedTicket = ticketRepository.save(ticket);
-        return convertToResponseDto(updatedTicket);
-    }
-
-    //  convert Ticket entity --> TicketResponseDto
-    private TicketResponseDto convertToResponseDto(Ticket ticket) {
-        TicketResponseDto responseDto = new TicketResponseDto();
-        responseDto.setId(ticket.getId());
-        responseDto.setTitle(ticket.getTitle());
-        responseDto.setDescription(ticket.getDescription());
-        responseDto.setPriority(ticket.getPriority());
-        responseDto.setStatus(ticket.getStatus());
-        responseDto.setCampus(ticket.getCampus().toString());
-        responseDto.setUpvote(ticket.getUpvote());
-
-
-        if (ticket.getImageUrl() != null && !ticket.getImageUrl().isEmpty()) {
-            responseDto.setImageUrl(String.join(",", ticket.getImageUrl()));
-        } else {
-            responseDto.setImageUrl("");
-        }
-
-
-        if (ticket.getCreatedby() != null) {
-            responseDto.setCreatedBy(ticket.getCreatedby().getUsername());
-        }
-
-
-        responseDto.setCreatedAt(ticket.getCreatedAt().format(DATE_FORMATTER));
-        responseDto.setUpdatedAt(ticket.getUpdatedAt().format(DATE_FORMATTER));
-
-        return responseDto;
-    }
-
-    //  convert Ticket entity --> TicketSummaryDto
-    private TicketSummaryDto convertToSummaryDto(Ticket ticket) {
-        TicketSummaryDto summaryDto = new TicketSummaryDto();
-        summaryDto.setId(ticket.getId());
-        summaryDto.setTitle(ticket.getTitle());
-        summaryDto.setDescription(ticket.getDescription());
-        summaryDto.setPriority(ticket.getPriority());
-        summaryDto.setStatus(ticket.getStatus());
-        summaryDto.setTicketStatus(ticket.getStatus());
-        summaryDto.setCampus(ticket.getCampus().toString());
-        summaryDto.setUpvote(ticket.getUpvote());
-        return summaryDto;
+        return ticketDtoMapper.toResponseDto(updatedTicket);
     }
 }

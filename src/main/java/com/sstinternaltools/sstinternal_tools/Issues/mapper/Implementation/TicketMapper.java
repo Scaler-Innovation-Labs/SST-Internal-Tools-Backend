@@ -4,21 +4,27 @@ import com.sstinternaltools.sstinternal_tools.Issues.dto.ticket.TicketCreateDto;
 import com.sstinternaltools.sstinternal_tools.Issues.dto.ticket.TicketResponseDto;
 import com.sstinternaltools.sstinternal_tools.Issues.entity.Ticket;
 import com.sstinternaltools.sstinternal_tools.Issues.mapper.Interfaces.TicketDtoMapper;
-//import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Component;
 import com.sstinternaltools.sstinternal_tools.Issues.dto.ticket.TicketUpdateDto;
 import com.sstinternaltools.sstinternal_tools.Issues.dto.ticket.TicketSummaryDto;
+
+import java.time.format.DateTimeFormatter;
 
 import jakarta.validation.constraints.NotNull;
 
 @Component
 public class TicketMapper implements TicketDtoMapper {
 
+    private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+
      @Override
      public Ticket fromCreateDto(TicketCreateDto ticketCreateDto) {
             Ticket ticket = new Ticket();
             ticket.setTitle(ticketCreateDto.getTitle());
             ticket.setDescription(ticketCreateDto.getDescription());
+            if (ticketCreateDto.getCampus() != null) {
+                ticket.setCampus(ticketCreateDto.getCampus());
+            }
             ticket.setStatus(ticketCreateDto.getStatus());
             ticket.setPriority(ticketCreateDto.getPriority());
             return ticket;
@@ -32,37 +38,66 @@ public class TicketMapper implements TicketDtoMapper {
             ticketResponseDto.setDescription(ticket.getDescription());
             ticketResponseDto.setStatus(ticket.getStatus());
             ticketResponseDto.setPriority(ticket.getPriority());
-            return ticketResponseDto;
+            if (ticket.getCampus() != null) {
+                ticketResponseDto.setCampus(ticket.getCampus().toString());
+            }
+            ticketResponseDto.setUpvote(ticket.getUpvote());
 
+            if (ticket.getImageUrl() != null && !ticket.getImageUrl().isEmpty()) {
+                ticketResponseDto.setImageUrl(String.join(",", ticket.getImageUrl()));
+            } else {
+                ticketResponseDto.setImageUrl(""); // nul set to empty string if no images
+            }
+
+            if (ticket.getCreatedby() != null) {
+                ticketResponseDto.setCreatedBy(ticket.getCreatedby().getUsername());
+            }
+
+            if (ticket.getCreatedAt() != null) {
+                ticketResponseDto.setCreatedAt(ticket.getCreatedAt().format(DATE_FORMATTER));
+            }
+            if (ticket.getUpdatedAt() != null) {
+                ticketResponseDto.setUpdatedAt(ticket.getUpdatedAt().format(DATE_FORMATTER));
+            }
+            return ticketResponseDto;
      }
+
      @Override
      public TicketSummaryDto toSummaryDto(Ticket ticket) {
-                TicketSummaryDto ticketSummaryDto = new TicketSummaryDto();
-                ticketSummaryDto.setId(ticket.getId());
-                ticketSummaryDto.setTitle(ticket.getTitle());
-                ticketSummaryDto.setStatus(ticket.getStatus());
-                ticketSummaryDto.setPriority(ticket.getPriority());
-                return ticketSummaryDto;
-        }
-        @Override
-        public Ticket fromUpdateDto(TicketUpdateDto ticketUpdateDto, Ticket ticket) {
-                if (ticketUpdateDto.getTitle() != null) {
-                    ticket.setTitle(ticketUpdateDto.getTitle());
-                }
-                if (ticketUpdateDto.getDescription() != null) {
-                    ticket.setDescription(ticketUpdateDto.getDescription());
-                }
-                if (ticketUpdateDto.getStatus() != null) {
-                    ticket.setStatus(ticketUpdateDto.getStatus());
-                }
-                if (ticketUpdateDto.getPriority() != null) {
-                    ticket.setPriority(ticketUpdateDto.getPriority());
-                }
-                return ticket;
-        }
+            TicketSummaryDto ticketSummaryDto = new TicketSummaryDto();
+            ticketSummaryDto.setId(ticket.getId());
+            ticketSummaryDto.setTitle(ticket.getTitle());
+            ticketSummaryDto.setDescription(ticket.getDescription());
+            ticketSummaryDto.setPriority(ticket.getPriority());
+            ticketSummaryDto.setStatus(ticket.getStatus());
+            ticketSummaryDto.setTicketStatus(ticket.getStatus()); // As in service
+            if (ticket.getCampus() != null) {
+                ticketSummaryDto.setCampus(ticket.getCampus().toString());
+            }
+            ticketSummaryDto.setUpvote(ticket.getUpvote());
+            return ticketSummaryDto;
+    }
 
-
-
-
-
+    @Override
+    public Ticket fromUpdateDto(TicketUpdateDto ticketUpdateDto, Ticket ticket) {
+            if (ticketUpdateDto.getTitle() != null) {
+                ticket.setTitle(ticketUpdateDto.getTitle());
+            }
+            if (ticketUpdateDto.getDescription() != null) {
+                ticket.setDescription(ticketUpdateDto.getDescription());
+            }
+            if (ticketUpdateDto.getStatus() != null) {
+                ticket.setStatus(ticketUpdateDto.getStatus());
+            }
+            if (ticketUpdateDto.getPriority() != null) {
+                ticket.setPriority(ticketUpdateDto.getPriority());
+            }
+            if (ticketUpdateDto.getCampus() != null) {
+                ticket.setCampus(ticketUpdateDto.getCampus());
+            }
+            if (ticketUpdateDto.getImageUrl() != null) {
+                ticket.setImageUrl(ticketUpdateDto.getImageUrl());
+            }
+            return ticket;
+    }
 }

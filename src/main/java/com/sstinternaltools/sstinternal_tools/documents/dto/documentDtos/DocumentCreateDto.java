@@ -1,4 +1,4 @@
-package com.sstinternaltools.sstinternal_tools.documents.dto;
+package com.sstinternaltools.sstinternal_tools.documents.dto.documentDtos;
 
 import com.sstinternaltools.sstinternal_tools.documents.entity.AllowedUsers;
 import com.sstinternaltools.sstinternal_tools.documents.entity.DocumentCategory;

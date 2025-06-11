@@ -1,12 +1,8 @@
-package com.sstinternaltools.sstinternal_tools.documents.dto;
+package com.sstinternaltools.sstinternal_tools.documents.dto.documentDtos;
 
 import com.sstinternaltools.sstinternal_tools.documents.entity.AllowedUsers;
 import com.sstinternaltools.sstinternal_tools.documents.entity.DocumentCategory;
 import com.sstinternaltools.sstinternal_tools.documents.entity.Tag;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
-
-import java.time.LocalDateTime;
 import java.util.Set;
 
 public class DocumentUpdateDto {

@@ -1,15 +1,21 @@
-package com.sstinternaltools.sstinternal_tools.documents.dto;
+package com.sstinternaltools.sstinternal_tools.documents.dto.documentDtos;
 
 import com.sstinternaltools.sstinternal_tools.documents.entity.DocumentCategory;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+
 import java.time.LocalDateTime;
 import java.util.Set;
 
 public class DocumentSummaryDto {
-
+    @NotBlank(message = "Document name cannot be blank")
     private String title;
+    @NotNull(message = "Document Category cannot be blank")
     private DocumentCategory category;
     private Set<String> tags;
+    @NotBlank(message = "Document file url cannot be blank")
     private String latestFilePath;
+    @NotNull(message = "Document upload date cannot be null")
     private LocalDateTime uploadedAt;
 
     public DocumentSummaryDto(String title, DocumentCategory category, Set<String> tags, String latestFilePath, LocalDateTime uploadedAt) {

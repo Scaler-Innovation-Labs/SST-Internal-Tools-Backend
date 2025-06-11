@@ -1,9 +1,8 @@
-package com.sstinternaltools.sstinternal_tools.documents.dto;
+package com.sstinternaltools.sstinternal_tools.documents.dto.documentDtos;
 
 import com.sstinternaltools.sstinternal_tools.documents.entity.AllowedUsers;
 import com.sstinternaltools.sstinternal_tools.documents.entity.DocumentCategory;
 import com.sstinternaltools.sstinternal_tools.documents.entity.Tag;
-import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
@@ -13,27 +12,19 @@ import java.util.Set;
 public class DocumentResponseDto{
     @NotNull(message = "Document id cannot be null")
     private Long id;
-
     @NotBlank(message = "Document name cannot be blank")
     private String title;
-
     @NotNull(message = "Document category cannot be null")
     private DocumentCategory category;
-
     @NotNull(message = "Allowed Users cannot be null")
     private Set<AllowedUsers> allowedUsers;
-
     private Set<Tag> tags;
-
     @NotBlank(message = "Document file URL cannot be blank")
     private String latestFilePath;
-
     @NotNull(message = "Document Version cannot be null")
     private Integer versionNumber;
-
     @NotNull(message = "Uploading time cannot be null")
     private LocalDateTime uploadedAt;
-
     @NotBlank(message = "Uploaded by field cannot be blank")
     private String uploadedBy;
 

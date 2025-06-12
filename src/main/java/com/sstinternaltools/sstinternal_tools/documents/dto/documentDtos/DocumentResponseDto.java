@@ -22,13 +22,13 @@ public class DocumentResponseDto{
     @NotBlank(message = "Document file URL cannot be blank")
     private String latestFilePath;
     @NotNull(message = "Document Version cannot be null")
-    private Integer versionNumber;
+    private Long versionNumber;
     @NotNull(message = "Uploading time cannot be null")
     private LocalDateTime uploadedAt;
     @NotBlank(message = "Uploaded by field cannot be blank")
     private String uploadedBy;
 
-    public DocumentResponseDto(Long id, String title, DocumentCategory category, Set<AllowedUsers> allowedUsers, Set<Tag> tags, String latestFilePath, int versionNumber, LocalDateTime uploadedAt, String uploadedBy) {
+    public DocumentResponseDto(Long id, String title, DocumentCategory category, Set<AllowedUsers> allowedUsers, Set<Tag> tags, String latestFilePath, Long versionNumber, LocalDateTime uploadedAt, String uploadedBy) {
         this.id = id;
         this.title = title;
         this.category = category;
@@ -90,11 +90,11 @@ public class DocumentResponseDto{
         this.latestFilePath = latestFilePath;
     }
 
-    public int getVersionNumber() {
+    public Long getVersionNumber() {
         return versionNumber;
     }
 
-    public void setVersionNumber(int versionNumber) {
+    public void setVersionNumber(Long versionNumber) {
         this.versionNumber = versionNumber;
     }
 

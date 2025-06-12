@@ -9,6 +9,15 @@ import java.time.LocalDateTime;
 public class DocumentVersionUpdateDto {
 
     private MultipartFile file;
+    private Boolean isLatestVersion;
+
+    public Boolean getLatestVersion() {
+        return isLatestVersion;
+    }
+
+    public void setLatestVersion(Boolean latestVersion) {
+        isLatestVersion = latestVersion;
+    }
 
     public MultipartFile getFile() {
         return file;

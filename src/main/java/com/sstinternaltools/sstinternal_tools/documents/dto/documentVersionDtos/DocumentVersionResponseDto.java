@@ -18,17 +18,28 @@ public class DocumentVersionResponseDto {
     private LocalDateTime uploadedAt ;
     @NotBlank(message = "Author Email cannot be null")
     private String uploadedByEmail;
+    @NotNull(message="Boolean for latest version cannot be null")
+    private Boolean isLatestVersion;
 
-    public DocumentVersionResponseDto(Long id, String documentName, Long versionNumber, String fileUrl, LocalDateTime uploadedAt, String uploadedByEmail) {
+    public DocumentVersionResponseDto(Long id, String documentName, Long versionNumber, String fileUrl, LocalDateTime uploadedAt, String uploadedByEmail , Boolean isLatestVersion) {
         this.id = id;
         this.documentName = documentName;
         this.versionNumber = versionNumber;
         this.fileUrl = fileUrl;
         this.uploadedAt = uploadedAt;
         this.uploadedByEmail = uploadedByEmail;
+        this.isLatestVersion = isLatestVersion;
     }
 
     public DocumentVersionResponseDto() {}
+
+    public Boolean getLatestVersion() {
+        return isLatestVersion;
+    }
+
+    public void setLatestVersion(Boolean latestVersion) {
+        isLatestVersion = latestVersion;
+    }
 
     public Long getId() {
         return id;

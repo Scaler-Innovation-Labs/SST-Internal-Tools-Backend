@@ -19,16 +19,27 @@ public class DocumentVersion {
 
     private LocalDateTime uploadedAt ;
 
+    private Boolean isLatestVersion;
+
     private Long uploadedByUserId;
 
-    public DocumentVersion(Document document,Long versionNumber, String fileUrl, Long uploadedByUserId) {
+    public DocumentVersion(Document document,Long versionNumber, String fileUrl, Long uploadedByUserId,Boolean isLatestVersion) {
         this.document = document;
         this.versionNumber = versionNumber;
         this.fileUrl = fileUrl;
         this.uploadedByUserId = uploadedByUserId;
+        this.isLatestVersion = isLatestVersion;
     }
 
     public DocumentVersion() {}
+
+    public Boolean isLatestVersion() {
+        return isLatestVersion;
+    }
+
+    public void setLatestVersion(Boolean latestVersion) {
+        isLatestVersion = latestVersion;
+    }
 
     public Long getId() {
         return id;

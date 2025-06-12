@@ -21,13 +21,13 @@ public class DocumentVersion {
 
     private Boolean isLatestVersion;
 
-    private Long uploadedByUserId;
+    private String uploadedByUserEmail;
 
-    public DocumentVersion(Document document,Long versionNumber, String fileUrl, Long uploadedByUserId,Boolean isLatestVersion) {
+    public DocumentVersion(Document document,Long versionNumber, String fileUrl,String uploadedByUserEmail,Boolean isLatestVersion) {
         this.document = document;
         this.versionNumber = versionNumber;
         this.fileUrl = fileUrl;
-        this.uploadedByUserId = uploadedByUserId;
+        this.uploadedByUserEmail = uploadedByUserEmail;
         this.isLatestVersion = isLatestVersion;
     }
 
@@ -77,11 +77,11 @@ public class DocumentVersion {
         this.uploadedAt = uploadedAt;
     }
 
-    public Long getUploadedByUserId() {
-        return uploadedByUserId;
+    public String getUploadedByUserEmail() {
+        return uploadedByUserEmail;
     }
 
-    public void setUploadedByUserId(Long uploadedByUserId) {
-        this.uploadedByUserId = uploadedByUserId;
+    public void setUploadedByUserEmail(String uploadedByUserEmail) {
+        this.uploadedByUserEmail = uploadedByUserEmail;
     }
 }

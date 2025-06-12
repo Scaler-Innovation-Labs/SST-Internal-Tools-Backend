@@ -1,5 +1,6 @@
 package com.sstinternaltools.sstinternal_tools.documents.mapper.implementation;
 
+import com.sstinternaltools.sstinternal_tools.documents.dto.documentDtos.DocumentCreateDto;
 import com.sstinternaltools.sstinternal_tools.documents.dto.documentVersionDtos.*;
 import com.sstinternaltools.sstinternal_tools.documents.entity.Document;
 import com.sstinternaltools.sstinternal_tools.documents.entity.DocumentVersion;
@@ -11,8 +12,8 @@ import java.time.LocalDateTime;
 @Component
 public class DocumentVersionDtoMapperImpl implements DocumentVersionDtoMapper {
     @Override
-    public DocumentVersion fromCreateDto(DocumentVersionCreateDto dto, Document document, String fileUrl, Long versionNumber, String uploadedByUserEmail) {
-        DocumentVersion version = new DocumentVersion(document, versionNumber, fileUrl, uploadedByUserEmail,true);
+    public DocumentVersion fromCreateDto(DocumentCreateDto dto, Document document, String fileUrl, String uploadedByUserEmail) {
+        DocumentVersion version = new DocumentVersion(document,, fileUrl, uploadedByUserEmail,true);
         version.setUploadedAt(LocalDateTime.now());
         return version;
     }

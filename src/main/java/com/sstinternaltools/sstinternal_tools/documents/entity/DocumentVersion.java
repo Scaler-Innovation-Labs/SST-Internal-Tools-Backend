@@ -13,7 +13,7 @@ public class DocumentVersion {
     @ManyToOne
     private Document document;
 
-    private int versionNumber;
+    private Long versionNumber;
 
     private String fileUrl; // Cloud URL or file path
 
@@ -21,7 +21,7 @@ public class DocumentVersion {
 
     private Long uploadedByUserId;
 
-    public DocumentVersion(Document document, int versionNumber, String fileUrl, Long uploadedByUserId) {
+    public DocumentVersion(Document document,Long versionNumber, String fileUrl, Long uploadedByUserId) {
         this.document = document;
         this.versionNumber = versionNumber;
         this.fileUrl = fileUrl;
@@ -42,11 +42,11 @@ public class DocumentVersion {
         this.document = document;
     }
 
-    public int getVersionNumber() {
+    public Long getVersionNumber() {
         return versionNumber;
     }
 
-    public void setVersionNumber(int versionNumber) {
+    public void setVersionNumber(Long versionNumber) {
         this.versionNumber = versionNumber;
     }
 

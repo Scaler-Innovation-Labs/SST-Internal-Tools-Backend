@@ -6,12 +6,23 @@ import jakarta.validation.constraints.NotNull;
 public class DocumentCategorySummaryDto {
     @NotBlank(message = "Category name cannot be null")
     private String name;
+    @NotBlank(message = "Category description cannot be null")
+    private String description;
 
-    public DocumentCategorySummaryDto(String name) {
+    public DocumentCategorySummaryDto(String name, String description) {
         this.name = name;
+        this.description = description;
     }
 
     public DocumentCategorySummaryDto() {}
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
 
     public String getName() {
         return name;

@@ -8,13 +8,24 @@ public class DocumentCategoryResponseDto {
     private Long id;
     @NotBlank(message = "Category name cannot be null")
     private String name;
+    @NotBlank(message = "Category description cannot be null")
+    private String description;
 
-    public DocumentCategoryResponseDto(Long id, String name) {
+    public DocumentCategoryResponseDto(Long id, String name,String description) {
         this.id = id;
         this.name = name;
+        this.description = description;
     }
 
     public DocumentCategoryResponseDto() {}
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
 
     public Long getId() {
         return id;

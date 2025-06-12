@@ -8,4 +8,5 @@ public interface DocumentVersionDtoMapper {
     DocumentVersion fromCreateDto(DocumentVersionCreateDto dto, Document document, String fileUrl, Long versionNumber, String uploadedByUserEmail);
     DocumentVersionResponseDto toResponseDto(DocumentVersion version);
     DocumentVersionSummaryDto toSummaryDto(DocumentVersion version);
+    DocumentVersion fromUpdateDto(DocumentVersionUpdateDto updateDto,DocumentVersion version);
 }

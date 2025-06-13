@@ -7,7 +7,7 @@ import java.time.LocalDate;
 
 public class EventResponseDto {
 
-    @NotBlank(message = "Event id cannot be blank")
+    @NotNull(message = "Event id cannot be blank")
     private Long id;
     @NotBlank(message = "Event name cannot be blank")
     private String name;

@@ -1,7 +1,5 @@
 package com.sstinternaltools.sstinternal_tools.transport.dto;
 
-import jakarta.validation.constraints.NotBlank;
-
 import java.time.LocalDate;
 import java.time.LocalTime;
 

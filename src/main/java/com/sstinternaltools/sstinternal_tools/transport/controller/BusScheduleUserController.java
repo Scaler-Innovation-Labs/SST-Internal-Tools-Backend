@@ -1,6 +1,5 @@
 package com.sstinternaltools.sstinternal_tools.transport.controller;
 
-import com.sstinternaltools.sstinternal_tools.gallery.dto.EventResponseDto;
 import com.sstinternaltools.sstinternal_tools.transport.dto.BusScheduleCreateDto;
 import com.sstinternaltools.sstinternal_tools.transport.dto.BusScheduleResponseDto;
 import com.sstinternaltools.sstinternal_tools.transport.dto.BusScheduleSummaryDto;

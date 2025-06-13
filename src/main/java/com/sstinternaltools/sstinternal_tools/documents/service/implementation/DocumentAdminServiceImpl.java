@@ -29,7 +29,7 @@ public class DocumentAdminServiceImpl implements DocumentAdminService {
         this.cloudStorageService = cloudStorageService;
     }
 
-    public DocumentResponseDto createDocument(DocumentCreateDto createDto){
+    public void createDocument(DocumentCreateDto createDto){
 
         String email=((UserPrincipal) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUser().getEmail();
         Document document=documentDtoMapper.toEntity(createDto);
@@ -38,8 +38,6 @@ public class DocumentAdminServiceImpl implements DocumentAdminService {
         String fileUrl=cloudStorageService.uploadFile(createDto.getFile());
 
         DocumentVersion documentVersion=documentVersionDtoMapper.fromCreateDto(createDto,document,fileUrl,email);
-
-        DocumentResponseDto responseDto=new DocumentResponseDto();
-        return responseDto;
+        documentVersionRepository.save(documentVersion);
     }
 }

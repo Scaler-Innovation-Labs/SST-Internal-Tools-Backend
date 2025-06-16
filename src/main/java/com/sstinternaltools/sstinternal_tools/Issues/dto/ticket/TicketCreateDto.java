@@ -15,7 +15,7 @@ public class TicketCreateDto {
     @NotBlank (message = "Priority cannot be blank")
     private TicketPriority priority;
     @NotBlank (message = "Status cannot be blank")
-    private TicketStatus status;
+    private TicketStatus status = TicketStatus.PENDING;
     @NotBlank (message = "Campus cannot be blank")
     private CampusType campus;
 

@@ -4,4 +4,9 @@ import com.sstinternaltools.sstinternal_tools.documents.entity.DocumentVersion;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface DocumentVersionRepository extends JpaRepository<DocumentVersion, Long> {
+
+    DocumentVersion getByDocumentId(Long documentId);
+    DocumentVersion findByDocumentIdAndIsLatestVersionTrue(Long documentId);
+    DocumentVersion findTopByDocumentIdOrderByVersionNumberDesc(Long documentId);
+    void deleteAllByDocumentId(Long documentId);
 }

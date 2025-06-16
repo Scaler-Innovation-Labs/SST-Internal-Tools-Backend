@@ -3,6 +3,8 @@ package com.sstinternaltools.sstinternal_tools.documents.dto.documentDtos;
 import com.sstinternaltools.sstinternal_tools.documents.entity.AllowedUsers;
 import com.sstinternaltools.sstinternal_tools.documents.entity.DocumentCategory;
 import com.sstinternaltools.sstinternal_tools.documents.entity.Tag;
+import org.springframework.web.multipart.MultipartFile;
+
 import java.util.Set;
 
 public class DocumentUpdateDto {
@@ -11,6 +13,15 @@ public class DocumentUpdateDto {
     private DocumentCategory category;
     private Set<AllowedUsers> allowedUsers;
     private Set<Tag> tags;
+    private MultipartFile file;
+
+    public MultipartFile getFile() {
+        return file;
+    }
+
+    public void setFile(MultipartFile file) {
+        this.file = file;
+    }
 
     public String getTitle() {
         return title;

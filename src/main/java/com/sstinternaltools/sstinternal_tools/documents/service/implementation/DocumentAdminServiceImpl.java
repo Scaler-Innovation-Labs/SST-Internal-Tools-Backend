@@ -2,6 +2,7 @@ package com.sstinternaltools.sstinternal_tools.documents.service.implementation;
 
 import com.sstinternaltools.sstinternal_tools.documents.dto.documentDtos.DocumentCreateDto;
 import com.sstinternaltools.sstinternal_tools.documents.dto.documentDtos.DocumentResponseDto;
+import com.sstinternaltools.sstinternal_tools.documents.dto.documentDtos.DocumentUpdateDto;
 import com.sstinternaltools.sstinternal_tools.documents.entity.Document;
 import com.sstinternaltools.sstinternal_tools.documents.entity.DocumentVersion;
 import com.sstinternaltools.sstinternal_tools.documents.mapper.interfaces.DocumentDtoMapper;
@@ -39,5 +40,9 @@ public class DocumentAdminServiceImpl implements DocumentAdminService {
 
         DocumentVersion documentVersion=documentVersionDtoMapper.fromCreateDto(createDto,document,fileUrl,email);
         documentVersionRepository.save(documentVersion);
+    }
+
+    public void updateDocument(DocumentUpdateDto updateDto){
+
     }
 }

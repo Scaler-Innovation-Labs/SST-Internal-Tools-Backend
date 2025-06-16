@@ -8,6 +8,7 @@ import java.util.Set;
 public class Document {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "document_id",nullable = false)
     private Long id;
 
     @Column(nullable = false)

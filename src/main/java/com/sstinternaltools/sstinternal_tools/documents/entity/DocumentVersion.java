@@ -11,6 +11,7 @@ public class DocumentVersion {
     private Long id;
 
     @ManyToOne
+    @JoinColumn(name = "document_id", nullable = false)
     private Document document;
 
     private Long versionNumber;

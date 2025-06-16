@@ -112,7 +112,7 @@ public class TicketServiceImpl implements TicketService {
 
         ticket = ticketDtoMapper.fromUpdateDto(ticketUpdateDto, ticket);
 
-        Ticket updatedTicket = ticketRepository.save(ticket)
+        Ticket updatedTicket = ticketRepository.save(ticket);
         return ticketDtoMapper.toResponseDto(updatedTicket);
     }
 

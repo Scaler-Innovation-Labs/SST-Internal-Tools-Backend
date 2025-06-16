@@ -110,27 +110,9 @@ public class TicketServiceImpl implements TicketService {
                 .orElseThrow(() -> new TicketNotFoundException("Ticket not found with ID: " + id));
 
 
-        if (ticketUpdateDto.getTitle() != null) {
-            ticket.setTitle(ticketUpdateDto.getTitle());
-        }
-        if (ticketUpdateDto.getDescription() != null) {
-            ticket.setDescription(ticketUpdateDto.getDescription());
-        }
-        if (ticketUpdateDto.getPriority() != null) {
-            ticket.setPriority(ticketUpdateDto.getPriority());
-        }
-        if (ticketUpdateDto.getStatus() != null) {
-            ticket.setStatus(ticketUpdateDto.getStatus());
-        }
-        if (ticketUpdateDto.getCampus() != null) {
-            ticket.setCampus(ticketUpdateDto.getCampus());
-        }
-        if (ticketUpdateDto.getImageUrl() != null) {
-            ticket.setImageUrl(ticketUpdateDto.getImageUrl());
-        }
+        ticket = ticketDtoMapper.fromUpdateDto(ticketUpdateDto, ticket);
 
-        ticket.setUpdatedAt(LocalDateTime.now());
-        Ticket updatedTicket = ticketRepository.save(ticket);
+        Ticket updatedTicket = ticketRepository.save(ticket)
         return ticketDtoMapper.toResponseDto(updatedTicket);
     }
 

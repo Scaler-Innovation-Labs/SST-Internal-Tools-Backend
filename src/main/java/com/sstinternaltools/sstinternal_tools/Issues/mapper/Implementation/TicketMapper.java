@@ -9,6 +9,7 @@ import com.sstinternaltools.sstinternal_tools.Issues.dto.ticket.TicketUpdateDto;
 import com.sstinternaltools.sstinternal_tools.Issues.dto.ticket.TicketSummaryDto;
 
 import java.time.format.DateTimeFormatter;
+import java.time.LocalDateTime;
 
 import jakarta.validation.constraints.NotNull;
 
@@ -96,8 +97,11 @@ public class TicketMapper implements TicketDtoMapper {
                 ticket.setCampus(ticketUpdateDto.getCampus());
             }
             if (ticketUpdateDto.getImageUrl() != null) {
+                // Assuming getImageUrl() from DTO returns List<String>
+                // and setImageUrl() in Entity expects List<String>
                 ticket.setImageUrl(ticketUpdateDto.getImageUrl());
             }
+            ticket.setUpdatedAt(LocalDateTime.now()); // Update timestamp here
             return ticket;
     }
 }

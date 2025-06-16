@@ -19,7 +19,7 @@ import jakarta.persistence.Column; // Add this import
 public class Ticket {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(nullable = false) // Add this annotation
+    @Column(nullable = false)
     private Long id;
     private String title;
     private String description;

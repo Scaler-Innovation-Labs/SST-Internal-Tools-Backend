@@ -4,7 +4,7 @@ import com.sstinternaltools.sstinternal_tools.Issues.entity.TicketStatus;
 import jakarta.validation.constraints.NotBlank;
 
 public class TicketSummaryDto {
-    private long id;
+    private Long id;
     private TicketStatus ticketStatus;
     @NotBlank (message = "Title cannot be blank")
     private String title;
@@ -70,7 +70,7 @@ public class TicketSummaryDto {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -82,3 +82,7 @@ public class TicketSummaryDto {
         this.ticketStatus = ticketStatus;
     }
 }
+
+
+
+

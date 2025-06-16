@@ -7,6 +7,8 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.JoinColumn;
 import com.sstinternaltools.sstinternal_tools.user.entity.User;
+import jakarta.validation.constraints.NotNull;
+
 import java.time.LocalDateTime;
 
 
@@ -14,7 +16,8 @@ import java.time.LocalDateTime;
 public class Comment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    @NotNull(message = "ID cannot be null")
+    private Long id;
 
     @ManyToOne
     @JoinColumn(name = "ticket_id")
@@ -29,7 +32,7 @@ public class Comment {
     private LocalDateTime timestamp;
 
 
-    public Comment(long id, Ticket ticket, User author, String content, LocalDateTime timestamp) {
+    public Comment(Long id, Ticket ticket, User author, String content, LocalDateTime timestamp) { // Changed id to Long
         this.id = id;
         this.ticket = ticket;
         this.author = author;
@@ -40,11 +43,11 @@ public class Comment {
     public Comment() {
     }
 
-    public long getId() {
+    public Long getId() { // Changed return type to Long
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) { // Changed parameter to Long
         this.id = id;
     }
 

@@ -11,6 +11,7 @@ import jakarta.persistence.FetchType;
 import com.sstinternaltools.sstinternal_tools.user.entity.User;
 import java.time.LocalDateTime;
 import java.util.List;
+import jakarta.persistence.Column; // Add this import
 
 
 
@@ -18,7 +19,8 @@ import java.util.List;
 public class Ticket {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    @Column(nullable = false) // Add this annotation
+    private Long id;
     private String title;
     private String description;
     private TicketPriority priority;
@@ -55,11 +57,11 @@ public class Ticket {
 
 
 
-    public long getId() {
+    public Long getId() { // Changed return type from long to Long
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) { // Changed parameter type from long to Long
         this.id = id;
     }
 

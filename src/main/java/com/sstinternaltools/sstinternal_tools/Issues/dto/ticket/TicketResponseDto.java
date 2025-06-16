@@ -7,7 +7,7 @@ import jakarta.validation.constraints.NotNull;
 
 public class TicketResponseDto {
     @NotBlank (message = "Ticket ID cannot be blank")
-    private long id;
+    private Long id;
     @NotBlank (message = "Title cannot be blank")
     private String title;
     @NotBlank (message = "Description cannot be blank")
@@ -31,7 +31,7 @@ public class TicketResponseDto {
     private String updatedAt;
 
 
-    public TicketResponseDto(long id, String title, String description, TicketPriority priority, TicketStatus status, String campus, long upvote, String imageUrl, String createdBy, String createdAt, String updatedAt) {
+    public TicketResponseDto(Long id, String title, String description, TicketPriority priority, TicketStatus status, String campus, long upvote, String imageUrl, String createdBy, String createdAt, String updatedAt) {
         this.id = id;
         this.title = title;
         this.description = description;
@@ -45,10 +45,10 @@ public class TicketResponseDto {
     }
     public TicketResponseDto() {
     }
-    public long getId() {
+    public Long getId() {
         return id;
     }
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

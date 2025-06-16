@@ -53,7 +53,7 @@ public class DocumentDtoMapperImpl implements DocumentDtoMapper {
     }
 
     @Override
-    public void updateEntity(DocumentUpdateDto dto, Document document) {
+    public Document updateEntity(DocumentUpdateDto dto, Document document) {
         if (dto.getTitle() != null) {
             document.setTitle(dto.getTitle());
         }
@@ -66,5 +66,7 @@ public class DocumentDtoMapperImpl implements DocumentDtoMapper {
         if (dto.getTags() != null) {
             document.setTags(dto.getTags());
         }
+
+        return document;
     }
 }

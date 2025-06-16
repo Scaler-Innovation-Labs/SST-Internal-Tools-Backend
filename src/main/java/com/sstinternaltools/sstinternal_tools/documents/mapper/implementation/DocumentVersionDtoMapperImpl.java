@@ -12,8 +12,8 @@ import java.time.LocalDateTime;
 @Component
 public class DocumentVersionDtoMapperImpl implements DocumentVersionDtoMapper {
     @Override
-    public DocumentVersion fromCreateDto(DocumentCreateDto dto, Document document, String fileUrl, String uploadedByUserEmail) {
-        DocumentVersion version = new DocumentVersion(document,, fileUrl, uploadedByUserEmail,true);
+    public DocumentVersion fromCreateDto(Document document, String fileUrl, String uploadedByUserEmail) {
+        DocumentVersion version = new DocumentVersion(document, 1L, fileUrl, uploadedByUserEmail,true);
         version.setUploadedAt(LocalDateTime.now());
         return version;
     }

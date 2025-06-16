@@ -38,11 +38,21 @@ public class DocumentAdminServiceImpl implements DocumentAdminService {
 
         String fileUrl=cloudStorageService.uploadFile(createDto.getFile());
 
-        DocumentVersion documentVersion=documentVersionDtoMapper.fromCreateDto(createDto,document,fileUrl,email);
+        DocumentVersion documentVersion=documentVersionDtoMapper.fromCreateDto(document,fileUrl,email);
         documentVersionRepository.save(documentVersion);
     }
 
-    public void updateDocument(DocumentUpdateDto updateDto){
+    public void updateDocument(DocumentUpdateDto updateDto,Long documentId){
+        Document document=documentRepository.getReferenceById(documentId);
+        Document updatedDocument=documentDtoMapper.updateEntity(updateDto,document);
+
+        if(updateDto.getFile()!=null){
+            String fileUrl=cloudStorageService.uploadFile(updateDto.getFile());
+
+        }
+    }
+
+    public DocumentVersion createDocumentVersion(Document document,){
 
     }
 }

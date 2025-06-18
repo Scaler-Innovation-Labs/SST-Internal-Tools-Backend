@@ -7,16 +7,18 @@ public class BookingRequestDTO {
     private Long userId;
     private LocalDateTime startTime;
     private LocalDateTime endTime;
+    private String purpose; // Reason for booking
 
     // Constructors
     public BookingRequestDTO() {
     }
 
-    public BookingRequestDTO(Long roomId, Long userId, LocalDateTime startTime, LocalDateTime endTime) {
+    public BookingRequestDTO(Long roomId, Long userId, LocalDateTime startTime, LocalDateTime endTime, String purpose) {
         this.roomId = roomId;
         this.userId = userId;
         this.startTime = startTime;
         this.endTime = endTime;
+        this.purpose = purpose;
     }
 
     // Getters and Setters
@@ -50,5 +52,13 @@ public class BookingRequestDTO {
 
     public void setEndTime(LocalDateTime endTime) {
         this.endTime = endTime;
+    }
+
+    public String getPurpose() {
+        return purpose;
+    }
+
+    public void setPurpose(String purpose) {
+        this.purpose = purpose;
     }
 }

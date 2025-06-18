@@ -3,13 +3,12 @@ package com.sstinternaltools.sstinternal_tools.announcement.controller;
 import com.sstinternaltools.sstinternal_tools.announcement.dto.AnnouncementRequest;
 import com.sstinternaltools.sstinternal_tools.announcement.dto.AnnouncementResponse;
 import com.sstinternaltools.sstinternal_tools.announcement.dto.AnnouncementUpdateRequest;
-import com.sstinternaltools.sstinternal_tools.announcement.model.AnnouncementLabel;
+import com.sstinternaltools.sstinternal_tools.announcement.entity.AnnouncementLabel;
 import com.sstinternaltools.sstinternal_tools.announcement.service.template.AnnouncementService;
 import jakarta.validation.Valid;
 import org.springframework.data.domain.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Set;

@@ -6,8 +6,8 @@ import com.sstinternaltools.sstinternal_tools.announcement.dto.AnnouncementUpdat
 import com.sstinternaltools.sstinternal_tools.announcement.exception.AnnouncementAccessDeniedException;
 import com.sstinternaltools.sstinternal_tools.announcement.exception.AnnouncementAlreadyDeletedException;
 import com.sstinternaltools.sstinternal_tools.announcement.exception.AnnouncementNotFoundException;
-import com.sstinternaltools.sstinternal_tools.announcement.model.Announcement;
-import com.sstinternaltools.sstinternal_tools.announcement.model.AnnouncementLabel;
+import com.sstinternaltools.sstinternal_tools.announcement.entity.Announcement;
+import com.sstinternaltools.sstinternal_tools.announcement.entity.AnnouncementLabel;
 import com.sstinternaltools.sstinternal_tools.announcement.repository.AnnouncementRepository;
 import com.sstinternaltools.sstinternal_tools.announcement.service.template.AnnouncementService;
 import com.sstinternaltools.sstinternal_tools.security.entity.UserPrincipal;
@@ -19,7 +19,6 @@ import org.springframework.data.domain.*;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.*;

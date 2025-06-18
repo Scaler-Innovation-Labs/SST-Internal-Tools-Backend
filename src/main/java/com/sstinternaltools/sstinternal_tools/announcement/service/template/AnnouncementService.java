@@ -3,7 +3,7 @@ package com.sstinternaltools.sstinternal_tools.announcement.service.template;
 import com.sstinternaltools.sstinternal_tools.announcement.dto.AnnouncementRequest;
 import com.sstinternaltools.sstinternal_tools.announcement.dto.AnnouncementResponse;
 import com.sstinternaltools.sstinternal_tools.announcement.dto.AnnouncementUpdateRequest;
-import com.sstinternaltools.sstinternal_tools.announcement.model.AnnouncementLabel;
+import com.sstinternaltools.sstinternal_tools.announcement.entity.AnnouncementLabel;
 import org.springframework.data.domain.*;
 
 import java.util.Set;

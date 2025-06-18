@@ -1,4 +1,4 @@
-package com.sstinternaltools.sstinternal_tools.announcement.model;
+package com.sstinternaltools.sstinternal_tools.announcement.entity;
 
 import com.sstinternaltools.sstinternal_tools.user.entity.User;
 import jakarta.persistence.*;

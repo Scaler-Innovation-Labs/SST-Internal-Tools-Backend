@@ -25,16 +25,8 @@ public class VendorPlanSelectionSummaryDto {
     private Set<MealType> mealTypes;
     @NotNull(message = "Fee cannot be blank")
     private double fee;
-
-    public VendorPlanSelectionSummaryDto(){}
-
-    public VendorPlanSelectionSummaryDto(String vendorPlanName, String vendorName, LocalDate selectedMonth, Set<MealType> mealTypes, double fee) {
-        this.vendorPlanName = vendorPlanName;
-        this.vendorName = vendorName;
-        this.selectedMonth = selectedMonth;
-        this.mealTypes = mealTypes;
-        this.fee = fee;
-    }
+    @NotNull(message = "Room number cannot be blank")
+    private Integer roomNumber;
 
     public String getVendorPlanName() {
         return vendorPlanName;
@@ -74,5 +66,13 @@ public class VendorPlanSelectionSummaryDto {
 
     public void setFee(double fee) {
         this.fee = fee;
+    }
+
+    public Integer getRoomNumber() {
+        return roomNumber;
+    }
+
+    public void setRoomNumber(Integer roomNumber) {
+        this.roomNumber = roomNumber;
     }
 }

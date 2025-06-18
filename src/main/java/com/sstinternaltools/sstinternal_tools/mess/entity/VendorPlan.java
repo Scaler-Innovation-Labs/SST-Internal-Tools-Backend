@@ -10,7 +10,6 @@ public class VendorPlan {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "vendor_plan_id",nullable = false)
     private Long id;
-
     private String planName;
 
     @ManyToOne

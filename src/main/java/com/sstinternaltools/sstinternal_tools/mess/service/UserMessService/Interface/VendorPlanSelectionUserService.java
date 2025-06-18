@@ -9,12 +9,9 @@ import java.time.YearMonth;
 import java.util.List;
 
 public interface VendorPlanSelectionUserService {
-    VendorPlanSelectionSummaryDto getVendorPlanSelectionById(Long id);
     List<VendorPlanSelectionSummaryDto> getVendorPlanSelectionsByUserId(Long userId);
-    List<VendorPlanSelectionSummaryDto> getVendorPlanSelectionsByMonth(YearMonth month);
-    List<VendorPlanSelectionSummaryDto> getVendorPlanSelectionsByMonthAndVendorId(YearMonth month, Long vendorId);
-    List<VendorPlanSelectionSummaryDto> getVendorPlanSelectionsByUserIdAndMonth(Long userId, YearMonth month);
-    VendorPlanSelectionResponseDto createVendorPlanSelection(VendorPlanSelectionCreateDto vendorPlanSelectionCreateDto, Long vendorPlanId, Long userId);
-    VendorPlanSelectionResponseDto updateVendorPlanSelection(VendorPlanSelectionUpdateDto vendorPlanSelectionUpdateDto, Long vendorPlanSelectionId);
-    void deleteVendorPlanSelection(Long id);
+    List<VendorPlanSelectionSummaryDto> getVendorPlanSelectionsByUserIdAndVendorId(Long userId, Long vendorId);
+    List<VendorPlanSelectionResponseDto> createVendorPlanSelection(List<VendorPlanSelectionCreateDto> vendorPlanSelectionCreateDtos, Long userId);
+    List<VendorPlanSelectionResponseDto> updateVendorPlanSelection(List<VendorPlanSelectionUpdateDto> vendorPlanSelectionUpdateDtos, Long userId);
+    void deleteVendorPlanSelection(Long userId);
 }

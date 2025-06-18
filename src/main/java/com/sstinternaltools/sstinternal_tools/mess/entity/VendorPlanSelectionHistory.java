@@ -6,33 +6,40 @@ import jakarta.persistence.*;
 import java.time.LocalDate;
 
 @Entity
-public class VendorPlanSelection {
+public class VendorPlanSelectionHistory {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name="vendor_plan_selection_id",nullable = false)
-    private Long id ;
+    @Column(name="vendor_plan_selection_history_id",nullable = false)
+    private Long id;
 
     @ManyToOne
     @JoinColumn(name="user_id")
     private User user;
 
     @ManyToOne
-    @JoinColumn(name="vendor_plan_id")
-    private VendorPlan plan;
+    @JoinColumn(name="vendor_plan_history_id")
+    private VendorPlanHistory plan;
+
     private LocalDate selectedMonth;
     private Integer roomNumber;
 
-    public VendorPlanSelection() {}
+    public VendorPlanSelectionHistory() {}
 
-    public VendorPlanSelection(User user, LocalDate selectedMonth, VendorPlan plan, Integer roomNumber) {
+    public VendorPlanSelectionHistory(Long id, User user, VendorPlanHistory plan, LocalDate selectedMonth, Integer roomNumber) {
+        this.id = id;
         this.user = user;
-        this.selectedMonth = LocalDate.of(selectedMonth.getYear(), selectedMonth.getMonth(), 1);
         this.plan = plan;
+        this.selectedMonth = selectedMonth;
         this.roomNumber = roomNumber;
     }
 
     public Long getId() {
         return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public User getUser() {
@@ -43,19 +50,11 @@ public class VendorPlanSelection {
         this.user = user;
     }
 
-    public VendorPlan getPlan() {
-        return plan;
-    }
-
-    public void setPlan(VendorPlan plan) {
-        this.plan = plan;
-    }
-
-    public LocalDate getMonth() {
+    public LocalDate getSelectedMonth() {
         return selectedMonth;
     }
 
-    public void setMonth(LocalDate selectedMonth) {
+    public void setSelectedMonth(LocalDate selectedMonth) {
         this.selectedMonth = selectedMonth;
     }
 
@@ -65,5 +64,13 @@ public class VendorPlanSelection {
 
     public void setRoomNumber(Integer roomNumber) {
         this.roomNumber = roomNumber;
+    }
+
+    public VendorPlanHistory getPlan() {
+        return plan;
+    }
+
+    public void setPlan(VendorPlanHistory plan) {
+        this.plan = plan;
     }
 }

@@ -1,7 +1,7 @@
 package com.sstinternaltools.sstinternal_tools.announcement.repository;
 
-import com.sstinternaltools.sstinternal_tools.announcement.model.Announcement;
-import com.sstinternaltools.sstinternal_tools.announcement.model.AnnouncementLabel;
+import com.sstinternaltools.sstinternal_tools.announcement.entity.Announcement;
+import com.sstinternaltools.sstinternal_tools.announcement.entity.AnnouncementLabel;
 import org.springframework.data.domain.*;
 import org.springframework.data.jpa.repository.*;
 import org.springframework.stereotype.Repository;

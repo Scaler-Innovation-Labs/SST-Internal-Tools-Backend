@@ -40,6 +40,7 @@ public class VendorPlanSelectionAdminServiceImpl implements VendorPlanSelectionA
         this.vendorPlanSelectionHistoryService = vendorPlanSelectionHistoryService;
     }
 
+    @Transactional
     @Override
     public List<VendorPlanSelectionResponseDto> createVendorPlanSelection(List<VendorPlanSelectionCreateDto> vendorPlanSelectionCreateDtos, Long userId) {
         User user = userRepository.findById(userId)
@@ -112,6 +113,7 @@ public class VendorPlanSelectionAdminServiceImpl implements VendorPlanSelectionA
         vendorPlanSelectionHistoryService.updateSelectionHistoryIfWithinWindow(user);
     }
 
+    @Transactional
     @Override
     public void deleteAllVendorPlanSelection() {
         vendorPlanSelectionRepository.deleteAll();

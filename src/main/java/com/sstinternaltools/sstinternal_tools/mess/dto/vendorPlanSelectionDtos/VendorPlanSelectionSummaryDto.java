@@ -23,6 +23,8 @@ public class VendorPlanSelectionSummaryDto {
     private Set<MealType> mealTypes;
     @NotNull(message = "Fee cannot be blank")
     private double fee;
+    @NotNull(message = "Room number cannot be blank")
+    private Integer roomNumber;
 
     public String getVendorPlanName() {
         return vendorPlanName;
@@ -62,5 +64,13 @@ public class VendorPlanSelectionSummaryDto {
 
     public void setFee(double fee) {
         this.fee = fee;
+    }
+
+    public Integer getRoomNumber() {
+        return roomNumber;
+    }
+
+    public void setRoomNumber(Integer roomNumber) {
+        this.roomNumber = roomNumber;
     }
 }

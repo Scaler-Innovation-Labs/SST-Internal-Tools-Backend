@@ -29,4 +29,9 @@ public class MessExceptionHandler {
     public ResponseEntity<Map<String, Object>> handleDuplicateResourceException(DuplicateResourceException ex) {
         return buildResponse(HttpStatus.CONFLICT, "This resource already exists.", ex.getMessage());
     }
+
+    @ExceptionHandler(RestrictedResourceException.class)
+    public ResponseEntity<Map<String, Object>> handleRestrictedResourceException(RestrictedResourceException ex) {
+        return buildResponse(HttpStatus.CONFLICT, "This resource is restricted to admins only.", ex.getMessage());
+    }
 }

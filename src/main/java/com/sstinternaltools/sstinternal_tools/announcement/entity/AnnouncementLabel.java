@@ -7,4 +7,3 @@ public enum AnnouncementLabel {
     COMPETITIVE_PROGRAMMING_CLUB,
     SPORTS_CLUB
 }
-

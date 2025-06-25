@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sstinternaltools.sstinternal_tools.security.exception.InvalidCredentialsException;
 import com.sstinternaltools.sstinternal_tools.security.service.interfaces.AuthService;
 import com.sstinternaltools.sstinternal_tools.security.service.interfaces.CustomLogicService;
+import com.sstinternaltools.sstinternal_tools.security.service.interfaces.ExcelEmailChecker;
 import com.sstinternaltools.sstinternal_tools.security.service.interfaces.JwtService;
 import com.sstinternaltools.sstinternal_tools.user.entity.User;
 import com.sstinternaltools.sstinternal_tools.user.entity.UserRole;
@@ -12,6 +13,8 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.transaction.Transactional;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
@@ -27,17 +30,22 @@ public class CustomOAuth2SuccessHandler implements AuthenticationSuccessHandler 
     private final CustomLogicService customLogicService;
     private final AuthService authService;
     private final ObjectMapper objectMapper;
+    private final ExcelEmailChecker excelEmailChecker;
+    private final String excelFilePath;
 
-    public CustomOAuth2SuccessHandler(JwtService jwtService, UserRepository userRepository, CustomLogicService customLogicService, AuthService authService, ObjectMapper objectMapper) {
+    public CustomOAuth2SuccessHandler(JwtService jwtService, UserRepository userRepository, CustomLogicService customLogicService, AuthService authService, ObjectMapper objectMapper, ExcelEmailChecker excelEmailChecker,  @Value("${EXCEL_FILE_PATH}") String excelFilePath) {
         this.jwtService = jwtService;
         this.userRepository = userRepository;
         this.customLogicService = customLogicService;
         this.authService = authService;
         this.objectMapper = objectMapper;
+        this.excelEmailChecker = excelEmailChecker;
+        this.excelFilePath = excelFilePath;
     }
 
 
     @Override
+    @Transactional
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
         try {
             OAuth2User oAuth2User = (OAuth2User) authentication.getPrincipal();
@@ -47,6 +55,12 @@ public class CustomOAuth2SuccessHandler implements AuthenticationSuccessHandler 
 
             if (!domain.equals("sst.scaler.com") && !domain.equals("scaler.com")) {
                 throw new InvalidCredentialsException("Invalid domain: " + domain);
+            }
+
+            if (email.startsWith("srinidhi") || email.startsWith("vivek") || email.startsWith("rudray") || email.startsWith("yash") || domain.equals("scaler.com")) { // Need to change this after getting a priveleged email.
+                if (!excelEmailChecker.isEmailInExcel(email, excelFilePath)) {
+                    throw new InvalidCredentialsException("Invalid email: " + email);
+                }
             }
 
             if (userRepository.findByEmail(email).isEmpty()) {
@@ -71,14 +85,16 @@ public class CustomOAuth2SuccessHandler implements AuthenticationSuccessHandler 
             response.sendRedirect("http://localhost:3000/dashboard"); // NEEDS TO BE CHANGED LATER
 
 //            Map<String, String> tokens = new HashMap<>();
-//            tokens.put("accessToken", accessToken); // access token send in the json format
+//            tokens.put("accessToken", accessToken); //access token send in the json format
+//            tokens.put("refreshToken", refreshToken);
 //
-//            response.setContentType("application/json");// Tells browser that the server response will be in JSON format
+//            response.setContentType("application/json");//Tells browser that the server response will be in JSON format
 //            response.setCharacterEncoding("UTF-8");//: Specifies that the characters in the response body will use UTF-8 encoding(to avoid character corruption)
 //            response.getWriter().write(objectMapper.writeValueAsString(tokens));// Converts the tokens Map<String, String> into a JSON string using Jackson's ObjectMapper
 //            response.sendRedirect("/");
 
         } catch(Exception e){
+            e.printStackTrace();
             response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "OAuth2 login failed. Please try again.");
         }
     }

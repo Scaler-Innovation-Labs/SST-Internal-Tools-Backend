@@ -19,14 +19,17 @@ public class VendorPlanSelectionMapper implements VendorPlanSelectionDtoMapper <
         vendorPlanSelection.setPlan(vendorPlan);
         vendorPlanSelection.setUser(user);
         vendorPlanSelection.setMonth(vendorPlanSelectionCreateDto.getSelectedMonth());
+        vendorPlanSelection.setRoomNumber(vendorPlanSelectionCreateDto.getRoomNumber());
         return vendorPlanSelection;
     }
 
     @Override
-    public VendorPlanSelection fromUpdateDto(VendorPlanSelectionUpdateDto vendorPlanSelectionUpdateDto, VendorPlanSelection vendorPlanSelection,VendorPlan vendorPlan) {
-        if(vendorPlan != null){
-            vendorPlanSelection.setPlan(vendorPlan);
-        }
+    public VendorPlanSelection fromUpdateDto(VendorPlanSelectionUpdateDto vendorPlanSelectionUpdateDto, VendorPlan vendorPlan, User user) {
+        VendorPlanSelection vendorPlanSelection = new VendorPlanSelection();
+        vendorPlanSelection.setPlan(vendorPlan);
+        vendorPlanSelection.setUser(user);
+        vendorPlanSelection.setMonth(vendorPlanSelectionUpdateDto.getSelectedMonth());
+        vendorPlanSelection.setRoomNumber(vendorPlanSelectionUpdateDto.getRoomNumber());
         return vendorPlanSelection;
     }
 
@@ -37,6 +40,7 @@ public class VendorPlanSelectionMapper implements VendorPlanSelectionDtoMapper <
         vendorPlanSelectionResponseDto.setVendorPlanId(vendorPlanSelection.getPlan().getId());
         vendorPlanSelectionResponseDto.setSelectedMonth(vendorPlanSelection.getMonth());
         vendorPlanSelectionResponseDto.setUserId(vendorPlanSelection.getUser().getId());
+        vendorPlanSelectionResponseDto.setRoomNumber(vendorPlanSelection.getRoomNumber());
         return vendorPlanSelectionResponseDto;
     }
 
@@ -48,6 +52,7 @@ public class VendorPlanSelectionMapper implements VendorPlanSelectionDtoMapper <
         vendorPlanSelectionSummaryDto.setVendorName(vendorPlanSelection.getPlan().getVendor().getVendorName());
         vendorPlanSelectionSummaryDto.setMealTypes(vendorPlanSelection.getPlan().getMealTypes());
         vendorPlanSelectionSummaryDto.setFee(vendorPlanSelection.getPlan().getFee());
+        vendorPlanSelectionSummaryDto.setRoomNumber(vendorPlanSelection.getRoomNumber());
         return vendorPlanSelectionSummaryDto;
     }
 }

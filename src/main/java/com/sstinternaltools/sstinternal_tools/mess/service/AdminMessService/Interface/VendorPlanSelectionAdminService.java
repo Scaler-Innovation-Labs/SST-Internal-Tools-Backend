@@ -4,8 +4,11 @@ import com.sstinternaltools.sstinternal_tools.mess.dto.vendorPlanSelectionDtos.V
 import com.sstinternaltools.sstinternal_tools.mess.dto.vendorPlanSelectionDtos.VendorPlanSelectionResponseDto;
 import com.sstinternaltools.sstinternal_tools.mess.dto.vendorPlanSelectionDtos.VendorPlanSelectionUpdateDto;
 
+import java.util.List;
+
 public interface VendorPlanSelectionAdminService {
-    VendorPlanSelectionResponseDto createVendorPlanSelection(VendorPlanSelectionCreateDto vendorPlanSelectionCreateDto, Long vendorPlanId, Long userId);
-    VendorPlanSelectionResponseDto updateVendorPlanSelection(VendorPlanSelectionUpdateDto vendorPlanSelectionUpdateDto, Long vendorPlanSelectionId);
-    void deleteVendorPlanSelectionDto(Long id);
+    List<VendorPlanSelectionResponseDto> createVendorPlanSelection(List<VendorPlanSelectionCreateDto> vendorPlanSelectionCreateDtos, Long userId);
+    List<VendorPlanSelectionResponseDto> updateVendorPlanSelection(List<VendorPlanSelectionUpdateDto> vendorPlanSelectionUpdateDtos, Long userId);
+    void deleteVendorPlanSelection(Long userId);
+    void deleteAllVendorPlanSelection();
 }

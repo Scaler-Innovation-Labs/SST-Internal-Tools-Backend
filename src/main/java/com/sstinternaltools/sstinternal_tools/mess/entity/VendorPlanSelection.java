@@ -4,12 +4,12 @@ import com.sstinternaltools.sstinternal_tools.user.entity.User;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
-import java.time.YearMonth;
 
 @Entity
 public class VendorPlanSelection {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name="vendor_plan_selection_id",nullable = false)
     private Long id ;
 
     @ManyToOne
@@ -19,15 +19,16 @@ public class VendorPlanSelection {
     @ManyToOne
     @JoinColumn(name="vendor_plan_id")
     private VendorPlan plan;
-
     private LocalDate selectedMonth;
+    private Integer roomNumber;
 
     public VendorPlanSelection() {}
 
-    public VendorPlanSelection(User user, LocalDate selectedMonth, VendorPlan plan) {
+    public VendorPlanSelection(User user, LocalDate selectedMonth, VendorPlan plan, Integer roomNumber) {
         this.user = user;
         this.selectedMonth = LocalDate.of(selectedMonth.getYear(), selectedMonth.getMonth(), 1);
         this.plan = plan;
+        this.roomNumber = roomNumber;
     }
 
     public Long getId() {
@@ -56,5 +57,13 @@ public class VendorPlanSelection {
 
     public void setMonth(LocalDate selectedMonth) {
         this.selectedMonth = selectedMonth;
+    }
+
+    public Integer getRoomNumber() {
+        return roomNumber;
+    }
+
+    public void setRoomNumber(Integer roomNumber) {
+        this.roomNumber = roomNumber;
     }
 }

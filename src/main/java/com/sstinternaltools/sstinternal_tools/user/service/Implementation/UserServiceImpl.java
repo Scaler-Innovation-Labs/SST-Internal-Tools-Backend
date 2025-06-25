@@ -10,6 +10,7 @@ import com.sstinternaltools.sstinternal_tools.user.entity.User;
 import com.sstinternaltools.sstinternal_tools.user.mapper.Implementation.UserMapper;
 import com.sstinternaltools.sstinternal_tools.user.repository.UserRepository;
 import com.sstinternaltools.sstinternal_tools.user.service.Interface.UserService;
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -36,13 +37,21 @@ public class UserServiceImpl implements UserService {
         return userMapper.toResponseDto(user);
     }
 
+    @Transactional
     @Override
-    public UserResponseDto updateUser(UserUpdateDto userUpdateDto, Long id) {
-        User user = userRepository.findById(id)
-                .orElseThrow(() -> new UserNotFoundException("User with id " + id + " not found"));
-        if (userUpdateDto.getUsername() == null || userUpdateDto.getUsername().isEmpty()) {
-            user.setUsername(userUpdateDto.getUsername());
+    public UserResponseDto updateUser(UserUpdateDto userUpdateDto, Long userId, Boolean isPut) {
+        if (userId == null) {
+            throw new IllegalArgumentException("User ID cannot be null.");
         }
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new UserNotFoundException("User with ID " + userId + " not found. [Method: updateUser]"));
+        if (isPut) {
+            if (userUpdateDto.getUsername() == null || userUpdateDto.getUsername().isEmpty()) {
+                throw new IllegalArgumentException("User name cannot be blank.");
+            }
+            user.setUsername(null);
+        }
+        user = userMapper.fromUpdateDto(userUpdateDto, user);
         User savedUser = userRepository.save(user);
         return userMapper.toResponseDto(savedUser);
     }

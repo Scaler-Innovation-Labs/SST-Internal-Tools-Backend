@@ -14,6 +14,8 @@ public class VendorPlanSelectionCreateDto {
     @JsonFormat(pattern = "yyyy-MM-dd")
     @NotNull(message = "Month cannot be blank")
     private LocalDate selectedMonth;
+    @NotNull(message = "Room number cannot be blank")
+    private Integer roomNumber;
 
     public Long getUserId() {
         return userId;
@@ -37,5 +39,13 @@ public class VendorPlanSelectionCreateDto {
 
     public void setSelectedMonth(LocalDate selectedMonth) {
         this.selectedMonth = LocalDate.of(selectedMonth.getYear(), selectedMonth.getMonth(), 1);
+    }
+
+    public Integer getRoomNumber() {
+        return roomNumber;
+    }
+
+    public void setRoomNumber(Integer roomNumber) {
+        this.roomNumber = roomNumber;
     }
 }

@@ -17,10 +17,30 @@ public class User
     @Column(unique = true)
     private String email;
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-//    @Lazy
     private List<UserRole> userRoles;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
+
+    public User(String username, String email, List<UserRole> userRoles, LocalDateTime createdAt, LocalDateTime updatedAt) {
+        this.username = username;
+        this.email = email;
+        this.userRoles = userRoles;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
+    }
+
+    public User() {}
+
+    @PrePersist
+    protected void onCreate() {
+        this.createdAt = LocalDateTime.now();
+        this.updatedAt = LocalDateTime.now();
+    }
+
+    @PreUpdate
+    protected void onUpdate() {
+        this.updatedAt = LocalDateTime.now();
+    }
 
     public Long getId() {
         return id;
@@ -57,14 +77,4 @@ public class User
     public LocalDateTime getUpdatedAt() {
         return updatedAt;
     }
-
-    public User(String username, String email, List<UserRole> userRoles, LocalDateTime createdAt, LocalDateTime updatedAt) {
-        this.username = username;
-        this.email = email;
-        this.userRoles = userRoles;
-        this.createdAt = createdAt;
-        this.updatedAt = updatedAt;
-    }
-
-    public User() {}
 }

@@ -8,7 +8,7 @@ import java.util.List;
 
 public interface UserService {
     UserResponseDto getUserByAccessToken(String accessToken);
-    UserResponseDto updateUser(UserUpdateDto userUpdateDto, Long id);
+    UserResponseDto updateUser(UserUpdateDto userUpdateDto, Long id, Boolean isPut);
     UserSummaryDto getUserById(Long id);
     UserSummaryDto getUserByEmail(String email);
     List<UserSummaryDto> getAllUsers();

@@ -1,0 +1,10 @@
+services:
+  postgres:
+    image: postgres:latest
+    restart: always
+    environment:
+      POSTGRES_DB: sst-internal-tools
+      POSTGRES_USER: sst
+      POSTGRES_PASSWORD: tools
+    ports:
+      - "5432:5432"

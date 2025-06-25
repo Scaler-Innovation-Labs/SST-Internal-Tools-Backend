@@ -30,7 +30,14 @@ public class UserControllerImpl implements UserController {
     @Override
     @PutMapping("/update/{id}")
     public ResponseEntity<UserResponseDto> updateUser(@Valid @RequestBody UserUpdateDto userUpdateDto, @PathVariable Long id){
-        UserResponseDto userResponseDto = userService.updateUser(userUpdateDto, id);
+        UserResponseDto userResponseDto = userService.updateUser(userUpdateDto, id, true);
+        return ResponseEntity.ok(userResponseDto);
+    }
+
+    @Override
+    @PatchMapping("/update/{id}")
+    public ResponseEntity<UserResponseDto> updateUserPartially(@Valid @RequestBody UserUpdateDto userUpdateDto, @PathVariable Long id){
+        UserResponseDto userResponseDto = userService.updateUser(userUpdateDto, id, false);
         return ResponseEntity.ok(userResponseDto);
     }
 

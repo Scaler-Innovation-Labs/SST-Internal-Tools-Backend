@@ -12,12 +12,14 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
 import java.util.List;
 
 @RestController
+@PreAuthorize("hasAnyRole('ADMIN', 'STUDENT_ADMIN', 'SUPER_ADMIN')")
 @RequestMapping("/mess/admin/vendorPlanSelection")
 public class VendorPlanSelectionAdminControllerImpl implements VendorPlanSelectionAdminController {
 

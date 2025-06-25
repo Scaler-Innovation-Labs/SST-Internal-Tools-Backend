@@ -5,6 +5,7 @@ import com.sstinternaltools.sstinternal_tools.security.service.interfaces.AuthSe
 import com.sstinternaltools.sstinternal_tools.security.service.interfaces.JwtService;
 import com.sstinternaltools.sstinternal_tools.user.entity.User;
 import com.sstinternaltools.sstinternal_tools.user.repository.UserRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import java.util.Map;
@@ -59,9 +60,11 @@ public class AuthServiceImpl implements AuthService {
     }
 
     @Override
+    @Transactional
     public void register(String email) {
         User user = new User();
         user.setEmail(email);
+        user.setUsername(email.substring(0, email.indexOf('.')));
         userRepository.save(user);
     }
 }

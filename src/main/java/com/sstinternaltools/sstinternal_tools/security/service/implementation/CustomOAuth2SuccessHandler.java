@@ -82,7 +82,7 @@ public class CustomOAuth2SuccessHandler implements AuthenticationSuccessHandler 
             Cookie refreshCookie = jwtService.generateRefreshCookie(email);
             response.addCookie(accessCookie); // send access cookie in response to frontend
             response.addCookie(refreshCookie); // send refresh cookie in response to frontend
-            response.sendRedirect("http://localhost:3000/dashboard"); // NEEDS TO BE CHANGED LATER
+//            response.sendRedirect("http://localhost:3000/dashboard"); // NEEDS TO BE CHANGED LATER
 
 //            Map<String, String> tokens = new HashMap<>();
 //            tokens.put("accessToken", accessToken); //access token send in the json format

@@ -29,7 +29,7 @@ public class TicketResponseDto {
     private String createdAt;
     @NotBlank (message = "Updated at cannot be blank")
     private String updatedAt;
-    private boolean isPrivate = false;
+    private boolean isPrivate = false; // false = public, true = private
 
 
     public TicketResponseDto(Long id, String title, String description, TicketPriority priority, TicketStatus status, String campus, long upvote, String imageUrl, String createdBy, String createdAt, String updatedAt) {

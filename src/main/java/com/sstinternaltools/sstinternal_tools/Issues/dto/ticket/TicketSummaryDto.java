@@ -17,6 +17,7 @@ public class TicketSummaryDto {
     @NotBlank (message = "Campus cannot be blank")
     private String campus;
     private long upvote;
+    private boolean isPrivate = false; // default is public
 
     public String getTitle() {
         return title;
@@ -81,8 +82,12 @@ public class TicketSummaryDto {
     public void setTicketStatus(TicketStatus ticketStatus) {
         this.ticketStatus = ticketStatus;
     }
+
+    public boolean isPrivate() {
+        return isPrivate;
+    }
+
+    public void setPrivate(boolean isPrivate) {
+        this.isPrivate = isPrivate;
+    }
 }
-
-
-
-

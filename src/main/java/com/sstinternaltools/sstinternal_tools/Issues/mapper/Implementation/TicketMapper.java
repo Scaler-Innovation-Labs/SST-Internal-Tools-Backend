@@ -28,6 +28,7 @@ public class TicketMapper implements TicketDtoMapper {
             }
             ticket.setStatus(ticketCreateDto.getStatus());
             ticket.setPriority(ticketCreateDto.getPriority());
+            ticket.setPrivate(ticketCreateDto.isPrivate());
             return ticket;
      }
 
@@ -43,6 +44,7 @@ public class TicketMapper implements TicketDtoMapper {
                 ticketResponseDto.setCampus(ticket.getCampus().toString());
             }
             ticketResponseDto.setUpvote(ticket.getUpvote());
+            ticketResponseDto.setPrivate(ticket.isPrivate());
 
             if (ticket.getImageUrl() != null && !ticket.getImageUrl().isEmpty()) {
                 ticketResponseDto.setImageUrl(String.join(",", ticket.getImageUrl()));
@@ -71,11 +73,12 @@ public class TicketMapper implements TicketDtoMapper {
             ticketSummaryDto.setDescription(ticket.getDescription());
             ticketSummaryDto.setPriority(ticket.getPriority());
             ticketSummaryDto.setStatus(ticket.getStatus());
-            ticketSummaryDto.setTicketStatus(ticket.getStatus()); // As in service
+            ticketSummaryDto.setTicketStatus(ticket.getStatus());
             if (ticket.getCampus() != null) {
                 ticketSummaryDto.setCampus(ticket.getCampus().toString());
             }
             ticketSummaryDto.setUpvote(ticket.getUpvote());
+            ticketSummaryDto.setPrivate(ticket.isPrivate());
             return ticketSummaryDto;
     }
 
@@ -100,6 +103,9 @@ public class TicketMapper implements TicketDtoMapper {
                 // Assuming getImageUrl() from DTO returns List<String>
                 // and setImageUrl() in Entity expects List<String>
                 ticket.setImageUrl(ticketUpdateDto.getImageUrl());
+            }
+            if (ticketUpdateDto.isPrivate() != null) {
+                ticket.setPrivate(ticketUpdateDto.isPrivate()); // <-- Added
             }
             ticket.setUpdatedAt(LocalDateTime.now()); // Update timestamp here
             return ticket;

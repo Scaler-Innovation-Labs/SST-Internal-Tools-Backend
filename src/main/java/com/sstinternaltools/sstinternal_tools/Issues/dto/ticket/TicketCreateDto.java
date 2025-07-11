@@ -19,6 +19,7 @@ public class TicketCreateDto {
     private TicketStatus status = TicketStatus.PENDING;
     @NotNull(message = "Campus must be selected")
     private CampusType campus;
+    private boolean isPrivate = false; // false = public, true = private
 
 
     public String getTitle() {
@@ -59,5 +60,13 @@ public class TicketCreateDto {
 
     public void setCampus(CampusType campus) {
         this.campus = campus;
+    }
+
+    public boolean isPrivate() {
+        return isPrivate;
+    }
+
+    public void setPrivate(boolean isPrivate) {
+        this.isPrivate = isPrivate;
     }
 }

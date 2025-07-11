@@ -13,6 +13,7 @@ public class TicketUpdateDto {
     private TicketStatus status;
     private CampusType campus;
     private List<String> imageUrl;
+    private Boolean isPrivate = false;
 
     public String getTitle() {
         return title;
@@ -60,5 +61,13 @@ public class TicketUpdateDto {
 
     public void setImageUrl(List<String> imageUrl) {
         this.imageUrl = imageUrl;
+    }
+
+    public Boolean isPrivate() {
+        return isPrivate;
+    }
+
+    public void setPrivate(Boolean isPrivate) {
+        this.isPrivate = isPrivate;
     }
 }

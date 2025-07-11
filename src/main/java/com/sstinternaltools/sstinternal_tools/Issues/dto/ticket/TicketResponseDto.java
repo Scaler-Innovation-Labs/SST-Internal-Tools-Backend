@@ -29,6 +29,7 @@ public class TicketResponseDto {
     private String createdAt;
     @NotBlank (message = "Updated at cannot be blank")
     private String updatedAt;
+    private boolean isPrivate = false;
 
 
     public TicketResponseDto(Long id, String title, String description, TicketPriority priority, TicketStatus status, String campus, long upvote, String imageUrl, String createdBy, String createdAt, String updatedAt) {
@@ -130,6 +131,14 @@ public class TicketResponseDto {
 
     public void setUpdatedAt(String updatedAt) {
         this.updatedAt = updatedAt;
+    }
+
+    public boolean isPrivate() {
+        return isPrivate;
+    }
+
+    public void setPrivate(boolean isPrivate) {
+        this.isPrivate = isPrivate;
     }
 
 

@@ -105,7 +105,7 @@ public class TicketMapper implements TicketDtoMapper {
                 ticket.setImageUrl(ticketUpdateDto.getImageUrl());
             }
             if (ticketUpdateDto.isPrivate() != null) {
-                ticket.setPrivate(ticketUpdateDto.isPrivate()); // <-- Added
+                ticket.setPrivate(ticketUpdateDto.isPrivate());
             }
             ticket.setUpdatedAt(LocalDateTime.now()); // Update timestamp here
             return ticket;

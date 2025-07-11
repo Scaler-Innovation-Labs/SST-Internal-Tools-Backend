@@ -3,6 +3,7 @@ import com.sstinternaltools.sstinternal_tools.Issues.entity.CampusType;
 import com.sstinternaltools.sstinternal_tools.Issues.entity.TicketPriority;
 import com.sstinternaltools.sstinternal_tools.Issues.entity.TicketStatus;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 
 
 public class TicketCreateDto {
@@ -16,7 +17,7 @@ public class TicketCreateDto {
     private TicketPriority priority;
     @NotBlank (message = "Status cannot be blank")
     private TicketStatus status = TicketStatus.PENDING;
-    @NotBlank (message = "Campus cannot be blank")
+    @NotNull(message = "Campus must be selected")
     private CampusType campus;
 
 

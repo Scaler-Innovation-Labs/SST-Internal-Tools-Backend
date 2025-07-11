@@ -37,9 +37,12 @@ public class Ticket {
     @JoinColumn(name = "user_id")
     private User createdby;
 
+    @Column(nullable = false)
+    private boolean isPrivate = false; // false = public, true = private
 
 
-    public Ticket(String title, String description, TicketPriority priority, TicketStatus status, CampusType campus, List<String> imageUrl, long upvote, LocalDateTime createdAt, LocalDateTime updatedAt, User createdby) {
+
+    public Ticket(String title, String description, TicketPriority priority, TicketStatus status, CampusType campus, List<String> imageUrl, long upvote, LocalDateTime createdAt, LocalDateTime updatedAt, User createdby, boolean isPrivate) {
         this.title = title;
         this.description = description;
         this.priority = priority;
@@ -50,6 +53,7 @@ public class Ticket {
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
         this.createdby = createdby;
+        this.isPrivate = isPrivate;
     }
 
     public Ticket() {
@@ -127,6 +131,12 @@ public class Ticket {
     }
     public void setTitle(String title) {
         this.title = title;
+    }
+    public boolean isPrivate() {
+        return isPrivate;
+    }
+    public void setPrivate(boolean isPrivate) {
+        this.isPrivate = isPrivate;
     }
 
 

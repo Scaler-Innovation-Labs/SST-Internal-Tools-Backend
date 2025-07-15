@@ -31,6 +31,7 @@ public class AuthControllerImpl implements AuthController {
         return ResponseEntity.ok("✅ User logged out successfully");
     }
 
+    @Override
     @GetMapping("/verify")
     public ResponseEntity<?> verify(HttpServletRequest request) {
         return authService.verifyAuth(request);

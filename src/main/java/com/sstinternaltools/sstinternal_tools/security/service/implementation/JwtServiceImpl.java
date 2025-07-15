@@ -75,10 +75,10 @@ public class JwtServiceImpl implements JwtService {
         //Added the access token in httpOnly cookie
         ResponseCookie accessCookie = ResponseCookie.from("accessToken", token)
                 .httpOnly(true)                  // prevent JS access — security best practice
-                .secure(true)                    // send only over HTTPS
+                .secure(false)                    // send only over HTTPS
                 .path("/")                       // cookie is valid for entire app
                 .maxAge(accessTokenExpiration/1000)
-                .sameSite("None")                // prevent CSRF, still allow POST from same site
+                .sameSite("Lax")                // prevent CSRF, still allow POST from same site
                 .build();
 
         return accessCookie;
@@ -111,10 +111,10 @@ public class JwtServiceImpl implements JwtService {
         //Added the refresh token in httpOnly cookie
         ResponseCookie refreshCookie = ResponseCookie.from("refreshToken", token)
                 .httpOnly(true)                  // prevent JS access — security best practice
-                .secure(true)                    // send only over HTTPS
+                .secure(false)                    // send only over HTTPS
                 .path("/auth")
                 .maxAge((int)refreshTokenExpiration/1000)    // expires in 7 days
-                .sameSite("None")                // prevent CSRF, still allow POST from same site
+                .sameSite("Lax")                // prevent CSRF, still allow POST from same site
                 .build();
 
         return refreshCookie;

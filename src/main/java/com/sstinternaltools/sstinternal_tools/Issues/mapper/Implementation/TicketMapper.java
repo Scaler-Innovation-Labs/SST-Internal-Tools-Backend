@@ -10,6 +10,7 @@ import com.sstinternaltools.sstinternal_tools.Issues.dto.ticket.TicketSummaryDto
 
 import java.time.format.DateTimeFormatter;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 
 import jakarta.validation.constraints.NotNull;
 
@@ -47,9 +48,9 @@ public class TicketMapper implements TicketDtoMapper {
             ticketResponseDto.setPrivate(ticket.isPrivate());
 
             if (ticket.getImageUrl() != null && !ticket.getImageUrl().isEmpty()) {
-                ticketResponseDto.setImageUrl(String.join(",", ticket.getImageUrl()));
+                ticketResponseDto.setImageUrl(ticket.getImageUrl());
             } else {
-                ticketResponseDto.setImageUrl(""); // nul set to empty string if no images
+                ticketResponseDto.setImageUrl(new ArrayList<>()); // set to empty list if no images
             }
 
             if (ticket.getCreatedby() != null) {

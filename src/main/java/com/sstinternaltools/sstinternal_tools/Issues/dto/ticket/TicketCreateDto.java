@@ -1,9 +1,12 @@
 package com.sstinternaltools.sstinternal_tools.Issues.dto.ticket;
+
 import com.sstinternaltools.sstinternal_tools.Issues.entity.CampusType;
 import com.sstinternaltools.sstinternal_tools.Issues.entity.TicketPriority;
 import com.sstinternaltools.sstinternal_tools.Issues.entity.TicketStatus;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+
+import java.util.List;
 
 
 public class TicketCreateDto {
@@ -20,6 +23,7 @@ public class TicketCreateDto {
     @NotNull(message = "Campus must be selected")
     private CampusType campus;
     private boolean isPrivate = false; // false = public, true = private
+    private List<String> imageUrl;
 
 
     public String getTitle() {
@@ -68,5 +72,13 @@ public class TicketCreateDto {
 
     public void setPrivate(boolean isPrivate) {
         this.isPrivate = isPrivate;
+    }
+
+    public List<String> getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(List<String> imageUrl) {
+        this.imageUrl = imageUrl;
     }
 }

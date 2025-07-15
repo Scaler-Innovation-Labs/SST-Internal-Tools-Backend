@@ -16,7 +16,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+import com.sstinternaltools.sstinternal_tools.Issues.service.ImageStorageService;
+import com.sstinternaltools.sstinternal_tools.Issues.service.ImageValidator;
+import org.springframework.beans.factory.annotation.Value;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -24,10 +29,14 @@ import java.util.List;
 public class TicketController {
 
     private final TicketService ticketService;
+    private final ImageStorageService imageStorageService;
+    private final ImageValidator imageValidator;
 
     @Autowired
-    public TicketController(TicketService ticketService) {
+    public TicketController(TicketService ticketService, ImageStorageService imageStorageService, ImageValidator imageValidator) {
         this.ticketService = ticketService;
+        this.imageStorageService = imageStorageService;
+        this.imageValidator = imageValidator;
     }
 
     @PostMapping("/tickets")
@@ -98,6 +107,18 @@ public class TicketController {
     public ResponseEntity<TicketResponseDto> upvoteTicket(@PathVariable Long id) {
         TicketResponseDto updatedTicket = ticketService.upvoteTicket(id);
         return new ResponseEntity<>(updatedTicket, HttpStatus.OK);
+    }
+
+    @PostMapping("/tickets/{id}/images")
+    public ResponseEntity<List<String>> uploadTicketImages(@PathVariable Long id, @RequestParam("images") MultipartFile[] images) {
+        List<String> imageUrls = new ArrayList<>();
+        for (MultipartFile image : images) {
+            imageValidator.validate(image);
+            String url = imageStorageService.storeImage(image);
+            imageUrls.add(url);
+        }
+        ticketService.appendImageUrls(id, imageUrls);
+        return new ResponseEntity<>(imageUrls, HttpStatus.OK);
     }
 
     private Long extractUserIdFromAuthentication(Authentication authentication) {

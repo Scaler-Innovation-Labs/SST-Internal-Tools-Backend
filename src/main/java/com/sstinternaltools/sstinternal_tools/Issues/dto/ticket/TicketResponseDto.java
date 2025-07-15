@@ -5,6 +5,8 @@ import com.sstinternaltools.sstinternal_tools.Issues.entity.TicketStatus;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
+import java.util.List;
+
 public class TicketResponseDto {
     @NotBlank (message = "Ticket ID cannot be blank")
     private Long id;
@@ -22,7 +24,7 @@ public class TicketResponseDto {
     @NotNull (message = "Upvote cannot be blank")
     private long upvote;
     @NotBlank (message = "Image URL cannot be blank")
-    private String imageUrl;
+    private List<String> imageUrl;
     @NotBlank (message = "Created by cannot be blank")
     private String createdBy;
     @NotBlank (message = "Created at cannot be blank")
@@ -32,7 +34,7 @@ public class TicketResponseDto {
     private boolean isPrivate = false; // false = public, true = private
 
 
-    public TicketResponseDto(Long id, String title, String description, TicketPriority priority, TicketStatus status, String campus, long upvote, String imageUrl, String createdBy, String createdAt, String updatedAt) {
+    public TicketResponseDto(Long id, String title, String description, TicketPriority priority, TicketStatus status, String campus, long upvote, List<String> imageUrl, String createdBy, String createdAt, String updatedAt) {
         this.id = id;
         this.title = title;
         this.description = description;
@@ -101,11 +103,11 @@ public class TicketResponseDto {
         this.upvote = upvote;
     }
 
-    public String getImageUrl() {
+    public List<String> getImageUrl() {
         return imageUrl;
     }
 
-    public void setImageUrl(String imageUrl) {
+    public void setImageUrl(List<String> imageUrl) {
         this.imageUrl = imageUrl;
     }
 

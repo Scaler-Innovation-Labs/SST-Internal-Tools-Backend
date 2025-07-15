@@ -20,6 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -149,5 +150,17 @@ public class TicketServiceImpl implements TicketService {
 
         Ticket updatedTicket = ticketRepository.save(ticket);
         return ticketDtoMapper.toResponseDto(updatedTicket);
+    }
+
+    @Override
+    @Transactional
+    public void appendImageUrls(Long ticketId, List<String> imageUrls) {
+        Ticket ticket = ticketRepository.findById(ticketId)
+                .orElseThrow(() -> new TicketNotFoundException("Ticket not found with ID: " + ticketId));
+        if (ticket.getImageUrl() == null) {
+            ticket.setImageUrl(new ArrayList<>());
+        }
+        ticket.getImageUrl().addAll(imageUrls);
+        ticketRepository.save(ticket);
     }
 }

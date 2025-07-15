@@ -112,7 +112,7 @@ public class JwtServiceImpl implements JwtService {
         ResponseCookie refreshCookie = ResponseCookie.from("refreshToken", token)
                 .httpOnly(true)                  // prevent JS access — security best practice
                 .secure(false)                    // send only over HTTPS
-                .path("/auth")
+                .path("/")
                 .maxAge((int)refreshTokenExpiration/1000)    // expires in 7 days
                 .sameSite("Lax")                // prevent CSRF, still allow POST from same site
                 .build();

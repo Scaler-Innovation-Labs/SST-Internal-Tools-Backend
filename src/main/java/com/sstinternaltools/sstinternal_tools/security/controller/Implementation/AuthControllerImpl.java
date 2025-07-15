@@ -2,6 +2,7 @@ package com.sstinternaltools.sstinternal_tools.security.controller.Implementatio
 
 import com.sstinternaltools.sstinternal_tools.security.controller.Interface.AuthController;
 import com.sstinternaltools.sstinternal_tools.security.service.interfaces.AuthService;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -28,6 +29,11 @@ public class AuthControllerImpl implements AuthController {
     public ResponseEntity<String> logout(@CookieValue("refreshToken") String refreshToken) {
         authService.logout(refreshToken);
         return ResponseEntity.ok("✅ User logged out successfully");
+    }
+
+    @GetMapping("/verify")
+    public ResponseEntity<?> verify(HttpServletRequest request) {
+        return authService.verifyAuth(request);
     }
 
 }

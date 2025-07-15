@@ -22,4 +22,5 @@ public interface TicketService {
     TicketResponseDto updateTicketStatus(Long id, TicketStatus status);
     void deleteTicket(Long id);
     TicketResponseDto upvoteTicket(Long id);
+    void appendImageUrls(Long ticketId, List<String> imageUrls);
 }

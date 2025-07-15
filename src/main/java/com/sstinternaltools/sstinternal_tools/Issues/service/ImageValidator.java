@@ -12,10 +12,12 @@ public class ImageValidator {
         if (!file.getContentType().startsWith("image/")) {
             throw new IllegalArgumentException("File is not an image");
         }
-        if (file.getSize() > 5 * 1024 * 1024) { // 5MB limit
-            throw new IllegalArgumentException("File size exceeds 5MB");
+        if (file.getSize() > 10 * 1024 * 1024) { // 10MB limit would be ig enought
+            throw new IllegalArgumentException("File size exceeds 10MB");
         }
-        // Add more validation if needed (dimensions, etc.)
+        // would be good to check for specific image formats if needed but for now
+        // also inc the size of image if needed in future if heavy images are used
+
     }
 }
 

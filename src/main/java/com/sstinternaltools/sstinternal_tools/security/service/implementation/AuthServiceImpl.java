@@ -109,16 +109,17 @@ public class AuthServiceImpl implements AuthService {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         System.out.println("Checking OAuth2 authentication: " + authentication);
 
-        if (authentication != null && authentication.isAuthenticated()) {
+        if (authentication != null &&
+                authentication.isAuthenticated() &&
+                !(authentication instanceof org.springframework.security.authentication.AnonymousAuthenticationToken)) {
+
             Object principal = authentication.getPrincipal();
             String email = null;
 
             if (principal instanceof OAuth2User) {
                 email = ((OAuth2User) principal).getAttribute("email");
-                System.out.println("Found OAuth2 user with email: " + email);
-            } else if (principal instanceof String) {
+            } else if (principal instanceof String && !"anonymousUser".equals(principal)) {
                 email = (String) principal;
-                System.out.println("Found principal with email: " + email);
             }
 
             if (email != null) {

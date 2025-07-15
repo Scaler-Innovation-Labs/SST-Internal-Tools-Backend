@@ -7,6 +7,7 @@ import com.sstinternaltools.sstinternal_tools.user.entity.User;
 import com.sstinternaltools.sstinternal_tools.user.repository.UserRepository;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
+import org.springframework.http.ResponseCookie;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -34,11 +35,11 @@ public class AuthServiceImpl implements AuthService {
         String email = jwtService.extractEmail(refreshToken);
         jwtService.revokeRefreshToken(refreshToken);
 
-        Cookie newAccessToken = jwtService.generateAccessCookie(email);
-        Cookie newRefreshToken = jwtService.generateRefreshCookie(email);
+        ResponseCookie newAccessToken = jwtService.generateAccessCookie(email);
+        ResponseCookie newRefreshToken = jwtService.generateRefreshCookie(email);
 
-        response.addCookie(newRefreshToken);
-        response.addCookie(newAccessToken);
+        response.addHeader("Set-Cookie", newAccessToken.toString());
+        response.addHeader("Set-Cookie", newRefreshToken.toString());
 
     }
 

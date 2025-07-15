@@ -6,9 +6,18 @@ import com.sstinternaltools.sstinternal_tools.security.service.interfaces.JwtSer
 import com.sstinternaltools.sstinternal_tools.user.entity.User;
 import com.sstinternaltools.sstinternal_tools.user.repository.UserRepository;
 import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.http.ResponseCookie;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Optional;
 
 @Service
 public class AuthServiceImpl implements AuthService {
@@ -63,4 +72,69 @@ public class AuthServiceImpl implements AuthService {
         user.setEmail(email);
         userRepository.save(user);
     }
+
+    @Override
+    public ResponseEntity<?> verifyAuth(HttpServletRequest request) {
+        System.out.println("Verify endpoint called");
+
+        // First check cookies for JWT token
+        Cookie[] cookies = request.getCookies();
+        if (cookies != null) {
+            System.out.println("Found " + cookies.length + " cookies");
+            for (Cookie cookie : cookies) {
+                if ("accessToken".equals(cookie.getName())) {
+                    try {
+                        String token = cookie.getValue();
+                        String email = jwtService.extractEmail(token);
+                        System.out.println("Found JWT token for email: " + email);
+
+                        Optional<User> userOpt = userRepository.findByEmail(email);
+                        if (userOpt.isPresent() && jwtService.validateAccessToken(token, userOpt.get())) {
+                            Map<String, Object> response = new HashMap<>();
+                            response.put("authenticated", true);
+                            response.put("email", email);
+                            System.out.println("JWT authentication successful");
+                            return ResponseEntity.ok(response);
+                        }
+                    } catch (Exception e) {
+                        System.out.println("Error validating JWT: " + e.getMessage());
+                    }
+                }
+            }
+        } else {
+            System.out.println("No cookies found in request");
+        }
+
+        // Then check for OAuth2 authentication
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        System.out.println("Checking OAuth2 authentication: " + authentication);
+
+        if (authentication != null && authentication.isAuthenticated()) {
+            Object principal = authentication.getPrincipal();
+            String email = null;
+
+            if (principal instanceof OAuth2User) {
+                email = ((OAuth2User) principal).getAttribute("email");
+                System.out.println("Found OAuth2 user with email: " + email);
+            } else if (principal instanceof String) {
+                email = (String) principal;
+                System.out.println("Found principal with email: " + email);
+            }
+
+            if (email != null) {
+                Map<String, Object> response = new HashMap<>();
+                response.put("authenticated", true);
+                response.put("email", email);
+                System.out.println("OAuth2 authentication successful");
+                return ResponseEntity.ok(response);
+            }
+        }
+
+        System.out.println("Authentication failed");
+        return ResponseEntity.status(401).body(Map.of(
+                "authenticated", false,
+                "message", "No valid authentication found"
+        ));
+    }
+
 }

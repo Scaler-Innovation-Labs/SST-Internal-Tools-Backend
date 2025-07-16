@@ -16,6 +16,7 @@ public class Document {
     private String title;
 
     @ManyToOne(optional = false)
+    @JoinColumn(name = "category_id")
     private DocumentCategory category;
 
     @Enumerated(EnumType.STRING)

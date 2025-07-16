@@ -6,6 +6,8 @@ import com.sstinternaltools.sstinternal_tools.documents.entity.DocumentVersion;
 import com.sstinternaltools.sstinternal_tools.documents.entity.Tag;
 import com.sstinternaltools.sstinternal_tools.documents.mapper.interfaces.DocumentDtoMapper;
 import org.springframework.stereotype.Component;
+
+import java.time.LocalDateTime;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -19,6 +21,7 @@ public class DocumentDtoMapperImpl implements DocumentDtoMapper {
         document.setCategory(dto.getCategory());
         document.setTags(dto.getTags());
         document.setAllowedUsers(dto.getUserAllowed());
+        document.setCreatedAt(LocalDateTime.now());
         return document;
     }
 

@@ -4,7 +4,6 @@ public enum AllowedUsers {
     ALL,
     SUPER_ADMIN,
     ADMIN,
-    FACULTY,
     STUDENT,
     BATCH2023,
     BATCH2024,

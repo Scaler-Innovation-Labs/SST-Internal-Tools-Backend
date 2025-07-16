@@ -13,23 +13,21 @@ public class DocumentCategoryDtoMapperImpl implements DocumentCategoryDtoMapper 
 
     @Override
     public DocumentCategory toEntity(DocumentCategoryCreateDto dto) {
-        return new DocumentCategory(dto.getName(), dto.getDescription());
+        return new DocumentCategory(dto.getName());
     }
 
     @Override
     public DocumentCategoryResponseDto toResponseDto(DocumentCategory category) {
         return new DocumentCategoryResponseDto(
                 category.getId(),
-                category.getName(),
-                category.getDescription()
+                category.getName()
         );
     }
 
     @Override
     public DocumentCategorySummaryDto toSummaryDto(DocumentCategory category) {
         return new DocumentCategorySummaryDto(
-                category.getName(),
-                category.getDescription()
+                category.getName()
         );
     }
 
@@ -37,9 +35,6 @@ public class DocumentCategoryDtoMapperImpl implements DocumentCategoryDtoMapper 
     public void updateEntity(DocumentCategoryUpdateDto dto, DocumentCategory category) {
         if (dto.getName() != null) {
             category.setName(dto.getName());
-        }
-        if (dto.getDescription() != null) {
-            category.setDescription(dto.getDescription());
         }
     }
 }

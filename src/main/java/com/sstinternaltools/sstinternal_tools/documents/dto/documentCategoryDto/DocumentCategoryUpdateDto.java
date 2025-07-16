@@ -2,11 +2,9 @@ package com.sstinternaltools.sstinternal_tools.documents.dto.documentCategoryDto
 
 public class DocumentCategoryUpdateDto {
     String name;
-    String description;
 
-    public DocumentCategoryUpdateDto(String name, String description) {
+    public DocumentCategoryUpdateDto(String name) {
         this.name = name;
-        this.description = description;
     }
 
     public DocumentCategoryUpdateDto() {}
@@ -19,11 +17,4 @@ public class DocumentCategoryUpdateDto {
         this.name = name;
     }
 
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
 }

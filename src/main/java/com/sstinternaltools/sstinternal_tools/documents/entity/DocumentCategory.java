@@ -11,11 +11,8 @@ public class DocumentCategory {
     @Column(unique = true, nullable = false)
     private String name;
 
-    private String description;
-
-    public DocumentCategory(String name, String description) {
+    public DocumentCategory(String name) {
         this.name = name;
-        this.description = description;
     }
 
     public DocumentCategory() {}
@@ -36,11 +33,4 @@ public class DocumentCategory {
         this.name = name;
     }
 
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
 }

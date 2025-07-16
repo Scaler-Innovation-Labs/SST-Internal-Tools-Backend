@@ -17,14 +17,14 @@ import com.sstinternaltools.sstinternal_tools.security.exception.InvalidCredenti
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
-import java.nio.file.AccessDeniedException;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-
+@Service
 public class DocumentServiceImpl implements DocumentService {
 
     private final DocumentRepository documentRepository;
@@ -77,7 +77,7 @@ public class DocumentServiceImpl implements DocumentService {
         documentRepository.deleteById(documentId);
     }
 
-    public DocumentResponseDto getDocumentById(Long documentId) throws AccessDeniedException {
+    public DocumentResponseDto getDocumentById(Long documentId){
         // Step 1: Get authentication
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         Set<AllowedUsers> userAllowedRoles=getAllowedUsers(authentication);
@@ -90,7 +90,7 @@ public class DocumentServiceImpl implements DocumentService {
         boolean isAllowed = documentAllowedUsers.contains(AllowedUsers.ALL) || userAllowedRoles.stream().anyMatch(documentAllowedUsers::contains);
 
         if (!isAllowed) {
-            throw new AccessDeniedException("You are not authorized to view this document.");
+            throw new InvalidCredentialsException("You are not authorized to view this document.");
         }
         DocumentVersion latestVersion = documentVersionRepository.findByDocumentIdAndIsLatestVersionTrue(documentId);
         return documentDtoMapper.toResponseDto(document, latestVersion);

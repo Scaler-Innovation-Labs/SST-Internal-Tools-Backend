@@ -2,6 +2,7 @@ package com.sstinternaltools.sstinternal_tools.documents.entity;
 
 import jakarta.persistence.*;
 
+import java.time.LocalDateTime;
 import java.util.Set;
 
 @Entity
@@ -23,15 +24,25 @@ public class Document {
 
     @OneToMany
     private Set<Tag> tags;
+    private LocalDateTime createdAt;
 
-    public Document(String title, DocumentCategory category, Set<AllowedUsers> allowedUsers, Set<Tag> tags) {
+    public Document(String title, DocumentCategory category, Set<AllowedUsers> allowedUsers, Set<Tag> tags,LocalDateTime createdAt) {
         this.title = title;
         this.category = category;
         this.allowedUsers = allowedUsers;
         this.tags = tags;
+        this.createdAt = createdAt;
     }
 
     public Document() {}
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
+    }
 
     public Long getId() {
         return id;

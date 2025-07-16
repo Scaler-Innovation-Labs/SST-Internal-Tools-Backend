@@ -17,26 +17,26 @@ public class DocumentSummaryDto {
     private String latestFilePath;
     @NotNull(message = "Document upload date cannot be null")
     private LocalDateTime uploadedAt;
-    @NotBlank(message = "Updates at cannot be blank")
-    private String updatesAt;
+    @NotNull(message = "Updates at cannot be blank")
+    private LocalDateTime updatedAt;
 
-    public DocumentSummaryDto(String title, DocumentCategory category, Set<String> tags, String latestFilePath, LocalDateTime uploadedAt, String updatesAt) {
+    public DocumentSummaryDto(String title, DocumentCategory category, Set<String> tags, String latestFilePath, LocalDateTime uploadedAt, LocalDateTime updatedAt) {
         this.title = title;
         this.category = category;
         this.tags = tags;
         this.latestFilePath = latestFilePath;
         this.uploadedAt = uploadedAt;
-        this.updatesAt = updatesAt;
+        this.updatedAt = updatedAt;
     }
 
     public DocumentSummaryDto() {}
 
-    public String getUpdatesAt() {
-        return updatesAt;
+    public LocalDateTime getUpdatedAt() {
+        return updatedAt;
     }
 
-    public void setUpdatesAt(String updatesAt) {
-        this.updatesAt = updatesAt;
+    public void setUpdatedAt(LocalDateTime updatedAt) {
+        this.updatedAt = updatedAt;
     }
 
     public String getTitle() {

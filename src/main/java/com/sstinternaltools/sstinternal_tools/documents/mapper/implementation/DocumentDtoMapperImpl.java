@@ -32,8 +32,9 @@ public class DocumentDtoMapperImpl implements DocumentDtoMapper {
                 document.getTags(),
                 latestVersion.getFileUrl(),
                 latestVersion.getVersionNumber(),
-                latestVersion.getUploadedAt(),
-                latestVersion.getUploadedByUserEmail()
+                document.getCreatedAt(),
+                latestVersion.getUploadedByUserEmail(),
+                latestVersion.getUploadedAt()
         );
     }
 
@@ -48,6 +49,7 @@ public class DocumentDtoMapperImpl implements DocumentDtoMapper {
                 document.getCategory(),
                 tagNames,
                 latestVersion.getFileUrl(),
+                document.getCreatedAt(),
                 latestVersion.getUploadedAt()
         );
     }

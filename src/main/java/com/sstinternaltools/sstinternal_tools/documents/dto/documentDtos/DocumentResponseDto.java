@@ -27,8 +27,10 @@ public class DocumentResponseDto{
     private LocalDateTime uploadedAt;
     @NotBlank(message = "Uploaded by field cannot be blank")
     private String uploadedBy;
+    @NotBlank(message = "Updates at cannot be blank")
+    private String updatesAt;
 
-    public DocumentResponseDto(Long id, String title, DocumentCategory category, Set<AllowedUsers> allowedUsers, Set<Tag> tags, String latestFilePath, Long versionNumber, LocalDateTime uploadedAt, String uploadedBy) {
+    public DocumentResponseDto(Long id, String title, DocumentCategory category, Set<AllowedUsers> allowedUsers, Set<Tag> tags, String latestFilePath, Long versionNumber, LocalDateTime uploadedAt, String uploadedBy, String updatesAt) {
         this.id = id;
         this.title = title;
         this.category = category;
@@ -38,12 +40,21 @@ public class DocumentResponseDto{
         this.versionNumber = versionNumber;
         this.uploadedAt = uploadedAt;
         this.uploadedBy = uploadedBy;
+        this.updatesAt = updatesAt;
     }
 
     public DocumentResponseDto() {}
 
     public Long getId() {
         return id;
+    }
+
+    public String getUpdatesAt() {
+        return updatesAt;
+    }
+
+    public void setUpdatesAt( String updatesAt) {
+        this.updatesAt = updatesAt;
     }
 
     public void setId(Long id) {

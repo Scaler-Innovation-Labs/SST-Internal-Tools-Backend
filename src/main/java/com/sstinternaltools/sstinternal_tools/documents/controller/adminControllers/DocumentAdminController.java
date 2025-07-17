@@ -56,4 +56,10 @@ public class DocumentAdminController {
         List<DocumentResponseDto> results = documentService.getDocumentByCategoryId(categoryId);
         return ResponseEntity.ok(results);
     }
+
+    @GetMapping("/getAll")
+    public ResponseEntity<List<DocumentResponseDto>> getAllDocuments() {
+        List<DocumentResponseDto> results = documentService.getAllDocuments();
+        return ResponseEntity.ok(results);
+    }
 }

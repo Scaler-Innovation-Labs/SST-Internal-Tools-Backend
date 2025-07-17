@@ -24,14 +24,18 @@ public class VendorPlanSelectionHistory {
     private LocalDate selectedMonth;
     private Integer roomNumber;
 
+    @Enumerated(EnumType.STRING)
+    private Hostel hostel;
+
     public VendorPlanSelectionHistory() {}
 
-    public VendorPlanSelectionHistory(Long id, User user, VendorPlanHistory plan, LocalDate selectedMonth, Integer roomNumber) {
+    public VendorPlanSelectionHistory(Long id, User user, VendorPlanHistory plan, LocalDate selectedMonth, Integer roomNumber, Hostel hostel) {
         this.id = id;
         this.user = user;
         this.plan = plan;
         this.selectedMonth = selectedMonth;
         this.roomNumber = roomNumber;
+        this.hostel = hostel;
     }
 
     public Long getId() {
@@ -72,5 +76,13 @@ public class VendorPlanSelectionHistory {
 
     public void setPlan(VendorPlanHistory plan) {
         this.plan = plan;
+    }
+
+    public Hostel getHostel() {
+        return hostel;
+    }
+
+    public void setHostel(Hostel hostel) {
+        this.hostel = hostel;
     }
 }

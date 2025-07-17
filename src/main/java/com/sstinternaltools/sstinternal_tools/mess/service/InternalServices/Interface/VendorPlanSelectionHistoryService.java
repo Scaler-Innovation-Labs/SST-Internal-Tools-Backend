@@ -1,6 +1,7 @@
 package com.sstinternaltools.sstinternal_tools.mess.service.InternalServices.Interface;
 
 import com.sstinternaltools.sstinternal_tools.mess.dto.vendorPlanSelectionHistoryDtos.VendorPlanSelectionHistorySummaryDto;
+import com.sstinternaltools.sstinternal_tools.mess.entity.Hostel;
 import com.sstinternaltools.sstinternal_tools.user.entity.User;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -17,4 +18,5 @@ public interface VendorPlanSelectionHistoryService {
     Page<VendorPlanSelectionHistorySummaryDto> getVendorPlanSelectionHistoryByMonthAndVendor(LocalDate date, String vendorName, Pageable pageable);
     Page<VendorPlanSelectionHistorySummaryDto> getVendorPlanSelectionHistoryByMonth(LocalDate date, Pageable pageable);
     Page<VendorPlanSelectionHistorySummaryDto> getVendorPlanSelectionHistory(Pageable pageable);
+    Page<VendorPlanSelectionHistorySummaryDto> getVendorPlanSelectionHistoryByHostel(Hostel hostel, Pageable pageable);
 }

@@ -5,6 +5,7 @@ import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
 import com.itextpdf.text.pdf.draw.LineSeparator;
+import com.sstinternaltools.sstinternal_tools.mess.entity.Hostel;
 import com.sstinternaltools.sstinternal_tools.mess.entity.MealType;
 import com.sstinternaltools.sstinternal_tools.mess.entity.VendorPlanSelection;
 import com.sstinternaltools.sstinternal_tools.mess.repository.VendorPlanSelectionRepository;
@@ -26,18 +27,21 @@ public class StudentOptInPDFExportServiceImpl implements StudentOptInPDFExportSe
     }
 
     @Override
-    public ByteArrayInputStream generateStudentOptInPDF() throws DocumentException {
+    public ByteArrayInputStream generateStudentOptInPDF(Hostel hostel) throws DocumentException {
         List<VendorPlanSelection> selections = vendorPlanSelectionRepository.findAllWithDetails();
 
         Map<String, List<VendorPlanSelection>> groupedByVendor = new HashMap<>();
         for (VendorPlanSelection selection : selections) {
-            if (!groupedByVendor.containsKey(selection.getPlan().getVendor().getVendorName())) {
+            if (!selection.getHostel().equals(hostel)) continue; // Filter by selected hostel
+
+            String vendorName = selection.getPlan().getVendor().getVendorName();
+            if (!groupedByVendor.containsKey(vendorName)) {
                 List<VendorPlanSelection> newList = new ArrayList<>();
                 newList.add(selection);
-                groupedByVendor.put(selection.getPlan().getVendor().getVendorName(), newList);
+                groupedByVendor.put(vendorName, newList);
             }
             else {
-                groupedByVendor.get(selection.getPlan().getVendor().getVendorName()).add(selection);
+                groupedByVendor.get(vendorName).add(selection);
             }
         }
 
@@ -46,16 +50,24 @@ public class StudentOptInPDFExportServiceImpl implements StudentOptInPDFExportSe
         PdfWriter.getInstance(document, out);
         document.open();
 
+        document.add(new Paragraph("" + hostel, FontFactory.getFont(FontFactory.HELVETICA_BOLD, 18))); // Hostel name outside
+        document.add(Chunk.NEWLINE);
+
         for (String vendor : groupedByVendor.keySet()) {
 
-            Map<String, int[]> studentMealMap = new TreeMap<>();
+            Map<String, String[]> studentMealMap = new TreeMap<>();
 
             // Make a mapping of all the meals the student has chosen for this vendor
             for (VendorPlanSelection selection : groupedByVendor.get(vendor)) {
                 String studentName = selection.getUser().getUsername();
-                studentMealMap.putIfAbsent(studentName, new int[]{selection.getRoomNumber(), 0, 0, 0});
-                for (MealType meal: selection.getPlan().getMealTypes()) {
-                    studentMealMap.get(studentName)[meal.ordinal()+1] = 1;
+                int roomNo = selection.getRoomNumber();
+                String studentHostel = selection.getHostel().toString(); // Needed for uniqueness
+
+                String key = studentName + "|" + roomNo + "|" + studentHostel;
+
+                studentMealMap.putIfAbsent(key, new String[]{studentName, String.valueOf(roomNo), "No", "No", "No"});
+                for (MealType meal : selection.getPlan().getMealTypes()) {
+                    studentMealMap.get(key)[meal.ordinal() + 2] = "Yes";
                 }
             }
 
@@ -72,12 +84,12 @@ public class StudentOptInPDFExportServiceImpl implements StudentOptInPDFExportSe
                 table.addCell(headerCell); // adds the first row i.e. the header cells to the table
             }
 
-            for (String StudentName: studentMealMap.keySet()) {
-                table.addCell(StudentName);
-                table.addCell(String.valueOf(studentMealMap.get(StudentName)[0]));
-                table.addCell(studentMealMap.get(StudentName)[1] == 1 ? "Yes" : "No");
-                table.addCell(studentMealMap.get(StudentName)[2] == 1 ? "Yes" : "No");
-                table.addCell(studentMealMap.get(StudentName)[3] == 1 ? "Yes" : "No");
+            for (String[] values : studentMealMap.values()) {
+                table.addCell(values[0]); // Name
+                table.addCell(values[1]); // Room No
+                table.addCell(values[2]); // Breakfast
+                table.addCell(values[3]); // Lunch
+                table.addCell(values[4]); // Dinner
             }
 
             document.add(table);

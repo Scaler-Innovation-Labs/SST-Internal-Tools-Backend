@@ -1,6 +1,7 @@
 package com.sstinternaltools.sstinternal_tools.mess.controller.AdminMessController.Implementation;
 
 import com.sstinternaltools.sstinternal_tools.mess.controller.AdminMessController.Interface.StudentOptInPDFExportController;
+import com.sstinternaltools.sstinternal_tools.mess.entity.Hostel;
 import com.sstinternaltools.sstinternal_tools.mess.service.InternalServices.Interface.StudentOptInPDFExportService;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.HttpHeaders;
@@ -9,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -26,10 +28,10 @@ public class StudentOptInPDFExportControllerImpl implements StudentOptInPDFExpor
     }
 
     @Override
-    @GetMapping("/downloadStudentOptInPDF")
-    public ResponseEntity<InputStreamResource> downloadStudentOptInPDF() {
+    @GetMapping("/downloadStudentOptInPDF/{hostel}")
+    public ResponseEntity<InputStreamResource> downloadStudentOptInPDF(@PathVariable Hostel hostel) {
         try {
-            ByteArrayInputStream bis = studentOptInPDFExportService.generateStudentOptInPDF();
+            ByteArrayInputStream bis = studentOptInPDFExportService.generateStudentOptInPDF(hostel);
             HttpHeaders headers = new HttpHeaders();
             headers.add("Content-Disposition", "attachment; filename=studentOptInList.pdf");
             return ResponseEntity.ok()

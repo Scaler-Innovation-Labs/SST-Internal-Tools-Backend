@@ -22,13 +22,17 @@ public class VendorPlanSelection {
     private LocalDate selectedMonth;
     private Integer roomNumber;
 
+    @Enumerated(EnumType.STRING)
+    private Hostel hostel;
+
     public VendorPlanSelection() {}
 
-    public VendorPlanSelection(User user, LocalDate selectedMonth, VendorPlan plan, Integer roomNumber) {
+    public VendorPlanSelection(User user, LocalDate selectedMonth, VendorPlan plan, Integer roomNumber, Hostel hostel) {
         this.user = user;
         this.selectedMonth = LocalDate.of(selectedMonth.getYear(), selectedMonth.getMonth(), 1);
         this.plan = plan;
         this.roomNumber = roomNumber;
+        this.hostel = hostel;
     }
 
     public Long getId() {
@@ -65,5 +69,13 @@ public class VendorPlanSelection {
 
     public void setRoomNumber(Integer roomNumber) {
         this.roomNumber = roomNumber;
+    }
+
+    public Hostel getHostel() {
+        return hostel;
+    }
+
+    public void setHostel(Hostel hostel) {
+        this.hostel = hostel;
     }
 }

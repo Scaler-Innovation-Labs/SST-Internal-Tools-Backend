@@ -21,6 +21,7 @@ public class VendorPlanSelectionHistoryMapper implements VendorPlanSelectionHist
         vendorPlanSelectionHistorySummaryDto.setSelectedMonth(vendorPlanSelectionHistory.getSelectedMonth());
         vendorPlanSelectionHistorySummaryDto.setRoomNumber(vendorPlanSelectionHistory.getRoomNumber());
         vendorPlanSelectionHistorySummaryDto.setVendorPlanHistorySummaryDto(vendorPlanHistoryMapper.toSummaryDto(vendorPlanSelectionHistory.getPlan()));
+        vendorPlanSelectionHistorySummaryDto.setHostel(vendorPlanSelectionHistory.getHostel());
         return vendorPlanSelectionHistorySummaryDto;
     }
 }

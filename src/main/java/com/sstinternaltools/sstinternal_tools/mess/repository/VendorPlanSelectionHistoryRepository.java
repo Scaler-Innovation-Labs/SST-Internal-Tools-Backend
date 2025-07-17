@@ -1,8 +1,10 @@
 package com.sstinternaltools.sstinternal_tools.mess.repository;
 
+import com.sstinternaltools.sstinternal_tools.mess.entity.Hostel;
 import com.sstinternaltools.sstinternal_tools.mess.entity.VendorPlanSelectionHistory;
 import com.sstinternaltools.sstinternal_tools.user.entity.User;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -20,5 +22,5 @@ public interface VendorPlanSelectionHistoryRepository extends JpaRepository<Vend
     Page<VendorPlanSelectionHistory> findBySelectedMonth(LocalDate month, Pageable pageable);
     Page<VendorPlanSelectionHistory> findBySelectedMonthAndPlan_PlanName(LocalDate month, String vendorPlan, Pageable pageable);
     Page<VendorPlanSelectionHistory> findBySelectedMonthAndPlan_VendorName(LocalDate month, String vendorName, Pageable pageable);
-
+    Page<VendorPlanSelectionHistory> findByHostel(Hostel hostel, Pageable pageable);
 }

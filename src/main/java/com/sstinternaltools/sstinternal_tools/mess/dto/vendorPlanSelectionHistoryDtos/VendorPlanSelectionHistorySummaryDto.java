@@ -2,6 +2,7 @@ package com.sstinternaltools.sstinternal_tools.mess.dto.vendorPlanSelectionHisto
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.sstinternaltools.sstinternal_tools.mess.dto.vendorPlanHistoryDtos.VendorPlanHistorySummaryDto;
+import com.sstinternaltools.sstinternal_tools.mess.entity.Hostel;
 import jakarta.validation.constraints.NotNull;
 
 import java.time.LocalDate;
@@ -16,6 +17,8 @@ public class VendorPlanSelectionHistorySummaryDto {
     private LocalDate selectedMonth;
     @NotNull(message = "Room number cannot be blank")
     private Integer roomNumber;
+    @NotNull(message = "Hostel name cannot be blank")
+    private Hostel hostel;
 
     public Long getUserId() {
         return userId;
@@ -47,5 +50,13 @@ public class VendorPlanSelectionHistorySummaryDto {
 
     public void setRoomNumber(Integer roomNumber) {
         this.roomNumber = roomNumber;
+    }
+
+    public Hostel getHostel() {
+        return hostel;
+    }
+
+    public void setHostel(Hostel hostel) {
+        this.hostel = hostel;
     }
 }

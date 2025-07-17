@@ -1,10 +1,7 @@
 package com.sstinternaltools.sstinternal_tools.mess.service.InternalServices.Implementation;
 
 import com.sstinternaltools.sstinternal_tools.mess.dto.vendorPlanSelectionHistoryDtos.VendorPlanSelectionHistorySummaryDto;
-import com.sstinternaltools.sstinternal_tools.mess.entity.VendorPlan;
-import com.sstinternaltools.sstinternal_tools.mess.entity.VendorPlanHistory;
-import com.sstinternaltools.sstinternal_tools.mess.entity.VendorPlanSelection;
-import com.sstinternaltools.sstinternal_tools.mess.entity.VendorPlanSelectionHistory;
+import com.sstinternaltools.sstinternal_tools.mess.entity.*;
 import com.sstinternaltools.sstinternal_tools.mess.mapper.implementation.VendorPlanSelectionHistoryMapper;
 import com.sstinternaltools.sstinternal_tools.mess.repository.*;
 import com.sstinternaltools.sstinternal_tools.mess.service.InternalServices.Interface.VendorPlanSelectionHistoryService;
@@ -80,7 +77,8 @@ public class VendorPlanSelectionHistoryServiceImpl implements VendorPlanSelectio
 
     @Override
     public Page<VendorPlanSelectionHistorySummaryDto> getVendorPlanSelectionHistoryByMonthAndVendorPlan(LocalDate month, String vendorPlan, Pageable pageable) {
-        Sort sort = Sort.by("roomNumber").ascending();
+        Sort sort = Sort.by("hostel").ascending()
+                .and(Sort.by("roomNumber").ascending());
 
         Page<VendorPlanSelectionHistory> vendorPlanSelectionHistories = vendorPlanSelectionHistoryRepository
                 .findBySelectedMonthAndPlan_PlanName(month.withDayOfMonth(1),
@@ -92,7 +90,8 @@ public class VendorPlanSelectionHistoryServiceImpl implements VendorPlanSelectio
 
     @Override
     public Page<VendorPlanSelectionHistorySummaryDto> getVendorPlanSelectionHistoryByMonthAndVendor(LocalDate month, String vendorName, Pageable pageable) {
-        Sort sort = Sort.by("plan.planName").ascending()
+        Sort sort = Sort.by("hostel").ascending()
+                .and(Sort.by("plan.planName").ascending())
                 .and(Sort.by("roomNumber").ascending());
 
         Page<VendorPlanSelectionHistory> vendorPlanSelectionHistories = vendorPlanSelectionHistoryRepository
@@ -105,7 +104,8 @@ public class VendorPlanSelectionHistoryServiceImpl implements VendorPlanSelectio
 
     @Override
     public Page<VendorPlanSelectionHistorySummaryDto> getVendorPlanSelectionHistoryByMonth(LocalDate month, Pageable pageable) {
-        Sort sort = Sort.by("plan.vendorName").ascending()
+        Sort sort = Sort.by("hostel").ascending()
+                .and(Sort.by("plan.vendorName").ascending())
                 .and(Sort.by("plan.planName").ascending())
                 .and(Sort.by("roomNumber").ascending());
 
@@ -117,13 +117,27 @@ public class VendorPlanSelectionHistoryServiceImpl implements VendorPlanSelectio
 
     @Override
     public Page<VendorPlanSelectionHistorySummaryDto> getVendorPlanSelectionHistory(Pageable pageable) {
-        Sort sort = Sort.by("selectedMonth").descending()
+        Sort sort = Sort.by("hostel").ascending()
+                .and(Sort.by("selectedMonth").descending())
                 .and(Sort.by("plan.vendorName").ascending())
                 .and(Sort.by("plan.planName").ascending())
                 .and(Sort.by("roomNumber").ascending());
 
         Page<VendorPlanSelectionHistory> vendorPlanSelectionHistories = vendorPlanSelectionHistoryRepository
                 .findAll(PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), sort));
+
+        return vendorPlanSelectionHistories.map(vendorPlanSelectionHistoryMapper::toSummaryDto);
+    }
+
+    @Override
+    public Page<VendorPlanSelectionHistorySummaryDto> getVendorPlanSelectionHistoryByHostel(Hostel hostel, Pageable pageable) {
+        Sort sort = Sort.by("selectedMonth").descending()
+                .and(Sort.by("plan.vendorName").ascending())
+                .and(Sort.by("plan.planName").ascending())
+                .and(Sort.by("roomNumber").ascending());
+
+        Page<VendorPlanSelectionHistory> vendorPlanSelectionHistories = vendorPlanSelectionHistoryRepository
+                .findByHostel(hostel, PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), sort));
 
         return vendorPlanSelectionHistories.map(vendorPlanSelectionHistoryMapper::toSummaryDto);
     }
@@ -142,6 +156,7 @@ public class VendorPlanSelectionHistoryServiceImpl implements VendorPlanSelectio
             VendorPlanSelectionHistory history = new VendorPlanSelectionHistory();
             history.setUser(selection.getUser());
             history.setRoomNumber(selection.getRoomNumber());
+            history.setHostel(selection.getHostel());
             history.setSelectedMonth(month);
             history.setPlan(planHistory);
             vendorPlanSelectionHistoryRepository.save(history);
@@ -158,7 +173,7 @@ public class VendorPlanSelectionHistoryServiceImpl implements VendorPlanSelectio
                 history.setPlanName(plan.getPlanName());
                 history.setVendorName(plan.getVendor().getVendorName());
                 history.setMealTypes(new HashSet<>(plan.getMealTypes()));
-                history.setFee(plan.getFee());
+                history.setFee(plan.getFee()) ;
                 vendorPlanHistoryRepository.save(history);
             }
         }

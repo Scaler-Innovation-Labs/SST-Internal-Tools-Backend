@@ -6,6 +6,7 @@ import com.sstinternaltools.sstinternal_tools.mess.dto.vendorPlanSelectionHistor
 import com.sstinternaltools.sstinternal_tools.mess.dto.vendorPlanSelectionDtos.VendorPlanSelectionCreateDto;
 import com.sstinternaltools.sstinternal_tools.mess.dto.vendorPlanSelectionDtos.VendorPlanSelectionResponseDto;
 import com.sstinternaltools.sstinternal_tools.mess.dto.vendorPlanSelectionDtos.VendorPlanSelectionUpdateDto;
+import com.sstinternaltools.sstinternal_tools.mess.entity.Hostel;
 import com.sstinternaltools.sstinternal_tools.mess.service.AdminMessService.Interface.VendorPlanSelectionAdminService;
 import com.sstinternaltools.sstinternal_tools.mess.service.InternalServices.Interface.VendorPlanSelectionHistoryService;
 import org.springframework.data.domain.Page;
@@ -95,6 +96,16 @@ public class VendorPlanSelectionAdminControllerImpl implements VendorPlanSelecti
     public ResponseEntity<Page<VendorPlanSelectionHistorySummaryDto>> getVendorPlanSelectionHistory(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size) {
         Pageable pageable = PageRequest.of(page, size);
         Page<VendorPlanSelectionHistorySummaryDto> vendorPlanSelectionHistorySummaryDtos = vendorPlanSelectionHistoryService.getVendorPlanSelectionHistory(pageable);
+        return ResponseEntity.ok(vendorPlanSelectionHistorySummaryDtos);
+    }
+
+    @Override
+    @GetMapping("/historyByHostel/{hostel}")
+    public ResponseEntity<Page<VendorPlanSelectionHistorySummaryDto>> getVendorPlanSelectionHistoryByHostel(@PathVariable Hostel hostel,
+                                                                                                            @RequestParam(defaultValue = "0") int page,
+                                                                                                            @RequestParam(defaultValue = "10") int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        Page<VendorPlanSelectionHistorySummaryDto> vendorPlanSelectionHistorySummaryDtos = vendorPlanSelectionHistoryService.getVendorPlanSelectionHistoryByHostel(hostel, pageable);
         return ResponseEntity.ok(vendorPlanSelectionHistorySummaryDtos);
     }
 }

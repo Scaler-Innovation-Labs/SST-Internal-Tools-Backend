@@ -4,6 +4,7 @@ import com.sstinternaltools.sstinternal_tools.mess.dto.vendorPlanSelectionHistor
 import com.sstinternaltools.sstinternal_tools.mess.dto.vendorPlanSelectionDtos.VendorPlanSelectionCreateDto;
 import com.sstinternaltools.sstinternal_tools.mess.dto.vendorPlanSelectionDtos.VendorPlanSelectionResponseDto;
 import com.sstinternaltools.sstinternal_tools.mess.dto.vendorPlanSelectionDtos.VendorPlanSelectionUpdateDto;
+import com.sstinternaltools.sstinternal_tools.mess.entity.Hostel;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 
@@ -17,4 +18,5 @@ public interface VendorPlanSelectionAdminController {
     ResponseEntity<Page<VendorPlanSelectionHistorySummaryDto>> getVendorPlanSelectionHistoryByMonthAndVendor(Integer month, Integer year, String vendorName, int page, int size);
     ResponseEntity<Page<VendorPlanSelectionHistorySummaryDto>> getVendorPlanSelectionHistoryByMonth(Integer month, Integer year, int page, int size);
     ResponseEntity<Page<VendorPlanSelectionHistorySummaryDto>> getVendorPlanSelectionHistory(int page, int size);
+    ResponseEntity<Page<VendorPlanSelectionHistorySummaryDto>> getVendorPlanSelectionHistoryByHostel(Hostel hostel, int page, int size);
 }

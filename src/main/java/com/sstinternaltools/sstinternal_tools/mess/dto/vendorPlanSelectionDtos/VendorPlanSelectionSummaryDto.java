@@ -1,6 +1,7 @@
 package com.sstinternaltools.sstinternal_tools.mess.dto.vendorPlanSelectionDtos;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.sstinternaltools.sstinternal_tools.mess.entity.Hostel;
 import com.sstinternaltools.sstinternal_tools.mess.entity.MealType;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
@@ -25,6 +26,8 @@ public class VendorPlanSelectionSummaryDto {
     private double fee;
     @NotNull(message = "Room number cannot be blank")
     private Integer roomNumber;
+    @NotNull(message = "Hostel name cannot be blank")
+    private Hostel hostel;
 
     public String getVendorPlanName() {
         return vendorPlanName;
@@ -72,5 +75,13 @@ public class VendorPlanSelectionSummaryDto {
 
     public void setRoomNumber(Integer roomNumber) {
         this.roomNumber = roomNumber;
+    }
+
+    public Hostel getHostel() {
+        return hostel;
+    }
+
+    public void setHostel(Hostel hostel) {
+        this.hostel = hostel;
     }
 }

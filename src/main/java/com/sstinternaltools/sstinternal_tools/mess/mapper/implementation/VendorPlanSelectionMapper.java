@@ -20,6 +20,7 @@ public class VendorPlanSelectionMapper implements VendorPlanSelectionDtoMapper <
         vendorPlanSelection.setUser(user);
         vendorPlanSelection.setMonth(vendorPlanSelectionCreateDto.getSelectedMonth());
         vendorPlanSelection.setRoomNumber(vendorPlanSelectionCreateDto.getRoomNumber());
+        vendorPlanSelection.setHostel(vendorPlanSelectionCreateDto.getHostel());
         return vendorPlanSelection;
     }
 
@@ -30,6 +31,7 @@ public class VendorPlanSelectionMapper implements VendorPlanSelectionDtoMapper <
         vendorPlanSelection.setUser(user);
         vendorPlanSelection.setMonth(vendorPlanSelectionUpdateDto.getSelectedMonth());
         vendorPlanSelection.setRoomNumber(vendorPlanSelectionUpdateDto.getRoomNumber());
+        vendorPlanSelection.setHostel(vendorPlanSelectionUpdateDto.getHostel());
         return vendorPlanSelection;
     }
 
@@ -41,6 +43,7 @@ public class VendorPlanSelectionMapper implements VendorPlanSelectionDtoMapper <
         vendorPlanSelectionResponseDto.setSelectedMonth(vendorPlanSelection.getMonth());
         vendorPlanSelectionResponseDto.setUserId(vendorPlanSelection.getUser().getId());
         vendorPlanSelectionResponseDto.setRoomNumber(vendorPlanSelection.getRoomNumber());
+        vendorPlanSelectionResponseDto.setHostel(vendorPlanSelection.getHostel());
         return vendorPlanSelectionResponseDto;
     }
 
@@ -53,6 +56,7 @@ public class VendorPlanSelectionMapper implements VendorPlanSelectionDtoMapper <
         vendorPlanSelectionSummaryDto.setMealTypes(vendorPlanSelection.getPlan().getMealTypes());
         vendorPlanSelectionSummaryDto.setFee(vendorPlanSelection.getPlan().getFee());
         vendorPlanSelectionSummaryDto.setRoomNumber(vendorPlanSelection.getRoomNumber());
+        vendorPlanSelectionSummaryDto.setHostel(vendorPlanSelection.getHostel());
         return vendorPlanSelectionSummaryDto;
     }
 }

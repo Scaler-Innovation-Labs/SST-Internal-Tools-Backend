@@ -137,6 +137,21 @@
             <version>2.18.2</version>
         </dependency>
 
+<!--        Dependency to prevent duplicate category creation.-->
+
+        <dependency>
+            <groupId>edu.stanford.nlp</groupId>
+            <artifactId>stanford-corenlp</artifactId>
+            <version>4.5.4</version>
+        </dependency>
+        <dependency>
+            <groupId>edu.stanford.nlp</groupId>
+            <artifactId>stanford-corenlp</artifactId>
+            <version>4.5.4</version>
+            <classifier>models</classifier>
+        </dependency>
+
+
         <!--        <dependency>-->
         <!--            <groupId>org.slf4j</groupId>-->
         <!--            <artifactId>slf4j-simple</artifactId>-->

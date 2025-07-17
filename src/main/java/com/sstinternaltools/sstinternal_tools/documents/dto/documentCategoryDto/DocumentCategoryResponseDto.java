@@ -8,13 +8,25 @@ public class DocumentCategoryResponseDto {
     private Long id;
     @NotBlank(message = "Category name cannot be null")
     private String name;
+    @NotBlank(message = "Category normalized name cannot be null")
+    private String normalizedName;
 
-    public DocumentCategoryResponseDto(Long id, String name) {
+
+    public DocumentCategoryResponseDto(Long id, String name,String normalizedName) {
         this.id = id;
         this.name = name;
+        this.normalizedName = normalizedName;
     }
 
     public DocumentCategoryResponseDto() {}
+
+    public String getNormalizedName() {
+        return normalizedName;
+    }
+
+    public void setNormalizedName(String normalizedName) {
+        this.normalizedName = normalizedName;
+    }
 
     public Long getId() {
         return id;

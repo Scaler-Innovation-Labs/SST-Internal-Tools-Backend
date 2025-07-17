@@ -5,7 +5,7 @@ import com.sstinternaltools.sstinternal_tools.documents.entity.DocumentCategory;
 
 public interface DocumentCategoryDtoMapper {
 
-    DocumentCategory toEntity(DocumentCategoryCreateDto dto);
+    DocumentCategory toEntity(DocumentCategoryCreateDto dto,String normalizedName);
 
     DocumentCategoryResponseDto toResponseDto(DocumentCategory category);
 

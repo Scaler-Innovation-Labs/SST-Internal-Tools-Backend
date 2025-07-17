@@ -12,8 +12,8 @@ import org.springframework.stereotype.Component;
 public class DocumentCategoryDtoMapperImpl implements DocumentCategoryDtoMapper {
 
     @Override
-    public DocumentCategory toEntity(DocumentCategoryCreateDto dto) {
-        return new DocumentCategory(dto.getName());
+    public DocumentCategory toEntity(DocumentCategoryCreateDto dto,String normalizedName) {
+        return new DocumentCategory(dto.getName(),normalizedName);
     }
 
     @Override

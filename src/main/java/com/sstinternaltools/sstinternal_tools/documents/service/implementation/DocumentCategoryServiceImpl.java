@@ -1,6 +1,7 @@
 package com.sstinternaltools.sstinternal_tools.documents.service.implementation;
 
 import com.sstinternaltools.sstinternal_tools.documents.dto.documentCategoryDto.DocumentCategoryCreateDto;
+import com.sstinternaltools.sstinternal_tools.documents.dto.documentCategoryDto.DocumentCategoryResponseDto;
 import com.sstinternaltools.sstinternal_tools.documents.entity.DocumentCategory;
 import com.sstinternaltools.sstinternal_tools.documents.mapper.interfaces.DocumentCategoryDtoMapper;
 import com.sstinternaltools.sstinternal_tools.documents.repository.DocumentCategoryRepository;
@@ -16,7 +17,7 @@ public class DocumentCategoryServiceImpl implements DocumentCategoryService {
         this.documentCategoryDtoMapper = documentCategoryDtoMapper;
     }
 
-    public void createDocumentCategory(DocumentCategoryCreateDto documentCategoryCreateDto) {
+    public DocumentCategoryResponseDto createDocumentCategory(DocumentCategoryCreateDto documentCategoryCreateDto) {
         DocumentCategory documentCategory =documentCategoryDtoMapper.toEntity(documentCategoryCreateDto);
         documentCategoryRepository.save(documentCategory);
     }

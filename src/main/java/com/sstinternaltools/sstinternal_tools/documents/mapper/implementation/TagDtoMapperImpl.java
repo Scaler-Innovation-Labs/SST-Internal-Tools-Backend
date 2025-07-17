@@ -2,11 +2,11 @@ package com.sstinternaltools.sstinternal_tools.documents.mapper.implementation;
 
 import com.sstinternaltools.sstinternal_tools.documents.dto.tagDtos.*;
 import com.sstinternaltools.sstinternal_tools.documents.entity.Tag;
-import com.sstinternaltools.sstinternal_tools.documents.mapper.interfaces.DtoMapper;
+import com.sstinternaltools.sstinternal_tools.documents.mapper.interfaces.TagDtoMapper;
 import org.springframework.stereotype.Component;
 
 @Component
-public class TagDtoMapperImpl implements DtoMapper<Tag, TagResponseDto, TagCreateDto, TagUpdateDto, TagSummaryDto> {
+public class TagDtoMapperImpl implements TagDtoMapper{
 
     @Override
     public Tag fromCreateDto(TagCreateDto dto) {

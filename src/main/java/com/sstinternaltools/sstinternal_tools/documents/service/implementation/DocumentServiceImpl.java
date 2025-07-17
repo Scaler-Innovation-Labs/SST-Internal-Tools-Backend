@@ -14,6 +14,8 @@ import com.sstinternaltools.sstinternal_tools.documents.service.interfaces.Cloud
 import com.sstinternaltools.sstinternal_tools.documents.service.interfaces.DocumentService;
 import com.sstinternaltools.sstinternal_tools.security.entity.UserPrincipal;
 import com.sstinternaltools.sstinternal_tools.security.exception.InvalidCredentialsException;
+import jakarta.persistence.Table;
+import jakarta.transaction.Transactional;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -41,12 +43,16 @@ public class DocumentServiceImpl implements DocumentService {
         this.cloudStorageService = cloudStorageService;
     }
 
+    @Override
+    @Transactional
     public DocumentResponseDto createDocument(DocumentCreateDto createDto){
         Document document=documentDtoMapper.toEntity(createDto);
         createDocumentVersion(document,createDto.getFile(),1L);
         return getDocumentById(document.getId());
     }
 
+    @Override
+    @Transactional
     public DocumentResponseDto updateDocument(DocumentUpdateDto updateDto,Long documentId){
         Document document=documentRepository.getReferenceById(documentId);
         Document updatedDocument=documentDtoMapper.updateEntity(updateDto,document);
@@ -72,11 +78,14 @@ public class DocumentServiceImpl implements DocumentService {
 
     }
 
+    @Override
+    @Transactional
     public void deleteDocument(Long documentId){
         documentVersionRepository.deleteAllByDocumentId(documentId);
         documentRepository.deleteById(documentId);
     }
 
+    @Override
     public DocumentResponseDto getDocumentById(Long documentId){
         // Step 1: Get authentication
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -130,6 +139,7 @@ public class DocumentServiceImpl implements DocumentService {
         return parts[1].substring(0, 2); // "24"
     }
 
+    @Override
     public List<DocumentResponseDto> getDocumentByCategoryId(Long categoryId) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication == null || !authentication.isAuthenticated()) {

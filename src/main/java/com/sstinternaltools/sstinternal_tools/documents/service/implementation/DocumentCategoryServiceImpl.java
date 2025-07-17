@@ -10,6 +10,7 @@ import com.sstinternaltools.sstinternal_tools.documents.repository.DocumentCateg
 import com.sstinternaltools.sstinternal_tools.documents.service.interfaces.DocumentCategoryService;
 import com.sstinternaltools.sstinternal_tools.documents.service.interfaces.LemmatizerService;
 import com.sstinternaltools.sstinternal_tools.mess.exception.ResourceNotFoundException;
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -28,6 +29,7 @@ public class DocumentCategoryServiceImpl implements DocumentCategoryService {
     }
 
     @Override
+    @Transactional
     public DocumentCategoryResponseDto createDocumentCategory(DocumentCategoryCreateDto dto) {
         String rawName = dto.getName();
         String normalized = lemmatizerService.lemmatize(rawName);
@@ -41,6 +43,7 @@ public class DocumentCategoryServiceImpl implements DocumentCategoryService {
     }
 
     @Override
+    @Transactional
     public DocumentCategoryResponseDto updateCategory(Long id ,DocumentCategoryUpdateDto dto) {
         DocumentCategory category = documentCategoryRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Category not found with ID: " + id));
@@ -58,6 +61,7 @@ public class DocumentCategoryServiceImpl implements DocumentCategoryService {
     }
 
     @Override
+    @Transactional
     public void deleteCategory(Long id) {
         if (!documentCategoryRepository.existsById(id)) {
             throw new ResourceNotFoundException("Category not found with ID: " + id);

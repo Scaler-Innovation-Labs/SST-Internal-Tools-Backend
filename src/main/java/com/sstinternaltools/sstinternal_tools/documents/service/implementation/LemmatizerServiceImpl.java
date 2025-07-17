@@ -25,6 +25,7 @@ public class LemmatizerServiceImpl implements LemmatizerService {
         pipeline = new StanfordCoreNLP(props);
     }
 
+    @Override
     public String lemmatize(String word) {
         if (word == null || word.isBlank()) return "";
 

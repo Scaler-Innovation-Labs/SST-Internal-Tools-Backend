@@ -68,6 +68,7 @@ public class DocumentServiceImpl implements DocumentService {
     }
 
     //method to create document version
+    @Transactional
     public void createDocumentVersion(Document document, MultipartFile multipartFile,Long versionNo){
         String email=((UserPrincipal) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUser().getEmail();
 
@@ -149,6 +150,33 @@ public class DocumentServiceImpl implements DocumentService {
         Set<AllowedUsers> userAllowedRoles =getAllowedUsers(authentication);
         // Fetch all documents by category
         List<Document> documents = documentRepository.findByCategoryId(categoryId);
+        // Filter and map only the allowed ones
+        List<DocumentResponseDto> allowedDocuments = documents.stream()
+                .filter(doc -> {
+                    Set<AllowedUsers> docAllowedUsers = doc.getAllowedUsers();
+                    return docAllowedUsers.contains(AllowedUsers.ALL) ||
+                            userAllowedRoles.stream().anyMatch(docAllowedUsers::contains);
+                })
+                .map(doc -> {
+                    DocumentVersion latestVersion = documentVersionRepository
+                            .findByDocumentIdAndIsLatestVersionTrue(doc.getId());
+                    return documentDtoMapper.toResponseDto(doc, latestVersion);
+                })
+                .collect(Collectors.toList());
+
+        return allowedDocuments;
+    }
+
+    @Override
+    public List<DocumentResponseDto> getAllDocuments() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication == null || !authentication.isAuthenticated()) {
+            throw new InvalidCredentialsException("User is not authenticated.");
+        }
+        // Extract user roles from SecurityContext
+        Set<AllowedUsers> userAllowedRoles =getAllowedUsers(authentication);
+        // Fetch all documents by category
+        List<Document> documents = documentRepository.findAll();
         // Filter and map only the allowed ones
         List<DocumentResponseDto> allowedDocuments = documents.stream()
                 .filter(doc -> {

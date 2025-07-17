@@ -11,4 +11,5 @@ public interface DocumentService {
     void deleteDocument(Long documentId);
     DocumentResponseDto getDocumentById(Long documentId);
     List<DocumentResponseDto> getDocumentByCategoryId(Long categoryId);
+    List<DocumentResponseDto> getAllDocuments();
 }

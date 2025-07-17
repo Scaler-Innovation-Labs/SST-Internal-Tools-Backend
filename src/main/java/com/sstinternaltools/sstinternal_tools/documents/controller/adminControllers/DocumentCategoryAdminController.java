@@ -6,6 +6,7 @@ import com.sstinternaltools.sstinternal_tools.documents.dto.documentCategoryDto.
 import com.sstinternaltools.sstinternal_tools.documents.entity.DocumentCategory;
 import com.sstinternaltools.sstinternal_tools.documents.mapper.interfaces.DocumentCategoryDtoMapper;
 import com.sstinternaltools.sstinternal_tools.documents.service.interfaces.DocumentCategoryService;
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
@@ -26,7 +27,7 @@ public class DocumentCategoryAdminController {
     // Create new category
     @PostMapping("/create")
     public ResponseEntity<DocumentCategoryResponseDto> createCategory(
-            @RequestBody DocumentCategoryCreateDto dto) {
+            @RequestBody @Valid DocumentCategoryCreateDto dto) {
         DocumentCategoryResponseDto created = documentCategoryService.createDocumentCategory(dto);
         return ResponseEntity.ok(created);
     }
@@ -35,16 +36,16 @@ public class DocumentCategoryAdminController {
     @PutMapping("/update/{id}")
     public ResponseEntity<DocumentCategoryResponseDto> updateCategory(
             @PathVariable Long id,
-            @RequestBody DocumentCategoryUpdateDto dto) {
+            @RequestBody @Valid DocumentCategoryUpdateDto dto) {
         DocumentCategoryResponseDto updated = documentCategoryService.updateCategory(id, dto);
         return ResponseEntity.ok(updated);
     }
 
     // Delete category
     @DeleteMapping("/delete/{id}")
-    public ResponseEntity<Void> deleteCategory(@PathVariable Long id) {
+    public ResponseEntity<String> deleteCategory(@PathVariable Long id) {
         documentCategoryService.deleteCategory(id);
-        return ResponseEntity.noContent().build();
+        return ResponseEntity.ok("Document category deleted successfully");
     }
 
     // Get category by ID

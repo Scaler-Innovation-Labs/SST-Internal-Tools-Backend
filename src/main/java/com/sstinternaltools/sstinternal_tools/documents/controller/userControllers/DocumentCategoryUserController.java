@@ -1,15 +1,11 @@
 package com.sstinternaltools.sstinternal_tools.documents.controller.userControllers;
 
-import com.sstinternaltools.sstinternal_tools.documents.dto.documentCategoryDto.DocumentCategoryCreateDto;
-import com.sstinternaltools.sstinternal_tools.documents.dto.documentCategoryDto.DocumentCategoryResponseDto;
 import com.sstinternaltools.sstinternal_tools.documents.dto.documentCategoryDto.DocumentCategorySummaryDto;
-import com.sstinternaltools.sstinternal_tools.documents.dto.documentCategoryDto.DocumentCategoryUpdateDto;
 import com.sstinternaltools.sstinternal_tools.documents.entity.DocumentCategory;
 import com.sstinternaltools.sstinternal_tools.documents.mapper.interfaces.DocumentCategoryDtoMapper;
 import com.sstinternaltools.sstinternal_tools.documents.service.interfaces.DocumentCategoryService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
 import java.util.stream.Collectors;
 

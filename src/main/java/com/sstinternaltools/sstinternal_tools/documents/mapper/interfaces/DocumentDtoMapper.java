@@ -13,4 +13,5 @@ public interface DocumentDtoMapper {
     DocumentResponseDto toResponseDto(Document document, DocumentVersion latestVersion);
     DocumentSummaryDto toSummaryDto(Document document, DocumentVersion latestVersion);
     Document updateEntity(DocumentUpdateDto dto, Document document);
+    DocumentSummaryDto fromResponseToSummaryDto(DocumentResponseDto dto);
 }

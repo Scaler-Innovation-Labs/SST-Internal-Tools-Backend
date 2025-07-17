@@ -74,4 +74,20 @@ public class DocumentDtoMapperImpl implements DocumentDtoMapper {
 
         return document;
     }
+
+    @Override
+    public DocumentSummaryDto fromResponseToSummaryDto(DocumentResponseDto dto) {
+        Set<String> tagNames = dto.getTags() != null
+                ? dto.getTags().stream().map(Tag::getName).collect(Collectors.toSet())
+                : Set.of();
+
+        return new DocumentSummaryDto(
+                dto.getTitle(),
+                dto.getCategory(),
+                tagNames,
+                dto.getLatestFilePath(),
+                dto.getUploadedAt(),
+                dto.getUpdatedAt()
+        );
+    }
 }

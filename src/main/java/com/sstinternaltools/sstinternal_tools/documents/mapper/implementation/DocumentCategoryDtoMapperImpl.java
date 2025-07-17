@@ -20,13 +20,15 @@ public class DocumentCategoryDtoMapperImpl implements DocumentCategoryDtoMapper 
     public DocumentCategoryResponseDto toResponseDto(DocumentCategory category) {
         return new DocumentCategoryResponseDto(
                 category.getId(),
-                category.getName()
+                category.getName(),
+                category.getNormalizedName()
         );
     }
 
     @Override
     public DocumentCategorySummaryDto toSummaryDto(DocumentCategory category) {
         return new DocumentCategorySummaryDto(
+                category.getId(),
                 category.getName()
         );
     }

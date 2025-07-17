@@ -10,8 +10,11 @@ import com.sstinternaltools.sstinternal_tools.documents.repository.DocumentCateg
 import com.sstinternaltools.sstinternal_tools.documents.service.interfaces.DocumentCategoryService;
 import com.sstinternaltools.sstinternal_tools.documents.service.interfaces.LemmatizerService;
 import com.sstinternaltools.sstinternal_tools.mess.exception.ResourceNotFoundException;
+import org.springframework.stereotype.Service;
+
 import java.util.List;
 
+@Service
 public class DocumentCategoryServiceImpl implements DocumentCategoryService {
 
     private final DocumentCategoryRepository documentCategoryRepository;
@@ -24,6 +27,7 @@ public class DocumentCategoryServiceImpl implements DocumentCategoryService {
         this.lemmatizerService = lemmatizerService;
     }
 
+    @Override
     public DocumentCategoryResponseDto createDocumentCategory(DocumentCategoryCreateDto dto) {
         String rawName = dto.getName();
         String normalized = lemmatizerService.lemmatize(rawName);
@@ -36,6 +40,7 @@ public class DocumentCategoryServiceImpl implements DocumentCategoryService {
         return documentCategoryDtoMapper.toResponseDto(category);
     }
 
+    @Override
     public DocumentCategoryResponseDto updateCategory(Long id ,DocumentCategoryUpdateDto dto) {
         DocumentCategory category = documentCategoryRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Category not found with ID: " + id));
@@ -52,6 +57,7 @@ public class DocumentCategoryServiceImpl implements DocumentCategoryService {
         return documentCategoryDtoMapper.toResponseDto(category);
     }
 
+    @Override
     public void deleteCategory(Long id) {
         if (!documentCategoryRepository.existsById(id)) {
             throw new ResourceNotFoundException("Category not found with ID: " + id);
@@ -59,17 +65,20 @@ public class DocumentCategoryServiceImpl implements DocumentCategoryService {
         documentCategoryRepository.deleteById(id);
     }
 
+    @Override
     public DocumentCategory getCategoryById(Long id) {
         DocumentCategory category = documentCategoryRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Category not found with ID: " + id));
         return category;
     }
 
+    @Override
     public List<DocumentCategory> getAllCategories() {
         List<DocumentCategory> categories = documentCategoryRepository.findAll();
         return categories;
     }
 
+    @Override
     public List<DocumentCategory> searchByNormalizedName(String keyword) {
         String normalized = lemmatizerService.lemmatize(keyword);  // optional
         return documentCategoryRepository.findByNormalizedNameContainingIgnoreCase(normalized);

@@ -41,14 +41,13 @@ public class DocumentServiceImpl implements DocumentService {
         this.cloudStorageService = cloudStorageService;
     }
 
-    public void createDocument(DocumentCreateDto createDto){
+    public DocumentResponseDto createDocument(DocumentCreateDto createDto){
         Document document=documentDtoMapper.toEntity(createDto);
-        documentRepository.save(document);
-
         createDocumentVersion(document,createDto.getFile(),1L);
+        return getDocumentById(document.getId());
     }
 
-    public void updateDocument(DocumentUpdateDto updateDto,Long documentId){
+    public DocumentResponseDto updateDocument(DocumentUpdateDto updateDto,Long documentId){
         Document document=documentRepository.getReferenceById(documentId);
         Document updatedDocument=documentDtoMapper.updateEntity(updateDto,document);
 
@@ -59,6 +58,7 @@ public class DocumentServiceImpl implements DocumentService {
             createDocumentVersion(updatedDocument,updateDto.getFile(),versionNo+1);
         }
         documentRepository.save(updatedDocument);
+        return getDocumentById(updatedDocument.getId());
     }
 
     //method to create document version

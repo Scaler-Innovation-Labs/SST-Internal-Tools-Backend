@@ -44,7 +44,6 @@ public class CustomOAuth2SuccessHandler implements AuthenticationSuccessHandler 
         try {
             OAuth2User oAuth2User = (OAuth2User) authentication.getPrincipal();
             String email = oAuth2User.getAttribute("email");
-
             String domain = email.split("@")[1];
 
             if (!domain.equals("sst.scaler.com") && !domain.equals("scaler.com")) {

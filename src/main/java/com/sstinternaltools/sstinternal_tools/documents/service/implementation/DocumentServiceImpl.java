@@ -11,6 +11,8 @@ import com.sstinternaltools.sstinternal_tools.documents.repository.DocumentRepos
 import com.sstinternaltools.sstinternal_tools.documents.repository.DocumentVersionRepository;
 import com.sstinternaltools.sstinternal_tools.documents.service.interfaces.DocumentService;
 import com.sstinternaltools.sstinternal_tools.documents.service.interfaces.DocumentVersionService;
+import com.sstinternaltools.sstinternal_tools.mess.exception.ResourceNotFoundException;
+import com.sstinternaltools.sstinternal_tools.security.entity.UserPrincipal;
 import com.sstinternaltools.sstinternal_tools.security.exception.InvalidCredentialsException;
 import jakarta.transaction.Transactional;
 import org.springframework.security.core.Authentication;
@@ -41,6 +43,7 @@ public class DocumentServiceImpl implements DocumentService {
     @Transactional
     public DocumentResponseDto createDocument(DocumentCreateDto createDto){
         Document document=documentDtoMapper.toEntity(createDto);
+        documentRepository.save(document);
         documentVersionService.createDocumentVersion(document,createDto.getFile(),1L);
         return getDocumentById(document.getId());
     }
@@ -78,7 +81,9 @@ public class DocumentServiceImpl implements DocumentService {
         String email = authentication.getName(); // typically the email
 
         // Step 4: Fetch document
-        Document document = documentRepository.getReferenceById(documentId);
+        Document document = documentRepository.findById(documentId)
+                .orElseThrow(() -> new ResourceNotFoundException("Document not found"));
+
         Set<AllowedUsers> documentAllowedUsers = document.getAllowedUsers(); // e.g., [ADMIN, BATCH2024]
 
         boolean isAllowed = documentAllowedUsers.contains(AllowedUsers.ALL) || userAllowedRoles.stream().anyMatch(documentAllowedUsers::contains);
@@ -106,7 +111,8 @@ public class DocumentServiceImpl implements DocumentService {
                 .filter(Objects::nonNull)
                 .collect(Collectors.toSet());
 
-        String email = authentication.getName();
+        String email=((UserPrincipal) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUser().getEmail();
+
         try {
             String batch = extractBatchYear(email); // e.g., "24"
             userAllowedRoles.add(AllowedUsers.valueOf("BATCH20" + batch));

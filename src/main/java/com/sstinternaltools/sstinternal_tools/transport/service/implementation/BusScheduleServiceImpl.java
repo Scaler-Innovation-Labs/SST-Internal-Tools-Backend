@@ -2,6 +2,7 @@ package com.sstinternaltools.sstinternal_tools.transport.service.implementation;
 
 import com.sstinternaltools.sstinternal_tools.gallery.entity.Event;
 import com.sstinternaltools.sstinternal_tools.gallery.exception.EventNotFoundException;
+import com.sstinternaltools.sstinternal_tools.security.entity.UserPrincipal;
 import com.sstinternaltools.sstinternal_tools.security.exception.InvalidCredentialsException;
 import com.sstinternaltools.sstinternal_tools.transport.dto.BusScheduleCreateDto;
 import com.sstinternaltools.sstinternal_tools.transport.dto.BusScheduleResponseDto;
@@ -12,6 +13,7 @@ import com.sstinternaltools.sstinternal_tools.transport.mapper.implementation.Bu
 import com.sstinternaltools.sstinternal_tools.transport.repository.BusScheduleRepository;
 import com.sstinternaltools.sstinternal_tools.transport.service.interfaces.BusScheduleService;
 import jakarta.transaction.Transactional;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.ResourceAccessException;
 
@@ -34,6 +36,8 @@ public class BusScheduleServiceImpl implements BusScheduleService {
     @Override
     @Transactional
     public BusScheduleResponseDto createBusSchedule(BusScheduleCreateDto createDto) {
+        String email=((UserPrincipal) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUser().getEmail();
+        System.out.println(email);
         DayOfWeek dayOfWeek = createDto.getDate().getDayOfWeek();
         BusSchedule busSchedule = busScheduleMapper.fromCreateDto(createDto,dayOfWeek);
         busScheduleRepository.save(busSchedule);

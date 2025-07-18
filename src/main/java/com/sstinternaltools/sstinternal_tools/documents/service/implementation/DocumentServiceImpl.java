@@ -64,6 +64,8 @@ public class DocumentServiceImpl implements DocumentService {
     @Override
     @Transactional
     public void deleteDocument(Long documentId){
+        documentVersionRepository.findByDocumentIdOrderByVersionNumberDesc(documentId).stream().map(DocumentVersion::getId)
+                .forEach(documentVersionService:: deleteDocumentVersion);
         documentVersionRepository.deleteAllByDocumentId(documentId);
         documentRepository.deleteById(documentId);
     }
@@ -96,7 +98,7 @@ public class DocumentServiceImpl implements DocumentService {
                 .map(role -> role.replace("ROLE_", ""))    // → STUDENT
                 .map(role -> {
                     try {
-                        return AllowedUsers.valueOf(role); // → AllowedUsers.STUDENT
+                        return AllowedUsers.valueOf(role); // AllowedUsers.STUDENT
                     } catch (IllegalArgumentException e) {
                         return null;
                     }

@@ -9,4 +9,5 @@ import java.util.List;
 @Repository
 public interface DocumentRepository extends JpaRepository<Document, Long> {
     List<Document> findByCategoryId(Long categoryId);
+    boolean existsByCategoryId(Long categoryId);
 }

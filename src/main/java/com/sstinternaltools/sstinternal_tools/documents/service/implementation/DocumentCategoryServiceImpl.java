@@ -7,6 +7,7 @@ import com.sstinternaltools.sstinternal_tools.documents.entity.DocumentCategory;
 import com.sstinternaltools.sstinternal_tools.documents.exception.DuplicateCategoryException;
 import com.sstinternaltools.sstinternal_tools.documents.mapper.interfaces.DocumentCategoryDtoMapper;
 import com.sstinternaltools.sstinternal_tools.documents.repository.DocumentCategoryRepository;
+import com.sstinternaltools.sstinternal_tools.documents.repository.DocumentRepository;
 import com.sstinternaltools.sstinternal_tools.documents.service.interfaces.DocumentCategoryService;
 import com.sstinternaltools.sstinternal_tools.documents.service.interfaces.LemmatizerService;
 import com.sstinternaltools.sstinternal_tools.mess.exception.ResourceNotFoundException;
@@ -21,11 +22,13 @@ public class DocumentCategoryServiceImpl implements DocumentCategoryService {
     private final DocumentCategoryRepository documentCategoryRepository;
     private final DocumentCategoryDtoMapper documentCategoryDtoMapper;
     private final LemmatizerService lemmatizerService;
+    private final DocumentRepository documentRepository;
 
-    public DocumentCategoryServiceImpl(DocumentCategoryRepository documentCategoryRepository, DocumentCategoryDtoMapper documentCategoryDtoMapper,LemmatizerService lemmatizerService) {
+    public DocumentCategoryServiceImpl(DocumentCategoryRepository documentCategoryRepository, DocumentCategoryDtoMapper documentCategoryDtoMapper,LemmatizerService lemmatizerService,DocumentRepository documentRepository) {
         this.documentCategoryRepository = documentCategoryRepository;
         this.documentCategoryDtoMapper = documentCategoryDtoMapper;
         this.lemmatizerService = lemmatizerService;
+        this.documentRepository=documentRepository;
     }
 
     @Override
@@ -66,6 +69,11 @@ public class DocumentCategoryServiceImpl implements DocumentCategoryService {
         if (!documentCategoryRepository.existsById(id)) {
             throw new ResourceNotFoundException("Category not found with ID: " + id);
         }
+
+        if (documentRepository.existsByCategoryId(id)) {
+            throw new RuntimeException("Cannot delete category because documents are associated with it.");
+        }
+
         documentCategoryRepository.deleteById(id);
     }
 

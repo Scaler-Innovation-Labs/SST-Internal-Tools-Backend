@@ -1,6 +1,5 @@
 package com.sstinternaltools.sstinternal_tools.documents.mapper.implementation;
 
-import com.sstinternaltools.sstinternal_tools.documents.dto.documentDtos.DocumentCreateDto;
 import com.sstinternaltools.sstinternal_tools.documents.dto.documentVersionDtos.*;
 import com.sstinternaltools.sstinternal_tools.documents.entity.Document;
 import com.sstinternaltools.sstinternal_tools.documents.entity.DocumentVersion;
@@ -22,7 +21,7 @@ public class DocumentVersionDtoMapperImpl implements DocumentVersionDtoMapper {
     public DocumentVersionResponseDto toResponseDto(DocumentVersion version) {
         DocumentVersionResponseDto dto = new DocumentVersionResponseDto();
         dto.setId(version.getId());
-        dto.setDocumentName(version.getDocument().getTitle());
+        dto.setDocumentName(version.getDocument().getTitle()+" V"+version.getVersionNumber());
         dto.setUploadedAt(version.getUploadedAt());
         dto.setFileUrl(version.getFileUrl());
         dto.setVersionNumber(version.getVersionNumber());

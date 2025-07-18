@@ -10,9 +10,9 @@ import java.util.Set;
 public class DocumentUpdateDto {
 
     private String title;
-    private DocumentCategory category;
+    private DocumentCategory categoryId;
     private Set<AllowedUsers> allowedUsers;
-    private Set<Tag> tags;
+    private Set<Long> tagIds;
     private MultipartFile file;
 
     public MultipartFile getFile() {
@@ -31,14 +31,6 @@ public class DocumentUpdateDto {
         this.title = title;
     }
 
-    public DocumentCategory getCategory() {
-        return category;
-    }
-
-    public void setCategory(DocumentCategory category) {
-        this.category = category;
-    }
-
     public Set<AllowedUsers> getAllowedUsers() {
         return allowedUsers;
     }
@@ -47,11 +39,19 @@ public class DocumentUpdateDto {
         this.allowedUsers = allowedUsers;
     }
 
-    public Set<Tag> getTags() {
-        return tags;
+    public DocumentCategory getCategoryId() {
+        return categoryId;
     }
 
-    public void setTags(Set<Tag> tags) {
-        this.tags = tags;
+    public void setCategoryId(DocumentCategory categoryId) {
+        this.categoryId = categoryId;
+    }
+
+    public Set<Long> getTagIds() {
+        return tagIds;
+    }
+
+    public void setTagIds(Set<Long> tagIds) {
+        this.tagIds = tagIds;
     }
 }

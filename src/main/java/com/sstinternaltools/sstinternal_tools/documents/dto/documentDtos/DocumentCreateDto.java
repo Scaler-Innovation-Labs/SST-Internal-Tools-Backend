@@ -12,8 +12,8 @@ public class DocumentCreateDto {
     @NotBlank(message = "Document name cannot be blank")
     private String title;
     @NotNull(message = "Document category cannot be blank")
-    private DocumentCategory category;
-    private Set<Tag> tags;
+    private Long categoryId;
+    private Set<Long> tagId;
     @NotNull(message = "Allowed users cannot be null")
     private Set<AllowedUsers> userAllowed;
     @NotNull(message = "File cannot be null")
@@ -27,20 +27,20 @@ public class DocumentCreateDto {
         this.title = title;
     }
 
-    public @NotNull(message = "Document category cannot be blank") DocumentCategory getCategory() {
-        return category;
+    public @NotNull(message = "Document category cannot be blank") Long getCategoryId() {
+        return categoryId;
     }
 
-    public void setCategory(@NotNull(message = "Document category cannot be blank") DocumentCategory category) {
-        this.category = category;
+    public void setCategoryId(@NotNull(message = "Document category cannot be blank") Long categoryId) {
+        this.categoryId = categoryId;
     }
 
-    public Set<Tag> getTags() {
-        return tags;
+    public Set<Long> getTagId() {
+        return tagId;
     }
 
-    public void setTags(Set<Tag> tags) {
-        this.tags = tags;
+    public void setTagId(Set<Long> tagId) {
+        this.tagId = tagId;
     }
 
     public @NotNull(message = "Allowed users cannot be null") Set<AllowedUsers> getUserAllowed() {

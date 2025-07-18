@@ -23,7 +23,12 @@ public class Document {
     @ElementCollection
     private Set<AllowedUsers> allowedUsers;
 
-    @OneToMany
+    @ManyToMany
+    @JoinTable(
+            name = "document_tags", // Name of the join table
+            joinColumns = @JoinColumn(name = "document_id"),
+            inverseJoinColumns = @JoinColumn(name = "tag_id")
+    )
     private Set<Tag> tags;
     private LocalDateTime createdAt;
 

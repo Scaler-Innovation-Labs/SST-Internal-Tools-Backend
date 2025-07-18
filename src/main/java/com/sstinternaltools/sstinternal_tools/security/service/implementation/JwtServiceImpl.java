@@ -13,6 +13,7 @@ import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import jakarta.servlet.http.Cookie;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.ResponseCookie;
 import org.springframework.stereotype.Service;
 import javax.crypto.SecretKey;
 import java.time.LocalDateTime;
@@ -25,9 +26,9 @@ import java.util.function.Function;
 @Service
 public class JwtServiceImpl implements JwtService {
 
-    private String jwtSecretKey;
-    private long accessTokenExpiration;
-    private long refreshTokenExpiration;
+    private final String jwtSecretKey;
+    private final long accessTokenExpiration;
+    private final long refreshTokenExpiration;
     private final JwtTokenRepository jwtTokenRepository;
     private final UserRepository userRepository;
 
@@ -47,7 +48,7 @@ public class JwtServiceImpl implements JwtService {
 
 
     //method to generate access token
-    public Cookie generateAccessCookie(String email) {
+    public ResponseCookie generateAccessCookie(String email) {
 
         User user = userRepository.findByEmailWithRoles(email)
                 .orElseThrow(() -> new RuntimeException("User with email " + email + " not found."));
@@ -72,17 +73,19 @@ public class JwtServiceImpl implements JwtService {
                 .compact();
 
         //Added the access token in httpOnly cookie
-        Cookie accessCookie = new Cookie("accessToken", token);
-        accessCookie.setHttpOnly(true);
-        accessCookie.setSecure(true);
-        accessCookie.setPath("/");
-        accessCookie.setMaxAge((int)accessTokenExpiration/1000);
+        ResponseCookie accessCookie = ResponseCookie.from("accessToken", token)
+                .httpOnly(true)                  // prevent JS access — security best practice
+                .secure(false)                    // send only over HTTPS
+                .path("/")                       // cookie is valid for entire app
+                .maxAge(accessTokenExpiration/1000)
+                .sameSite("Lax")                // prevent CSRF, still allow POST from same site
+                .build();
 
         return accessCookie;
     }
 
     //method to generate refresh token
-    public Cookie generateRefreshCookie(String email) {
+    public ResponseCookie generateRefreshCookie(String email) {
         User user=userRepository.findByEmail(email)
                 .orElseThrow(()->new RuntimeException("User with email " + email + " not found."));
 
@@ -106,11 +109,13 @@ public class JwtServiceImpl implements JwtService {
         jwtTokenRepository.save(refreshToken);
 
         //Added the refresh token in httpOnly cookie
-        Cookie refreshCookie = new Cookie("refreshToken", token);
-        refreshCookie.setHttpOnly(true);
-        refreshCookie.setSecure(true);
-        refreshCookie.setPath("/auth");
-        refreshCookie.setMaxAge((int)refreshTokenExpiration/1000);
+        ResponseCookie refreshCookie = ResponseCookie.from("refreshToken", token)
+                .httpOnly(true)                  // prevent JS access — security best practice
+                .secure(false)                    // send only over HTTPS
+                .path("/")
+                .maxAge((int)refreshTokenExpiration/1000)    // expires in 7 days
+                .sameSite("Lax")                // prevent CSRF, still allow POST from same site
+                .build();
 
         return refreshCookie;
     }

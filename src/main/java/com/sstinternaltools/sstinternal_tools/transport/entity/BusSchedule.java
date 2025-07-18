@@ -2,6 +2,7 @@ package com.sstinternaltools.sstinternal_tools.transport.entity;
 
 import jakarta.persistence.*;
 
+import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
@@ -11,23 +12,63 @@ public class BusSchedule {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "bus_schedule_id",nullable = false)
     private Long id;
-
     private String source;
     private String destination;
     private LocalTime departureTime;
+    private LocalTime arrivalTime;
+    @Enumerated(EnumType.STRING)
+    private DayOfWeek dayOfWeek;
+    @Enumerated(EnumType.STRING)
+    private BusStatus busStatus;
     private LocalDate date;
+    private int studentsBoarded;
 
-    public BusSchedule(String source, String destination, LocalTime departureTime, LocalDate date) {
+    public BusSchedule(String source, String destination, LocalTime departureTime,LocalTime arrivalTime, LocalDate date,BusStatus busStatus,int studentsBoarded) {
         this.source = source;
         this.destination = destination;
         this.departureTime = departureTime;
+        this.arrivalTime = arrivalTime;
         this.date = date;
+        this.busStatus = busStatus;
+        this.studentsBoarded = studentsBoarded;
     }
 
     public BusSchedule() {}
 
+    public BusStatus getBusStatus() {
+        return busStatus;
+    }
+
+    public void setBusStatus(BusStatus busStatus) {
+        this.busStatus = busStatus;
+    }
+
+    public int getStudentsBoarded() {
+        return studentsBoarded;
+    }
+
+    public void setStudentsBoarded(int studentsBoarded) {
+        this.studentsBoarded = studentsBoarded;
+    }
+
     public Long getId() {
         return id;
+    }
+
+    public LocalTime getArrivalTime() {
+        return arrivalTime;
+    }
+
+    public void setArrivalTime(LocalTime arrivalTime) {
+        this.arrivalTime = arrivalTime;
+    }
+
+    public DayOfWeek getDayOfWeek() {
+        return dayOfWeek;
+    }
+
+    public void setDayOfWeek(DayOfWeek dayOfWeek) {
+        this.dayOfWeek = dayOfWeek;
     }
 
     public String getSource() {

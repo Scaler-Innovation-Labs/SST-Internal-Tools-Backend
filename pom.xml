@@ -137,6 +137,21 @@
             <version>2.18.2</version>
         </dependency>
 
+<!--        Dependency to prevent duplicate category creation.-->
+
+        <dependency>
+            <groupId>edu.stanford.nlp</groupId>
+            <artifactId>stanford-corenlp</artifactId>
+            <version>4.5.4</version>
+        </dependency>
+        <dependency>
+            <groupId>edu.stanford.nlp</groupId>
+            <artifactId>stanford-corenlp</artifactId>
+            <version>4.5.4</version>
+            <classifier>models</classifier>
+        </dependency>
+
+
         <!--        <dependency>-->
         <!--            <groupId>org.slf4j</groupId>-->
         <!--            <artifactId>slf4j-simple</artifactId>-->
@@ -150,6 +165,23 @@
             <artifactId>itextpdf</artifactId>
             <version>5.5.13.3</version>
         </dependency>
+
+<!--        &lt;!&ndash; Spring Boot Starter for file upload (comes with web) &ndash;&gt;-->
+<!--        &lt;!&ndash; No extra dependency needed for MultipartFile if you're using spring-boot-starter-web &ndash;&gt;-->
+
+<!--        &lt;!&ndash; Optional: Jackson if you're dealing with JSON responses from Supabase or other APIs &ndash;&gt;-->
+<!--        <dependency>-->
+<!--            <groupId>com.fasterxml.jackson.core</groupId>-->
+<!--            <artifactId>jackson-databind</artifactId>-->
+<!--        </dependency>-->
+
+<!--        &lt;!&ndash; Lombok (if using @RequiredArgsConstructor, etc.) &ndash;&gt;-->
+<!--        <dependency>-->
+<!--            <groupId>org.projectlombok</groupId>-->
+<!--            <artifactId>lombok</artifactId>-->
+<!--            <optional>true</optional>-->
+<!--        </dependency>-->
+
 
     </dependencies>
 

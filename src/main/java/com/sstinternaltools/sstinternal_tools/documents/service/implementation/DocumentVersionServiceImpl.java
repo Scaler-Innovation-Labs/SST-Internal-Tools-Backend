@@ -57,9 +57,6 @@ public class DocumentVersionServiceImpl implements DocumentVersionService {
     public void deleteDocumentVersion(Long versionId) {
         DocumentVersion version = documentVersionRepository.findById(versionId)
                 .orElseThrow(() -> new ResourceNotFoundException("Document version not found with ID: " + versionId));
-        cloudStorageService.deleteFile(version.getFileUrl());
         documentVersionRepository.delete(version);
     }
-
-
 }

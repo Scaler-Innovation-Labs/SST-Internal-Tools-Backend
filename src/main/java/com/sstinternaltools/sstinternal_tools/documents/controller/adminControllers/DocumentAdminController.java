@@ -19,7 +19,7 @@ public class DocumentAdminController {
         this.documentService = documentService;
     }
 
-    // ✅ Create a new document
+    //  Create a new document
     @PostMapping("/create")
     public ResponseEntity<DocumentResponseDto> createDocument(
             @ModelAttribute @Valid DocumentCreateDto createDto) {
@@ -27,7 +27,7 @@ public class DocumentAdminController {
         return ResponseEntity.ok(responseDto);
     }
 
-    // ✅ Update an existing document
+    // Update an existing document
     @PutMapping("update/{id}")
     public ResponseEntity<DocumentResponseDto> updateDocument(
             @PathVariable Long id,
@@ -36,21 +36,21 @@ public class DocumentAdminController {
         return ResponseEntity.ok(responseDto);
     }
 
-    // ✅ Delete document by ID
+    // Delete document by ID
     @DeleteMapping("delete/{id}")
     public ResponseEntity<String> deleteDocument(@PathVariable Long id) {
         documentService.deleteDocument(id);
         return ResponseEntity.ok("Document deleted successfully");
     }
 
-    // ✅ Get document by ID (with access check)
+    // Get document by ID (with access check)
     @GetMapping("getById/{id}")
     public ResponseEntity<DocumentResponseDto> getDocumentById(@PathVariable Long id) {
         DocumentResponseDto responseDto = documentService.getDocumentById(id);
         return ResponseEntity.ok(responseDto);
     }
 
-    // ✅ Get documents by category (with filtering by access)
+    //Get documents by category (with filtering by access)
     @GetMapping("/byCategory/{categoryId}")
     public ResponseEntity<List<DocumentResponseDto>> getDocumentsByCategoryId(@PathVariable Long categoryId) {
         List<DocumentResponseDto> results = documentService.getDocumentByCategoryId(categoryId);

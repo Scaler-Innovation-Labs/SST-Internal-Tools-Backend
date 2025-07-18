@@ -7,20 +7,16 @@ import com.sstinternaltools.sstinternal_tools.documents.entity.AllowedUsers;
 import com.sstinternaltools.sstinternal_tools.documents.entity.Document;
 import com.sstinternaltools.sstinternal_tools.documents.entity.DocumentVersion;
 import com.sstinternaltools.sstinternal_tools.documents.mapper.interfaces.DocumentDtoMapper;
-import com.sstinternaltools.sstinternal_tools.documents.mapper.interfaces.DocumentVersionDtoMapper;
 import com.sstinternaltools.sstinternal_tools.documents.repository.DocumentRepository;
 import com.sstinternaltools.sstinternal_tools.documents.repository.DocumentVersionRepository;
-import com.sstinternaltools.sstinternal_tools.documents.service.interfaces.CloudStorageService;
 import com.sstinternaltools.sstinternal_tools.documents.service.interfaces.DocumentService;
-import com.sstinternaltools.sstinternal_tools.security.entity.UserPrincipal;
+import com.sstinternaltools.sstinternal_tools.documents.service.interfaces.DocumentVersionService;
 import com.sstinternaltools.sstinternal_tools.security.exception.InvalidCredentialsException;
-import jakarta.persistence.Table;
 import jakarta.transaction.Transactional;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
@@ -32,22 +28,20 @@ public class DocumentServiceImpl implements DocumentService {
     private final DocumentRepository documentRepository;
     private final DocumentVersionRepository documentVersionRepository;
     private final DocumentDtoMapper documentDtoMapper;
-    private final DocumentVersionDtoMapper documentVersionDtoMapper;
-    private final CloudStorageService cloudStorageService;
+    private final DocumentVersionService documentVersionService;
 
-    public DocumentServiceImpl(DocumentRepository documentRepository, DocumentVersionRepository documentVersionRepository, DocumentDtoMapper documentDtoMapper, DocumentVersionDtoMapper documentVersionDtoMapper, CloudStorageService cloudStorageService) {
+    public DocumentServiceImpl(DocumentRepository documentRepository, DocumentVersionRepository documentVersionRepository, DocumentDtoMapper documentDtoMapper,DocumentVersionService documentVersionService) {
         this.documentRepository = documentRepository;
         this.documentVersionRepository = documentVersionRepository;
         this.documentDtoMapper = documentDtoMapper;
-        this.documentVersionDtoMapper = documentVersionDtoMapper;
-        this.cloudStorageService = cloudStorageService;
+        this.documentVersionService = documentVersionService;
     }
 
     @Override
     @Transactional
     public DocumentResponseDto createDocument(DocumentCreateDto createDto){
         Document document=documentDtoMapper.toEntity(createDto);
-        createDocumentVersion(document,createDto.getFile(),1L);
+        documentVersionService.createDocumentVersion(document,createDto.getFile(),1L);
         return getDocumentById(document.getId());
     }
 
@@ -61,22 +55,10 @@ public class DocumentServiceImpl implements DocumentService {
             DocumentVersion currentDocument=documentVersionRepository.findByDocumentIdAndIsLatestVersionTrue(documentId);
             currentDocument.setLatestVersion(false);
             Long versionNo=documentVersionRepository.findTopByDocumentIdOrderByVersionNumberDesc(documentId).getVersionNumber();
-            createDocumentVersion(updatedDocument,updateDto.getFile(),versionNo+1);
+            documentVersionService.createDocumentVersion(updatedDocument,updateDto.getFile(),versionNo+1);
         }
         documentRepository.save(updatedDocument);
         return getDocumentById(updatedDocument.getId());
-    }
-
-    //method to create document version
-    @Transactional
-    public void createDocumentVersion(Document document, MultipartFile multipartFile,Long versionNo){
-        String email=((UserPrincipal) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUser().getEmail();
-
-        String fileUrl=cloudStorageService.uploadFile(multipartFile);
-
-        DocumentVersion documentVersion=documentVersionDtoMapper.fromCreateDto(document,fileUrl,email,versionNo);
-        documentVersionRepository.save(documentVersion);
-
     }
 
     @Override

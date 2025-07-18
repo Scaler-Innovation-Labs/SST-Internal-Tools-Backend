@@ -1,12 +1,9 @@
 package com.sstinternaltools.sstinternal_tools.documents.controller.userControllers;
 
-import com.sstinternaltools.sstinternal_tools.documents.dto.documentDtos.DocumentCreateDto;
 import com.sstinternaltools.sstinternal_tools.documents.dto.documentDtos.DocumentResponseDto;
 import com.sstinternaltools.sstinternal_tools.documents.dto.documentDtos.DocumentSummaryDto;
-import com.sstinternaltools.sstinternal_tools.documents.dto.documentDtos.DocumentUpdateDto;
 import com.sstinternaltools.sstinternal_tools.documents.mapper.interfaces.DocumentDtoMapper;
 import com.sstinternaltools.sstinternal_tools.documents.service.interfaces.DocumentService;
-import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;

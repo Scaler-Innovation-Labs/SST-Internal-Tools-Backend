@@ -10,7 +10,7 @@ import java.util.Set;
 public class DocumentUpdateDto {
 
     private String title;
-    private DocumentCategory categoryId;
+    private Long categoryId;
     private Set<AllowedUsers> allowedUsers;
     private Set<Long> tagIds;
     private MultipartFile file;
@@ -39,11 +39,11 @@ public class DocumentUpdateDto {
         this.allowedUsers = allowedUsers;
     }
 
-    public DocumentCategory getCategoryId() {
+    public Long getCategoryId() {
         return categoryId;
     }
 
-    public void setCategoryId(DocumentCategory categoryId) {
+    public void setCategoryId(Long categoryId) {
         this.categoryId = categoryId;
     }
 

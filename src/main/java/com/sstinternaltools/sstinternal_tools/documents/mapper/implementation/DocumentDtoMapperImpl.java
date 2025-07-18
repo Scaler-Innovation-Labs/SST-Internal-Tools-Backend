@@ -2,24 +2,45 @@ package com.sstinternaltools.sstinternal_tools.documents.mapper.implementation;
 
 import com.sstinternaltools.sstinternal_tools.documents.dto.documentDtos.*;
 import com.sstinternaltools.sstinternal_tools.documents.entity.Document;
+import com.sstinternaltools.sstinternal_tools.documents.entity.DocumentCategory;
 import com.sstinternaltools.sstinternal_tools.documents.entity.DocumentVersion;
 import com.sstinternaltools.sstinternal_tools.documents.entity.Tag;
 import com.sstinternaltools.sstinternal_tools.documents.mapper.interfaces.DocumentDtoMapper;
+import com.sstinternaltools.sstinternal_tools.documents.repository.DocumentCategoryRepository;
+import com.sstinternaltools.sstinternal_tools.documents.repository.TagRepository;
+import com.sstinternaltools.sstinternal_tools.mess.exception.ResourceNotFoundException;
 import org.springframework.stereotype.Component;
-
 import java.time.LocalDateTime;
+import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
 
 @Component
 public class DocumentDtoMapperImpl implements DocumentDtoMapper {
 
+    private final DocumentCategoryRepository documentCategoryRepository;
+    private final TagRepository tagRepository;
+
+    public DocumentDtoMapperImpl(DocumentCategoryRepository documentCategoryRepository, TagRepository tagRepository) {
+        this.documentCategoryRepository = documentCategoryRepository;
+        this.tagRepository = tagRepository;
+    }
+
     @Override
     public Document toEntity(DocumentCreateDto dto) {
+
+        Set<Tag> tags = dto.getTagId() != null
+                ? new HashSet<>(tagRepository.findAllById(dto.getTagId()))
+                : null;
+
+        DocumentCategory category = documentCategoryRepository.findById(dto.getCategoryId())
+                .orElseThrow(() -> new ResourceNotFoundException("Invalid category ID: " + dto.getCategoryId()));
+
+
         Document document = new Document();
         document.setTitle(dto.getTitle());
-        document.setCategory(dto.getCategory());
-        document.setTags(dto.getTags());
+        document.setCategory(category);
+        document.setTags(tags);
         document.setAllowedUsers(dto.getUserAllowed());
         document.setCreatedAt(LocalDateTime.now());
         return document;
@@ -59,17 +80,24 @@ public class DocumentDtoMapperImpl implements DocumentDtoMapper {
 
     @Override
     public Document updateEntity(DocumentUpdateDto dto, Document document) {
+        DocumentCategory category = documentCategoryRepository.findById(dto.getCategoryId())
+                .orElseThrow(() -> new ResourceNotFoundException("Invalid category ID: " + dto.getCategoryId()));
+
+        Set<Tag> tags = dto.getTagIds() != null
+                ? new HashSet<>(tagRepository.findAllById(dto.getTagIds()))
+                : null;
+
         if (dto.getTitle() != null) {
             document.setTitle(dto.getTitle());
         }
-        if (dto.getCategory() != null) {
-            document.setCategory(dto.getCategory());
+        if (dto.getCategoryId() != null) {
+            document.setCategory(category);
         }
         if (dto.getAllowedUsers() != null) {
             document.setAllowedUsers(dto.getAllowedUsers());
         }
-        if (dto.getTags() != null) {
-            document.setTags(dto.getTags());
+        if (dto.getTagIds() != null) {
+            document.setTags(tags);
         }
 
         return document;

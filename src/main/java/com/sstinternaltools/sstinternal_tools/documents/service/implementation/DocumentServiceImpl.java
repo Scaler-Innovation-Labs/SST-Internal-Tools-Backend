@@ -15,6 +15,8 @@ import com.sstinternaltools.sstinternal_tools.mess.exception.ResourceNotFoundExc
 import com.sstinternaltools.sstinternal_tools.security.entity.UserPrincipal;
 import com.sstinternaltools.sstinternal_tools.security.exception.InvalidCredentialsException;
 import jakarta.transaction.Transactional;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -27,6 +29,7 @@ import java.util.stream.Collectors;
 @Service
 public class DocumentServiceImpl implements DocumentService {
 
+    private static final Logger log = LoggerFactory.getLogger(DocumentServiceImpl.class);
     private final DocumentRepository documentRepository;
     private final DocumentVersionRepository documentVersionRepository;
     private final DocumentDtoMapper documentDtoMapper;
@@ -51,7 +54,7 @@ public class DocumentServiceImpl implements DocumentService {
     @Override
     @Transactional
     public DocumentResponseDto updateDocument(DocumentUpdateDto updateDto,Long documentId){
-        Document document=documentRepository.getReferenceById(documentId);
+        Document document=documentRepository.findById(documentId).orElseThrow(()-> new ResourceNotFoundException("Document not found"));
         Document updatedDocument=documentDtoMapper.updateEntity(updateDto,document);
 
         if(updateDto.getFile()!=null){
@@ -77,7 +80,7 @@ public class DocumentServiceImpl implements DocumentService {
     public DocumentResponseDto getDocumentById(Long documentId){
         // Step 1: Get authentication
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        Set<AllowedUsers> userAllowedRoles=getAllowedUsers(authentication);
+        Set<AllowedUsers> userBatchRoles=getUserBatchRole(authentication);
         String email = authentication.getName(); // typically the email
 
         // Step 4: Fetch document
@@ -85,19 +88,21 @@ public class DocumentServiceImpl implements DocumentService {
                 .orElseThrow(() -> new ResourceNotFoundException("Document not found"));
 
         Set<AllowedUsers> documentAllowedUsers = document.getAllowedUsers(); // e.g., [ADMIN, BATCH2024]
+        documentAllowedUsers.add(AllowedUsers.ADMIN);
+        documentAllowedUsers.add(AllowedUsers.SUPER_ADMIN);
 
-        boolean isAllowed = documentAllowedUsers.contains(AllowedUsers.ALL) || userAllowedRoles.stream().anyMatch(documentAllowedUsers::contains);
+        boolean isAllowed = documentAllowedUsers.contains(AllowedUsers.ALL) || userBatchRoles.stream().anyMatch(documentAllowedUsers::contains);
 
         if (!isAllowed) {
             throw new InvalidCredentialsException("You are not authorized to view this document.");
-        }
+        }.log
         DocumentVersion latestVersion = documentVersionRepository.findByDocumentIdAndIsLatestVersionTrue(documentId);
         return documentDtoMapper.toResponseDto(document, latestVersion);
     }
 
 
     // Step 2: Extract user roles from JWT (SecurityContext)
-    public Set<AllowedUsers> getAllowedUsers(Authentication authentication) {
+    public Set<AllowedUsers> getUserBatchRole(Authentication authentication) {
         Set<AllowedUsers> userAllowedRoles = authentication.getAuthorities().stream()
                 .map(GrantedAuthority::getAuthority)       // e.g., ROLE_STUDENT
                 .map(role -> role.replace("ROLE_", ""))    // → STUDENT
@@ -110,6 +115,7 @@ public class DocumentServiceImpl implements DocumentService {
                 })
                 .filter(Objects::nonNull)
                 .collect(Collectors.toSet());
+
 
         String email=((UserPrincipal) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUser().getEmail();
 
@@ -137,15 +143,17 @@ public class DocumentServiceImpl implements DocumentService {
             throw new InvalidCredentialsException("User is not authenticated.");
         }
         // Extract user roles from SecurityContext
-        Set<AllowedUsers> userAllowedRoles =getAllowedUsers(authentication);
+        Set<AllowedUsers> userBatchRoles =getUserBatchRole(authentication);
         // Fetch all documents by category
         List<Document> documents = documentRepository.findByCategoryId(categoryId);
         // Filter and map only the allowed ones
         List<DocumentResponseDto> allowedDocuments = documents.stream()
                 .filter(doc -> {
                     Set<AllowedUsers> docAllowedUsers = doc.getAllowedUsers();
+                    docAllowedUsers.add(AllowedUsers.ADMIN);
+                    docAllowedUsers.add(AllowedUsers.SUPER_ADMIN);
                     return docAllowedUsers.contains(AllowedUsers.ALL) ||
-                            userAllowedRoles.stream().anyMatch(docAllowedUsers::contains);
+                            userBatchRoles.stream().anyMatch(docAllowedUsers::contains);
                 })
                 .map(doc -> {
                     DocumentVersion latestVersion = documentVersionRepository
@@ -164,15 +172,17 @@ public class DocumentServiceImpl implements DocumentService {
             throw new InvalidCredentialsException("User is not authenticated.");
         }
         // Extract user roles from SecurityContext
-        Set<AllowedUsers> userAllowedRoles =getAllowedUsers(authentication);
+        Set<AllowedUsers> userBatchRoles =getUserBatchRole(authentication);
         // Fetch all documents by category
         List<Document> documents = documentRepository.findAll();
         // Filter and map only the allowed ones
         List<DocumentResponseDto> allowedDocuments = documents.stream()
                 .filter(doc -> {
                     Set<AllowedUsers> docAllowedUsers = doc.getAllowedUsers();
+                    docAllowedUsers.add(AllowedUsers.ADMIN);
+                    docAllowedUsers.add(AllowedUsers.SUPER_ADMIN);
                     return docAllowedUsers.contains(AllowedUsers.ALL) ||
-                            userAllowedRoles.stream().anyMatch(docAllowedUsers::contains);
+                            userBatchRoles.stream().anyMatch(docAllowedUsers::contains);
                 })
                 .map(doc -> {
                     DocumentVersion latestVersion = documentVersionRepository

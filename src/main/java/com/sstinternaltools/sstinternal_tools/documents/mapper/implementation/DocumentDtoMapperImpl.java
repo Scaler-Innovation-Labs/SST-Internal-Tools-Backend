@@ -80,9 +80,6 @@ public class DocumentDtoMapperImpl implements DocumentDtoMapper {
 
     @Override
     public Document updateEntity(DocumentUpdateDto dto, Document document) {
-        DocumentCategory category = documentCategoryRepository.findById(dto.getCategoryId())
-                .orElseThrow(() -> new ResourceNotFoundException("Invalid category ID: " + dto.getCategoryId()));
-
         Set<Tag> tags = dto.getTagIds() != null
                 ? new HashSet<>(tagRepository.findAllById(dto.getTagIds()))
                 : null;
@@ -91,6 +88,7 @@ public class DocumentDtoMapperImpl implements DocumentDtoMapper {
             document.setTitle(dto.getTitle());
         }
         if (dto.getCategoryId() != null) {
+            DocumentCategory category = documentCategoryRepository.findById(dto.getCategoryId()).orElse(null);
             document.setCategory(category);
         }
         if (dto.getAllowedUsers() != null) {

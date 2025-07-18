@@ -36,9 +36,9 @@ public class TagAdminController {
 
     //  Delete Tag
     @DeleteMapping("delete/{id}")
-    public ResponseEntity<Void> deleteTag(@PathVariable Long id) {
+    public ResponseEntity<String> deleteTag(@PathVariable Long id) {
         tagService.deleteTag(id);
-        return ResponseEntity.noContent().build();
+        return ResponseEntity.ok("Tag deleted Successfully");
     }
 
     // Get All Tags

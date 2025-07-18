@@ -65,7 +65,7 @@ public class CloudStorageServiceImpl implements CloudStorageService {
                 throw new IllegalArgumentException("Invalid file URL: not a public Supabase file.");
             }
             String filePath = fileUrl.substring(index + publicPrefix.length());
-            String deleteUrl = supabaseUrl + "/storage/v1/object/" + bucket + "/" + filePath;
+            String deleteUrl = supabaseUrl + "/storage/v1/object/" + "/" + filePath;
             HttpHeaders headers = new HttpHeaders();
             headers.set("Authorization", "Bearer " + supabaseKey);
             headers.set("apikey", supabaseKey);

@@ -15,8 +15,6 @@ import com.sstinternaltools.sstinternal_tools.mess.exception.ResourceNotFoundExc
 import com.sstinternaltools.sstinternal_tools.security.entity.UserPrincipal;
 import com.sstinternaltools.sstinternal_tools.security.exception.InvalidCredentialsException;
 import jakarta.transaction.Transactional;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -29,7 +27,6 @@ import java.util.stream.Collectors;
 @Service
 public class DocumentServiceImpl implements DocumentService {
 
-    private static final Logger log = LoggerFactory.getLogger(DocumentServiceImpl.class);
     private final DocumentRepository documentRepository;
     private final DocumentVersionRepository documentVersionRepository;
     private final DocumentDtoMapper documentDtoMapper;
@@ -57,7 +54,7 @@ public class DocumentServiceImpl implements DocumentService {
         Document document=documentRepository.findById(documentId).orElseThrow(()-> new ResourceNotFoundException("Document not found"));
         Document updatedDocument=documentDtoMapper.updateEntity(updateDto,document);
 
-        if(updateDto.getFile()!=null){
+        if(updateDto.getFile()!=null && !updateDto.getFile().isEmpty()){
             DocumentVersion currentDocument=documentVersionRepository.findByDocumentIdAndIsLatestVersionTrue(documentId);
             currentDocument.setLatestVersion(false);
             Long versionNo=documentVersionRepository.findTopByDocumentIdOrderByVersionNumberDesc(documentId).getVersionNumber();
@@ -95,7 +92,7 @@ public class DocumentServiceImpl implements DocumentService {
 
         if (!isAllowed) {
             throw new InvalidCredentialsException("You are not authorized to view this document.");
-        }.log
+        }
         DocumentVersion latestVersion = documentVersionRepository.findByDocumentIdAndIsLatestVersionTrue(documentId);
         return documentDtoMapper.toResponseDto(document, latestVersion);
     }

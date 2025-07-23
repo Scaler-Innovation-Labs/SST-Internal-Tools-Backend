@@ -13,8 +13,8 @@ public interface TicketRepository extends JpaRepository<Ticket, Long> {
 
 
     List<Ticket> findByPriority(TicketPriority priority);
-    List<Ticket> findByCategory(String category);
-    List<Ticket> findByUserId(Long id);
+//    List<Ticket> findByCategory(String category);
+//    List<Ticket> findByUserId(Long id);
     List<Ticket> findByStatus(TicketStatus status);
 
     // Added correct methods

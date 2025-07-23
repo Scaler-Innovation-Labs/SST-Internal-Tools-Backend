@@ -3,39 +3,8 @@ services:
     image: postgres:latest
     restart: always
     environment:
-      POSTGRES_DB: sst-internal-tools
-      POSTGRES_USER: sst
-      POSTGRES_PASSWORD: tools
+      POSTGRES_DB: SST-Internal_Tools
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: pass
     ports:
-      - "5432:5432"
-    volumes:
-      - postgres-data:/var/lib/postgresql/data
-    healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U sst -d sst-internal-tools"]
-      interval: 10s
-      timeout: 5s
-      retries: 5
-
-  app:
-    build:
-      context: .
-      dockerfile: Dockerfile
-    depends_on:
-      postgres:
-        condition: service_healthy
-    ports:
-      - "8080:8080"
-    environment:
-      DATABASE_URL: jdbc:postgresql://postgres:5432/sst-internal-tools
-      DATABASE_USER: sst
-      DATABASE_PASSWORD: tools
-      SERVER_PORT: 8080
-      GOOGLE_CLIENT_ID: 1064457293396-05f0n109k8qj814qvuruct1vevr7at0q.apps.googleusercontent.com
-      GOOGLE_CLIENT_SECRET: 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
-      JWT_SECRET_KEY: your_jwt_secret_key_here
-      JWT_ACCESS_EXPIRATION: 3600000
-      JWT_REFRESH_EXPIRATION: 86400000
-
-volumes:
-  postgres-data:
-
+      - "3338:5432"

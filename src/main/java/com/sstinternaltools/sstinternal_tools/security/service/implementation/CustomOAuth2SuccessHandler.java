@@ -72,7 +72,7 @@ public class CustomOAuth2SuccessHandler implements AuthenticationSuccessHandler 
             response.addHeader("Set-Cookie", refreshCookie.toString());
 
             String redirectUrl = frontendUrl + "/auth/callback";
-//            response.sendRedirect(redirectUrl);
+            response.sendRedirect(redirectUrl);
 
 
 

@@ -15,7 +15,6 @@ import org.springframework.ai.vectorstore.VectorStore;
 import org.springframework.stereotype.Service;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.core.io.Resource;
-
 import java.util.List;
 import java.util.stream.Collectors;
 

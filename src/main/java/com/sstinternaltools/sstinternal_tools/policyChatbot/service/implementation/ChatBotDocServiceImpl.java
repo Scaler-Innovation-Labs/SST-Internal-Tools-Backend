@@ -8,6 +8,7 @@ import com.sstinternaltools.sstinternal_tools.policyChatbot.entity.ChatBotDoc;
 import com.sstinternaltools.sstinternal_tools.policyChatbot.mapper.interfaces.ChatBotDocMapper;
 import com.sstinternaltools.sstinternal_tools.policyChatbot.repository.ChatBotDocRepository;
 import com.sstinternaltools.sstinternal_tools.policyChatbot.service.interfaces.ChatBotDocService;
+import jakarta.transaction.Transactional;
 import org.springframework.ai.reader.pdf.PagePdfDocumentReader;
 import org.springframework.ai.transformer.splitter.TokenTextSplitter;
 import org.springframework.ai.vectorstore.VectorStore;
@@ -34,6 +35,7 @@ public class ChatBotDocServiceImpl implements ChatBotDocService {
         this.chatBotDocMapper = chatBotDocMapper;
     }
 
+    @Transactional
     public Long saveDocumentToCloudStorage(ChatBotDocCreateDto createDto){
         String fileUrl=cloudStorageService.uploadFile(createDto.getFile());
         ChatBotDoc chatBotDoc=chatBotDocMapper.fromCreateDto(createDto,fileUrl);
@@ -41,6 +43,8 @@ public class ChatBotDocServiceImpl implements ChatBotDocService {
         return chatBotDoc.getId();
     }
 
+    @Transactional
+    @Override
     public void injectDocument(ChatBotDocCreateDto createDto) {
 
         try {
@@ -73,6 +77,8 @@ public class ChatBotDocServiceImpl implements ChatBotDocService {
         }
     }
 
+    @Transactional
+    @Override
     public void deleteDocumentAndEmbeddings(Long docId) {
         ChatBotDoc doc=chatBotDocRepository.findById(docId).orElseThrow(()->new ResourceNotFoundException("Document not found"));
         String filterExpression = "docId == '" + docId + "'";
@@ -80,6 +86,7 @@ public class ChatBotDocServiceImpl implements ChatBotDocService {
         cloudStorageService.deleteFile(doc.getFileUrl());
     }
 
+    @Override
     public List<ChatBotDocResponseDto> getAllDocuments() {
         return chatBotDocRepository.findAll().stream().map(chatBotDocMapper::fromEntityToDto).collect(Collectors.toList());
     }

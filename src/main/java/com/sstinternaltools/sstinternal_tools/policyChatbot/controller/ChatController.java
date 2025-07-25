@@ -6,6 +6,7 @@ import jakarta.validation.constraints.NotNull;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
+@RequestMapping("/policyChatBot")
 public class ChatController {
 
     private final ChatService chatService;

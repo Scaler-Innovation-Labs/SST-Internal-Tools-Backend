@@ -62,7 +62,7 @@ public class ChatServiceImpl implements ChatService {
 
         System.out.println(context);
 
-        // Define your system prompt to guide the assistant
+        // Definedr system prompt to guide the assistant
         String systemPrompt = """
                You are an expert assistant helping answer user questions based on provided context from documents, as well as prior conversation history with the user. Remember personal information shared by the user during this conversation and use it in answers.
                                             If the answer is not found in the documents or conversation history, say: "I don’t have enough information to answer that question."
@@ -82,7 +82,7 @@ public class ChatServiceImpl implements ChatService {
                 {user_input}
                 """);
 
-        // Fill template variables
+
         Prompt prompt = promptTemplate.create(Map.of(
                 "systemPrompt", systemPrompt,
                 "chat_history", chatHistory,
@@ -90,7 +90,7 @@ public class ChatServiceImpl implements ChatService {
                 "user_input", message
         ));
 
-        // Log prompt content before calling LLM (for debugging)
+
         System.out.println("========= PROMPT TO LLM =========");
         System.out.println(prompt.toString());
         System.out.println("===============================");

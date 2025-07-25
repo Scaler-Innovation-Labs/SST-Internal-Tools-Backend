@@ -1,6 +1,8 @@
 package com.sstinternaltools.sstinternal_tools.policyChatbot.controller;
 
+import com.sstinternaltools.sstinternal_tools.policyChatbot.dtos.ChatResponse;
 import com.sstinternaltools.sstinternal_tools.policyChatbot.service.interfaces.ChatService;
+import jakarta.validation.constraints.NotNull;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -13,7 +15,7 @@ public class ChatController {
     }
 
     @PostMapping("/getAns")
-    public String getAns(@RequestParam String message) {
-        return chatService.getAns(message);
+    public ChatResponse getAns(@RequestParam String message,@RequestParam @NotNull String conversationId) {
+        return chatService.getAns(conversationId,message);
     }
 }

@@ -56,7 +56,7 @@ public class ChatBotDocServiceImpl implements ChatBotDocService {
                 throw new ResourceNotFoundException("No text extracted from file");
             }
 
-            TokenTextSplitter textSplitter = new TokenTextSplitter(250, 30, 20, 500, false);
+            TokenTextSplitter textSplitter = new TokenTextSplitter(150, 30, 20, 500, false);
             var chunks = textSplitter.apply(documents);
 
             System.out.println("Number of chunks created: " + chunks.size());
@@ -83,6 +83,7 @@ public class ChatBotDocServiceImpl implements ChatBotDocService {
         String filterExpression = "docId == '" + docId + "'";
         vectorStore.delete(filterExpression);
         cloudStorageService.deleteFile(doc.getFileUrl());
+        chatBotDocRepository.deleteById(docId);
     }
 
     @Override

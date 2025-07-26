@@ -35,11 +35,11 @@ public class ChatBotDocServiceImpl implements ChatBotDocService {
     }
 
     @Transactional
-    public Long saveDocumentToCloudStorage(ChatBotDocCreateDto createDto){
+    public ChatBotDoc saveDocumentToCloudStorage(ChatBotDocCreateDto createDto){
         String fileUrl=cloudStorageService.uploadFile(createDto.getFile());
         ChatBotDoc chatBotDoc=chatBotDocMapper.fromCreateDto(createDto,fileUrl);
         chatBotDocRepository.save(chatBotDoc);
-        return chatBotDoc.getId();
+        return chatBotDoc;
     }
 
     @Transactional
@@ -47,7 +47,7 @@ public class ChatBotDocServiceImpl implements ChatBotDocService {
     public void injectDocument(ChatBotDocCreateDto createDto) {
 
         try {
-            Long docId=saveDocumentToCloudStorage(createDto);
+            ChatBotDoc chatBotDoc=saveDocumentToCloudStorage(createDto);
             Resource resource = new InputStreamResource(createDto.getFile().getInputStream());
             PagePdfDocumentReader pdfReader = new PagePdfDocumentReader(resource);
 
@@ -65,8 +65,14 @@ public class ChatBotDocServiceImpl implements ChatBotDocService {
                 throw new ResourceNotFoundException("No chunks created from the document content");
             }
 
-            // Add metadata to each chunk before saving
-            chunks.forEach(doc -> doc.getMetadata().put("docId", docId.toString()));
+            for (int i = 0; i < chunks.size(); i++) {
+                var doc = chunks.get(i);
+                doc.getMetadata().put("docId", chatBotDoc.getId().toString());
+                doc.getMetadata().put("documentName", chatBotDoc.getDocumentName());
+                doc.getMetadata().put("fileUrl", chatBotDoc.getFileUrl());
+
+            }
+
             vectorStore.accept(chunks);
             System.out.println("VectorStore loaded with PDF content.");
 

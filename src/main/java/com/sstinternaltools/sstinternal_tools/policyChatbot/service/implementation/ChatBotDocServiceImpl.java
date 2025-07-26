@@ -79,6 +79,7 @@ public class ChatBotDocServiceImpl implements ChatBotDocService {
         } catch (Exception e) {
             e.printStackTrace();
             System.err.println("Error during document ingestion: " + e.getMessage());
+            throw new RuntimeException("Failed to inject document: likely due to invalid file content or encoding.");
         }
     }
 

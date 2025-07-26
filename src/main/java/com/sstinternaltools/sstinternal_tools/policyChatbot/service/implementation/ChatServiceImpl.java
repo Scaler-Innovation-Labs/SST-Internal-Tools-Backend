@@ -1,5 +1,6 @@
 package com.sstinternaltools.sstinternal_tools.policyChatbot.service.implementation;
 
+import com.sstinternaltools.sstinternal_tools.mess.exception.ResourceNotFoundException;
 import com.sstinternaltools.sstinternal_tools.policyChatbot.dtos.ChatResponse;
 import com.sstinternaltools.sstinternal_tools.policyChatbot.service.interfaces.ChatService;
 import org.springframework.ai.chat.client.ChatClient;
@@ -14,10 +15,8 @@ import org.springframework.ai.chat.prompt.PromptTemplate;
 import org.springframework.ai.document.Document;
 import org.springframework.ai.vectorstore.pgvector.PgVectorStore;
 import org.springframework.stereotype.Service;
-
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
@@ -56,16 +55,29 @@ public class ChatServiceImpl implements ChatService {
 
         // Retrieve relevant documents from vector store to build context
         List<Document> similarDocs = vectorStore.similaritySearch(message);
-        String context = similarDocs.stream()
-                .map(Document::getText)
-                .collect(Collectors.joining("\n"));
+
+        if(similarDocs == null || similarDocs.isEmpty()) {
+            throw new ResourceNotFoundException("I dont have information about this question");
+        }
+
+        List<Document> topDocs = similarDocs.stream().limit(5).collect(Collectors.toList());
+        String context = topDocs.stream()
+                .map(doc -> {
+                    String docName = doc.getMetadata().getOrDefault("documentName", "Unknown Document").toString();
+                    String fileUrl = doc.getMetadata().getOrDefault("fileUrl", "").toString();
+                    String page=doc.getMetadata().getOrDefault("page_number", "").toString();
+                    String citation = "[" + docName+ (page.isEmpty() ? "" : ", Page: " + page) + (fileUrl.isEmpty() ? "" : ", Link: " + fileUrl) + "]";
+                    return citation + "\n" + doc.getText();
+                }).collect(Collectors.joining("\n---\n"));
 
         System.out.println(context);
 
-        // Definedr system prompt to guide the assistant
+        // Defined system prompt to guide the assistant
         String systemPrompt = """
-               You are an expert assistant helping answer user questions based on provided context from documents, as well as prior conversation history with the user. Remember personal information shared by the user during this conversation and use it in answers.
-                                            If the answer is not found in the documents or conversation history, say: "I don’t have enough information to answer that question."
+              You are a helpful assistant for college policy questions. Use only the provided context and conversation history to answer. If you use information from a document, mention the document name, Page number, or file url all in the key value pair if available. If you don't know the answer
+              , say \\"I don’t have enough information to answer that question.
+              \\" Do not make up answers. If possible, suggest a follow-up question or offer to escalate to a human if the user needs more help.
+              \\nAlways cite the source document in your answer if you use it.
         """;
 
         // Build the prompt template with placeholders

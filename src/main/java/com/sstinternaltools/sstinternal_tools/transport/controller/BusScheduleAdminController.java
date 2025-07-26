@@ -11,6 +11,7 @@ import com.sstinternaltools.sstinternal_tools.transport.mapper.interfaces.BusDto
 import jakarta.validation.Valid;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
@@ -30,18 +31,21 @@ public class BusScheduleAdminController {
     }
 
     @PostMapping("/create")
+    @PreAuthorize("hasAnyRole('STUDENT_ADMIN','ADMIN','SUPER_ADMIN')")
     public ResponseEntity<BusScheduleResponseDto> createBusSchedule(@RequestBody @Valid BusScheduleCreateDto busScheduleCreateDto) {
         BusScheduleResponseDto responseDto = busScheduleFacade.createBusSchedule(busScheduleCreateDto);
         return ResponseEntity.ok(responseDto);
     }
 
     @PutMapping("/update/{scheduleId}")
+    @PreAuthorize("hasAnyRole('STUDENT_ADMIN','ADMIN','SUPER_ADMIN')")
     public ResponseEntity<BusScheduleResponseDto> updateBusSchedule(@RequestBody @Valid BusScheduleUpdateDto busScheduleUpdateDto,@PathVariable @Valid Long scheduleId) {
         BusScheduleResponseDto updateDto=busScheduleFacade.updateBusSchedule(busScheduleUpdateDto,scheduleId);
         return ResponseEntity.ok(updateDto);
     }
 
     @DeleteMapping("/delete/{scheduleId}")
+    @PreAuthorize("hasAnyRole('STUDENT_ADMIN','ADMIN','SUPER_ADMIN')")
     public ResponseEntity<String> deleteBusSchedule(@PathVariable @Valid Long scheduleId) {
         busScheduleFacade.deleteBusSchedule(scheduleId);
         return ResponseEntity.ok("Schedule is deleted");

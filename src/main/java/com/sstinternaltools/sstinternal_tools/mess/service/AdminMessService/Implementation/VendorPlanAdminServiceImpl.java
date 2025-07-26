@@ -49,7 +49,7 @@ public class VendorPlanAdminServiceImpl implements VendorPlanAdminService {
 
     @Override
     public VendorPlanResponseDto createVendorPlan(VendorPlanCreateDto vendorPlanCreateDto, Long vendorId) {
-        Vendor vendor = vendorRepository.findById(vendorId)
+        Vendor vendor = vendorRepository.findById(vendorPlanCreateDto.getVendorId())
                 .orElseThrow(() -> new ResourceNotFoundException("Vendor not found."));
         List<VendorPlan> vendorPlans = vendorPlanRepository.findByVendorId(vendorId);
         for (VendorPlan vendorPlan : vendorPlans) {

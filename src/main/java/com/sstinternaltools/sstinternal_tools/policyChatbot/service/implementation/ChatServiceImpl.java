@@ -70,7 +70,7 @@ public class ChatServiceImpl implements ChatService {
             // Update conversation history
             updateConversationHistory(conversationId, message, response);
 
-            return new ChatResponse(conversationId, response, historyMessages);
+            return new ChatResponse(conversationId, response);
 
         } catch (Exception e) {
             logger.error("Error processing chat request for conversation {}: {}", conversationId, e.getMessage(), e);

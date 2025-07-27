@@ -8,12 +8,10 @@ public class ChatResponse {
 
     private String conversationId;
     private String answer;
-    private List<Message> history;
 
-    public ChatResponse(String conversationId, String answer, List<Message> history) {
+    public ChatResponse(String conversationId, String answer) {
         this.conversationId = conversationId;
         this.answer = answer;
-        this.history = history;
     }
 
     public String getConversationId() {
@@ -32,11 +30,4 @@ public class ChatResponse {
         this.answer = answer;
     }
 
-    public List<Message> getHistory() {
-        return history;
-    }
-
-    public void setHistory(List<Message> history) {
-        this.history = history;
-    }
 }

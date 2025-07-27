@@ -1,8 +1,13 @@
 package com.sstinternaltools.sstinternal_tools.policyChatbot.service.implementation;
 
-import com.sstinternaltools.sstinternal_tools.mess.exception.ResourceNotFoundException;
 import com.sstinternaltools.sstinternal_tools.policyChatbot.dtos.ChatResponse;
+import com.sstinternaltools.sstinternal_tools.policyChatbot.exception.ChatbotServiceException;
+import com.sstinternaltools.sstinternal_tools.policyChatbot.exception.InvalidConversationException;
+import com.sstinternaltools.sstinternal_tools.policyChatbot.exception.LLMServiceException;
+import com.sstinternaltools.sstinternal_tools.policyChatbot.exception.VectorStoreException;
 import com.sstinternaltools.sstinternal_tools.policyChatbot.service.interfaces.ChatService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.ai.chat.messages.AssistantMessage;
 import org.springframework.ai.chat.messages.UserMessage;
@@ -14,6 +19,7 @@ import org.springframework.ai.chat.prompt.Prompt;
 import org.springframework.ai.chat.prompt.PromptTemplate;
 import org.springframework.ai.document.Document;
 import org.springframework.ai.vectorstore.pgvector.PgVectorStore;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Map;
@@ -22,9 +28,14 @@ import java.util.stream.Collectors;
 @Service
 public class ChatServiceImpl implements ChatService {
 
+    private final Logger logger = LoggerFactory.getLogger(ChatServiceImpl.class);
     private final ChatClient chatClient;
     private final PgVectorStore vectorStore;
     private final ChatMemory chatMemory;
+//    @Value("${chatbot.max-context-chunks:5}")
+//    private int maxContextChunks;
+//    @Value("${chatbot.max-conversation-history:20}")
+//    private int maxConversationHistory;
 
     public ChatServiceImpl(ChatClient.Builder chatClientBuilder,
                            PgVectorStore vectorStore,
@@ -42,83 +53,173 @@ public class ChatServiceImpl implements ChatService {
 
     @Override
     public ChatResponse getAns(String conversationId, String message) {
+        try {
 
-        final String finalConversationId = conversationId;
+            // Input validation
+            validateInput(conversationId, message);
 
-        // Get existing conversation history messages from chatMemory (Postgres)
-        List<Message> historyMessages = chatMemory.get(finalConversationId);
+            // Get conversation history
+            List<Message> historyMessages = getConversationHistory(conversationId);
 
-        // Build chat history string suitable for prompt
-        String chatHistory = historyMessages.stream()
-                .map(msg -> msg.getMessageType() + ": " + msg.getText())
-                .collect(Collectors.joining("\n"));
+            // Retrieve relevant context
+            String context = retrieveRelevantContext(message);
 
-        // Retrieve relevant documents from vector store to build context
-        List<Document> similarDocs = vectorStore.similaritySearch(message);
+            // Generate response
+            String response = generateResponse(message, historyMessages, context);
 
-        if(similarDocs == null || similarDocs.isEmpty()) {
-            throw new ResourceNotFoundException("I dont have information about this question");
+            // Update conversation history
+            updateConversationHistory(conversationId, message, response);
+
+            return new ChatResponse(conversationId, response, historyMessages);
+
+        } catch (Exception e) {
+            logger.error("Error processing chat request for conversation {}: {}", conversationId, e.getMessage(), e);
+            throw new ChatbotServiceException("Failed to process chat request", e);
+        }
+    }
+
+    private String retrieveRelevantContext(String message) {
+        try {
+            // Retrieve relevant documents from vector store
+            List<Document> similarDocs = vectorStore.similaritySearch(message);
+
+            if(similarDocs == null || similarDocs.isEmpty()) {
+                logger.info("No relevant documents found for query: {}", message);
+                return "No relevant policy documents found for this query.";
+            }
+
+//            // Filter by similarity threshold and limit chunks
+//            List<Document> topDocs = similarDocs.stream()
+//                    .limit(10)
+//                    .collect(Collectors.toList());
+
+            // Build context with metadata
+            return similarDocs.stream()
+                    .map(doc -> {
+                        String docName = doc.getMetadata().getOrDefault("documentName", "Unknown Document").toString();
+                        String page = doc.getMetadata().getOrDefault("page", "").toString();
+                        String fileUrl = doc.getMetadata().getOrDefault("fileUrl", "").toString();
+
+                        StringBuilder citation = new StringBuilder();
+                        citation.append("[").append(docName);
+                        if (!page.isEmpty()) citation.append(", Page: ").append(page);
+                        if (!fileUrl.isEmpty()) citation.append(", Link: ").append(fileUrl);
+                        citation.append("]");
+
+                        return citation.toString() + "\n" + doc.getText();
+                    })
+                    .collect(Collectors.joining("\n---\n"));
+
+        } catch (Exception e) {
+            logger.error("Error retrieving context: {}", e.getMessage(), e);
+            throw new VectorStoreException("Failed to retrieve relevant context", e);
+        }
+    }
+
+    private void validateInput(String conversationId, String message) {
+        if (conversationId == null || conversationId.trim().isEmpty()) {
+            throw new InvalidConversationException("Conversation ID cannot be null or empty");
         }
 
-        List<Document> topDocs = similarDocs.stream().limit(5).collect(Collectors.toList());
-        String context = topDocs.stream()
-                .map(doc -> {
-                    String docName = doc.getMetadata().getOrDefault("documentName", "Unknown Document").toString();
-                    String fileUrl = doc.getMetadata().getOrDefault("fileUrl", "").toString();
-                    String page=doc.getMetadata().getOrDefault("page_number", "").toString();
-                    String citation = "[" + docName+ (page.isEmpty() ? "" : ", Page: " + page) + (fileUrl.isEmpty() ? "" : ", Link: " + fileUrl) + "]";
-                    return citation + "\n" + doc.getText();
-                }).collect(Collectors.joining("\n---\n"));
+        if (message == null || message.trim().isEmpty()) {
+            throw new InvalidConversationException("Message cannot be null or empty");
+        }
 
-        System.out.println(context);
+        if (message.length() > 1000) {
+            throw new InvalidConversationException("Message too long. Maximum 1000 characters allowed.");
+        }
+    }
 
-        // Defined system prompt to guide the assistant
-        String systemPrompt = """
-              You are a helpful assistant for college policy questions. Use only the provided context and conversation history to answer. If you use information from a document, mention the document name, Page number, or file url all in the key value pair if available. If you don't know the answer
-              , say \\"I don’t have enough information to answer that question.
-              \\" Do not make up answers. If possible, suggest a follow-up question or offer to escalate to a human if the user needs more help.
-              \\nAlways cite the source document in your answer if you use it.
-        """;
+    private List<Message> getConversationHistory(String conversationId) {
+        try {
+            return chatMemory.get(conversationId);
+        } catch (Exception e) {
+            logger.warn("Failed to retrieve conversation history for {}: {}", conversationId, e.getMessage());
+            return List.of();
+        }
+    }
 
-        // Build the prompt template with placeholders
-        PromptTemplate promptTemplate = new PromptTemplate("""
-                {systemPrompt}
+    private String generateResponse(String message, List<Message> historyMessages, String context) {
+        try {
+            // Build optimized chat history
+            String chatHistory = buildOptimizedChatHistory(historyMessages);
 
-                Chat History:
-                {chat_history}
+            // Create enhanced system prompt
+            String systemPrompt = createEnhancedSystemPrompt();
 
-                Context:
-                {context}
+            // Build the prompt template
+            PromptTemplate promptTemplate = new PromptTemplate("""
+{systemPrompt}
 
-                User:
-                {user_input}
-                """);
+Chat History:
+{chat_history}
 
+Context:
+{context}
 
-        Prompt prompt = promptTemplate.create(Map.of(
-                "systemPrompt", systemPrompt,
-                "chat_history", chatHistory,
-                "context", context,
-                "user_input", message
-        ));
+User Question: {user_input}
 
+Please provide a clear, accurate, and helpful response based on the provided context and conversation history.
+""");
 
-        System.out.println("========= PROMPT TO LLM =========");
-        System.out.println(prompt.toString());
-        System.out.println("===============================");
+            // Create prompt
+            Prompt prompt = promptTemplate.create(Map.of(
+                    "systemPrompt", systemPrompt,
+                    "chat_history", chatHistory,
+                    "context", context,
+                    "user_input", message
+            ));
 
-        // Call the LLM via Spring AI ChatClient
-        var response = chatClient.prompt(prompt).call().content();
-        System.out.println(response);
+            // Call the LLM
+            var response = chatClient.prompt(prompt).call().content();
 
-        // Persist the user message and assistant response to chat memory
-        chatMemory.add(finalConversationId, List.of(
-                new UserMessage(message),
-                new AssistantMessage(response)
-        ));
+            if (response == null || response.trim().isEmpty()) {
+                throw new LLMServiceException("Received empty response from LLM");
+            }
 
-        // Return conversation ID, LLM response, and full conversation history
-        return new ChatResponse(finalConversationId, response, historyMessages);
+            return response;
+
+        } catch (Exception e) {
+            logger.error("Error generating response: {}", e.getMessage(), e);
+            throw new LLMServiceException("Failed to generate response", e);
+        }
+    }
+
+    private String buildOptimizedChatHistory(List<Message> historyMessages) {
+        if (historyMessages.isEmpty()) {
+            return "No previous conversation history.";
+        }
+
+        // Take only the last few messages to keep context manageable
+        int maxHistoryMessages = Math.min(historyMessages.size(), 10);
+        List<Message> recentMessages = historyMessages.subList(
+                Math.max(0, historyMessages.size() - maxHistoryMessages),
+                historyMessages.size()
+        );
+
+        return recentMessages.stream()
+                .map(msg -> msg.getMessageType() + ": " + msg.getText())
+                .collect(Collectors.joining("\n"));
+    }
+
+    private String createEnhancedSystemPrompt() {
+        return """
+         You are a helpful assistant for college policy questions. Use only the provided context and conversation history to answer. If you use information from a document, mention the document name, Page number, or file url all in the key value pair if available. If you don't know the answer
+                                      , say \\\\"I don’t have enough information to answer that question.
+                                      \\\\" Do not make up answers. If possible, suggest a follow-up question or offer to escalate to a human if the user needs more help.
+                                      \\\\nAlways cite the source document in your answer if you use it.
+""";
+    }
+
+    private void updateConversationHistory(String conversationId, String message, String response) {
+        try {
+            chatMemory.add(conversationId, List.of(
+                    new UserMessage(message),
+                    new AssistantMessage(response)
+            ));
+        } catch (Exception e) {
+            logger.warn("Failed to update conversation history for {}: {}", conversationId, e.getMessage());
+        }
     }
 }
 

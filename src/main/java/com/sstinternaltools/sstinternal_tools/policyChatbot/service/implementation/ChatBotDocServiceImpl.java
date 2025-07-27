@@ -48,6 +48,7 @@ public class ChatBotDocServiceImpl implements ChatBotDocService {
 
         try {
             ChatBotDoc chatBotDoc=saveDocumentToCloudStorage(createDto);
+            System.out.println(chatBotDoc.getFileUrl());
             Resource resource = new InputStreamResource(createDto.getFile().getInputStream());
             PagePdfDocumentReader pdfReader = new PagePdfDocumentReader(resource);
 

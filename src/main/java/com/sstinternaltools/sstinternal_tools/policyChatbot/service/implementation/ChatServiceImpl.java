@@ -88,16 +88,16 @@ public class ChatServiceImpl implements ChatService {
                 return "No relevant policy documents found for this query.";
             }
 
-//            // Filter by similarity threshold and limit chunks
-//            List<Document> topDocs = similarDocs.stream()
-//                    .limit(10)
-//                    .collect(Collectors.toList());
+            // Filter by similarity threshold and limit chunks
+            List<Document> topDocs = similarDocs.stream()
+                    .limit(10)
+                    .collect(Collectors.toList());
 
             // Build context with metadata
             return similarDocs.stream()
                     .map(doc -> {
                         String docName = doc.getMetadata().getOrDefault("documentName", "Unknown Document").toString();
-                        String page = doc.getMetadata().getOrDefault("page", "").toString();
+                        String page = doc.getMetadata().getOrDefault("page_number", "").toString();
                         String fileUrl = doc.getMetadata().getOrDefault("fileUrl", "").toString();
 
                         StringBuilder citation = new StringBuilder();
@@ -204,11 +204,21 @@ Please provide a clear, accurate, and helpful response based on the provided con
 
     private String createEnhancedSystemPrompt() {
         return """
-         You are a helpful assistant for college policy questions. Use only the provided context and conversation history to answer. If you use information from a document, mention the document name, Page number, or file url all in the key value pair if available. If you don't know the answer
-                                      , say \\\\"I don’t have enough information to answer that question.
-                                      \\\\" Do not make up answers. If possible, suggest a follow-up question or offer to escalate to a human if the user needs more help.
-                                      \\\\nAlways cite the source document in your answer if you use it.
-""";
+                     You are a helpful assistant for college policy questions. Use only the provided context and conversation history to answer. If you use information from a document, mention the document name, Page number, or file url all in the key value pair if available. If you don't know the answer
+                                                                  , say \\\\"I don’t have enough information to answer that question.
+                                                                  \\\\" Do not make up answers. If possible, suggest a follow-up question or offer to escalate to a human if the user needs more help.
+                                                                  \\\\nAlways cite the source document in your answer if you use it.
+
+                        Example Response:
+                
+                        The policy states that students must submit leave of absence requests at least two weeks prior to the semester start.
+                
+                        Source: \s
+                        * document_name: "Student Academic Handbook 2025" \s
+                        * page_number: 17 \s
+                        * url: "https://example.edu/handbook-2025.pdf"
+                
+       """;
     }
 
     private void updateConversationHistory(String conversationId, String message, String response) {

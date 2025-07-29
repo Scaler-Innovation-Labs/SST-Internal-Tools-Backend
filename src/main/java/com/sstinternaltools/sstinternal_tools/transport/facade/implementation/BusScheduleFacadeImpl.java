@@ -3,6 +3,7 @@ package com.sstinternaltools.sstinternal_tools.transport.facade.implementation;
 import com.sstinternaltools.sstinternal_tools.transport.dto.BusScheduleCreateDto;
 import com.sstinternaltools.sstinternal_tools.transport.dto.BusScheduleResponseDto;
 import com.sstinternaltools.sstinternal_tools.transport.dto.BusScheduleUpdateDto;
+import com.sstinternaltools.sstinternal_tools.transport.entity.BusSchedule;
 import com.sstinternaltools.sstinternal_tools.transport.facade.interfaces.BusScheduleFacade;
 import com.sstinternaltools.sstinternal_tools.transport.service.interfaces.BusScheduleService;
 import org.springframework.stereotype.Service;
@@ -18,20 +19,25 @@ public class BusScheduleFacadeImpl implements BusScheduleFacade {
     public BusScheduleFacadeImpl(BusScheduleService busScheduleService) {
         this.busScheduleService = busScheduleService;
     }
-
+    @Override
     public BusScheduleResponseDto createBusSchedule(BusScheduleCreateDto busScheduleCreateDto){
         return busScheduleService.createBusSchedule(busScheduleCreateDto);
     }
-
+    @Override
     public BusScheduleResponseDto updateBusSchedule(BusScheduleUpdateDto busScheduleUpdateDto,Long scheduleId){
         return busScheduleService.updateBusSchedule(busScheduleUpdateDto,scheduleId);
     }
-
+    @Override
     public void deleteBusSchedule(Long scheduleId){
         busScheduleService.deleteBusSchedule(scheduleId);
     }
-
-    public List<BusScheduleResponseDto> getBusSchedule(LocalDate date){
+    @Override
+    public List<BusSchedule> getBusSchedule(LocalDate date){
         return busScheduleService.getSchedulesForDate(date);
+    }
+
+    @Override
+    public List<BusSchedule> searchBusScheduleByDateRange(LocalDate start, LocalDate end) {
+        return busScheduleService.searchBusScheduleByDateRange(start, end);
     }
 }

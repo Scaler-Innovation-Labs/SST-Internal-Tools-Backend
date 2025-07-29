@@ -19,6 +19,8 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.List;
 
 @Component
 public class JwtFilter extends OncePerRequestFilter {
@@ -33,13 +35,27 @@ public class JwtFilter extends OncePerRequestFilter {
         this.myUserDetailsService = myUserDetailsService;
     }
 
+    // List of paths that don't require authentication
+    private final List<String> publicPaths = Arrays.asList(
+            "/auth",
+            "/api/auth/verify",
+            "/oauth2",
+            "/login",
+            "/error",
+            "/favicon.ico"
+    );
+
+    private boolean isPublicPath(String path) {
+        return publicPaths.stream().anyMatch(path::startsWith);
+    }
+
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
 
         String path = request.getRequestURI();
 
         // Skip filtering for auth endpoints
-        if (path.startsWith("/auth") || path.startsWith("/oauth2")) {
+        if (isPublicPath(path)) {
             filterChain.doFilter(request, response); // Skip JWT check
             return;
         }
@@ -54,11 +70,19 @@ public class JwtFilter extends OncePerRequestFilter {
             }
         }
 
+        if (token == null) {
+            response.setContentType("application/json");
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            response.getWriter().write("{\"error\":\"No access token found\"}");
+            return;
+        }
+
         final String userEmail;
 
         try {
             userEmail = jwtService.extractEmail(token);
         } catch (Exception e) {
+
             throw new JwtAuthenticationException("Invalid JWT token.");
         }
         

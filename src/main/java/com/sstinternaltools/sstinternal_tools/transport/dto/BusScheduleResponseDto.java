@@ -1,8 +1,11 @@
 package com.sstinternaltools.sstinternal_tools.transport.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.sstinternaltools.sstinternal_tools.transport.entity.BusStatus;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
+import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
@@ -15,24 +18,69 @@ public class BusScheduleResponseDto {
     private String destination;
     @NotNull(message = "Departure time cannot be blank")
     private LocalTime departureTime;
+    @NotNull(message = "Arrival time cannot be blank")
+    private LocalTime arrivalTime;
+    @NotNull(message = "Day cannot be blank")
+    private DayOfWeek dayofWeek;
+    @JsonFormat(pattern = "yyyy-MM-dd")
     @NotNull(message = "Date cannot be blank")
     private LocalDate date;
+    @NotNull(message="Bus Status cannot be blank")
+    private BusStatus busStatus;
+    @NotBlank(message = "Number of students boarded cannot be blank")
+    private int studentsBoarded;
 
-    public BusScheduleResponseDto(Long id, String source, String destination, LocalTime departureTime, LocalDate date) {
+    public BusScheduleResponseDto(Long id, String source, String destination, LocalTime departureTime,LocalTime arrivalTime,DayOfWeek dayofWeek, LocalDate date,BusStatus busStatus,int studentsBoarded) {
         this.id = id;
         this.source = source;
         this.destination = destination;
         this.departureTime = departureTime;
+        this.arrivalTime = arrivalTime;
+        this.dayofWeek = dayofWeek;
         this.date = date;
+        this.busStatus = busStatus;
+        this.studentsBoarded = studentsBoarded;
     }
 
     public BusScheduleResponseDto() {}
 
-    public @NotBlank(message = "Id cannot be blank") Long getId() {
+    public BusStatus getBusStatus() {
+        return busStatus;
+    }
+
+    public void setBusStatus(BusStatus busStatus) {
+        this.busStatus = busStatus;
+    }
+
+    public int getStudentsBoarded() {
+        return studentsBoarded;
+    }
+
+    public void setStudentsBoarded(int studentsBoarded) {
+        this.studentsBoarded = studentsBoarded;
+    }
+
+    public LocalTime getArrivalTime() {
+        return arrivalTime;
+    }
+
+    public void setArrivalTime( LocalTime arrivalTime) {
+        this.arrivalTime = arrivalTime;
+    }
+
+    public DayOfWeek getDayofWeek() {
+        return dayofWeek;
+    }
+
+    public void setDayofWeek(DayOfWeek dayofWeek) {
+        this.dayofWeek = dayofWeek;
+    }
+
+    public Long getId() {
         return id;
     }
 
-    public void setId(@NotBlank(message = "Id cannot be blank") Long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

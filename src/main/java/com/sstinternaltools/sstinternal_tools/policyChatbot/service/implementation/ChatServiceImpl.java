@@ -55,24 +55,17 @@ public class ChatServiceImpl implements ChatService {
     public ChatResponse getAns(String conversationId, String message) {
         try {
 
-            System.out.println("Step 1");
             // Input validation
             validateInput(conversationId, message);
-            System.out.println("Step 2");
 
             // Get conversation history
             List<Message> historyMessages = getConversationHistory(conversationId);
-            System.out.println("Step 3");
 
             // Retrieve relevant context
             String context = retrieveRelevantContext(message);
-            System.out.println("Step 4");
 
             // Generate response
             ChatResponse response = generateResponse(message, historyMessages, context,conversationId);
-
-            System.out.println(response);
-            System.out.println("Step 5");
 
             return response;
 
@@ -148,12 +141,8 @@ public class ChatServiceImpl implements ChatService {
             // Build optimized chat history
             String chatHistory = buildOptimizedChatHistory(historyMessages);
 
-            System.out.println("Step 4.1");
-
             // Create enhanced system prompt
             String systemPrompt = createEnhancedSystemPrompt();
-
-            System.out.println("Step 4.2");
 
             // Build the prompt template
             PromptTemplate promptTemplate = new PromptTemplate("""
@@ -182,24 +171,18 @@ Please provide a clear, accurate, and helpful response based on the provided con
                     "format",outputConverter.getFormat()
             ));
 
-            System.out.println("Step 4.4");
             // Call the LLM
             var response = chatClient.prompt(prompt).call().content();
 
-            System.out.println(response);
-
-            System.out.println("Step 4.5");
             // Update conversation history
             updateConversationHistory(conversationId, message, response);
-
-            System.out.println("Step 4.6");
 
             if (response == null || response.trim().isEmpty()) {
                 throw new LLMServiceException("Received empty response from LLM");
             }
 
             ChatResponse res = outputConverter.convert(response);
-            System.out.println("Step 4.7");
+
             return res;
 
         } catch (Exception e) {
@@ -270,7 +253,7 @@ Please provide a clear, accurate, and helpful response based on the provided con
                                       
                                        *Format : Use this for a policy answer found in the context.*
                                        
-                                         response: {A concise summary of the answer, under 30 words.}        
+                                         response: {A concise summary of the answer, under 100 words.}        
                                          document_name: "{document_name}"
                                          page_number: {page_number or "N/A"}
                                          file_url: "{url or "N/A"}"

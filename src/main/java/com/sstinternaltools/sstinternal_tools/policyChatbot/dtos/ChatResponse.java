@@ -1,33 +1,49 @@
 package com.sstinternaltools.sstinternal_tools.policyChatbot.dtos;
 
-import org.springframework.ai.chat.messages.Message;
-
-import java.util.List;
-
 public class ChatResponse {
 
-    private String conversationId;
-    private String answer;
+    private String response;
+    private String document_name;
+    private String page_number;
+    private String file_url;
 
-    public ChatResponse(String conversationId, String answer) {
-        this.conversationId = conversationId;
-        this.answer = answer;
+
+    public ChatResponse(String response, String file_url, String document_name, String page_number) {
+        this.response = response;
+        this.file_url = file_url;
+        this.document_name = document_name;
+        this.page_number = page_number;
     }
 
-    public String getConversationId() {
-        return conversationId;
+    public String getResponse() {
+        return response;
     }
 
-    public void setConversationId(String conversationId) {
-        this.conversationId = conversationId;
+    public void setResponse(String response) {
+        this.response = response;
     }
 
-    public String getAnswer() {
-        return answer;
+    public String getFile_url() {
+        return file_url;
     }
 
-    public void setAnswer(String answer) {
-        this.answer = answer;
+    public void setFile_url(String file_url) {
+        this.file_url = file_url;
     }
 
+    public String getDocument_name() {
+        return document_name;
+    }
+
+    public void setDocument_name(String document_name) {
+        this.document_name = document_name;
+    }
+
+    public String getPage_number() {
+        return page_number;
+    }
+
+    public void setPage_number(String page_number) {
+        this.page_number = page_number;
+    }
 }

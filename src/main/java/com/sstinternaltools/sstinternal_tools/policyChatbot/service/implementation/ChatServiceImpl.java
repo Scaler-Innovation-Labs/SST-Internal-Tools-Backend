@@ -17,9 +17,9 @@ import org.springframework.ai.chat.memory.repository.jdbc.JdbcChatMemoryReposito
 import org.springframework.ai.chat.messages.Message;
 import org.springframework.ai.chat.prompt.Prompt;
 import org.springframework.ai.chat.prompt.PromptTemplate;
+import org.springframework.ai.converter.BeanOutputConverter;
 import org.springframework.ai.document.Document;
 import org.springframework.ai.vectorstore.pgvector.PgVectorStore;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Map;
@@ -55,22 +55,26 @@ public class ChatServiceImpl implements ChatService {
     public ChatResponse getAns(String conversationId, String message) {
         try {
 
+            System.out.println("Step 1");
             // Input validation
             validateInput(conversationId, message);
+            System.out.println("Step 2");
 
             // Get conversation history
             List<Message> historyMessages = getConversationHistory(conversationId);
+            System.out.println("Step 3");
 
             // Retrieve relevant context
             String context = retrieveRelevantContext(message);
+            System.out.println("Step 4");
 
             // Generate response
-            String response = generateResponse(message, historyMessages, context);
+            ChatResponse response = generateResponse(message, historyMessages, context,conversationId);
 
-            // Update conversation history
-            updateConversationHistory(conversationId, message, response);
+            System.out.println(response);
+            System.out.println("Step 5");
 
-            return new ChatResponse(conversationId, response);
+            return response;
 
         } catch (Exception e) {
             logger.error("Error processing chat request for conversation {}: {}", conversationId, e.getMessage(), e);
@@ -139,13 +143,17 @@ public class ChatServiceImpl implements ChatService {
         }
     }
 
-    private String generateResponse(String message, List<Message> historyMessages, String context) {
+    private ChatResponse generateResponse(String message, List<Message> historyMessages, String context,String conversationId) {
         try {
             // Build optimized chat history
             String chatHistory = buildOptimizedChatHistory(historyMessages);
 
+            System.out.println("Step 4.1");
+
             // Create enhanced system prompt
             String systemPrompt = createEnhancedSystemPrompt();
+
+            System.out.println("Step 4.2");
 
             // Build the prompt template
             PromptTemplate promptTemplate = new PromptTemplate("""
@@ -159,25 +167,40 @@ Context:
 
 User Question: {user_input}
 
+Format : {format}
+
 Please provide a clear, accurate, and helpful response based on the provided context and conversation history.
 """);
-
+            System.out.println("Step 4.3");
+            BeanOutputConverter<ChatResponse> outputConverter = new BeanOutputConverter<>(ChatResponse.class);
             // Create prompt
             Prompt prompt = promptTemplate.create(Map.of(
                     "systemPrompt", systemPrompt,
                     "chat_history", chatHistory,
                     "context", context,
-                    "user_input", message
+                    "user_input", message,
+                    "format",outputConverter.getFormat()
             ));
 
+            System.out.println("Step 4.4");
             // Call the LLM
             var response = chatClient.prompt(prompt).call().content();
+
+            System.out.println(response);
+
+            System.out.println("Step 4.5");
+            // Update conversation history
+            updateConversationHistory(conversationId, message, response);
+
+            System.out.println("Step 4.6");
 
             if (response == null || response.trim().isEmpty()) {
                 throw new LLMServiceException("Received empty response from LLM");
             }
 
-            return response;
+            ChatResponse res = outputConverter.convert(response);
+            System.out.println("Step 4.7");
+            return res;
 
         } catch (Exception e) {
             logger.error("Error generating response: {}", e.getMessage(), e);
@@ -204,20 +227,60 @@ Please provide a clear, accurate, and helpful response based on the provided con
 
     private String createEnhancedSystemPrompt() {
         return """
-                     You are a helpful assistant for college policy questions. Use only the provided context and conversation history to answer. If you use information from a document, mention the document name, Page number, or file url all in the key value pair if available. If you don't know the answer
-                                                                  , say \\\\"I don’t have enough information to answer that question.
-                                                                  \\\\" Do not make up answers. If possible, suggest a follow-up question or offer to escalate to a human if the user needs more help.
-                                                                  \\\\nAlways cite the source document in your answer if you use it.
-
-                        Example Response:
-                
-                        The policy states that students must submit leave of absence requests at least two weeks prior to the semester start.
-                
-                        Source: \s
-                        * document_name: "Student Academic Handbook 2025" \s
-                        * page_number: 17 \s
-                        * url: "https://example.edu/handbook-2025.pdf"
-                
+               ### *1. Core Identity & Persona*
+                                      
+                                       You are a "Helpful College Assistant." Your primary goal is to provide precise answers to policy questions using provided documents, but you can also handle general conversation. You operate in one of two modes depending on the user's query.
+                                      
+                                       *   *Policy Expert Mode:* When asked a question about college policies, rules, or procedures, you are precise, factual, and rely *only* on the provided context.
+                                       *   *General Assistant Mode:* When greeted or asked a general question, you are friendly, helpful, and conversational.
+                                      
+                                       ### *2. Guiding Principles*
+                                      
+                                       1.  *Intent-First Principle:* Your first action is to determine the user's intent. Is it a policy question or a general query/greeting?
+                                       2.  *Brevity is Key:* All responses you generate, regardless of type, *must be under 30 words*.
+                                       3.  *Policy Mode Rules (Non-Negotiable):*
+                                           *   *Absolute Context Adherence:* You must *ONLY* use the information contained within the provided documents.
+                                           *   *Single Source Citation:* You must cite only the *single best source* for your answer.
+                                           *   *Strict Formatting:* You *MUST* use Format A or Format B for all policy-related answers.
+                                       4.  *General Mode Rules:*
+                                           *   *Be Brief and Friendly:* Respond conversationally but stay under the 30-word limit.
+                                           *   *Use General Knowledge:* You may use your pre-existing knowledge for non-policy questions.
+                                           *   *Use Conversational Formatting:* You *MUST* use Format C for all general responses.
+                                      
+                                       ### *3. Step-by-Step Operational Workflow*
+                                      
+                                       1.  *Classify Query Intent:*
+                                           *   *If it is not the special case, proceed with standard classification:*
+                                               *   If the query is about rules, regulations, academic procedures, etc., activate *Policy Expert Mode* and proceed to Step 2.
+                                               *   If the query is a greeting or a general knowledge question, activate *General Assistant Mode* and proceed to Step 3.
+                                      
+                                       2.  *Policy Expert Workflow:*
+                                           *   *A. Scan the Context:* Thoroughly search all provided documents.
+                                           *   *B. Synthesize the Answer:*
+                                               *   *If found:* Select the *single best source* document. Summarize the answer in *under 30 words. Extract the citation details and the full supporting quote. Use **Format A*.
+                                               *   *If not found:* Do not attempt to answer. Immediately use *Format B*.
+                                      
+                                       3.  *General Assistant Workflow:*
+                                           *   *A. Formulate Response:* Create a friendly, conversational response that is *under 30 words*.
+                                           *   *B. Format the Output:* Present the response using *Format C*.
+                                      
+                                       ### *4. Strict Output Formats (Mandatory)*
+                                      
+                                       You must respond in the following formats.
+                                      
+                                       *Format : Use this for a policy answer found in the context.*
+                                       
+                                         response: {A concise summary of the answer, under 30 words.}        
+                                         document_name: "{document_name}"
+                                         page_number: {page_number or "N/A"}
+                                         file_url: "{url or "N/A"}"
+                                         
+                                       Example Response:
+                                     
+                                       * response :The policy states that students must submit leave of absence requests at least two weeks prior to the semester start.
+                                       * document_name: "Student Academic Handbook 2025" 
+                                       * page_number: 17 
+                                       * url: "https://example.edu/handbook-2025.pdf"                        
        """;
     }
 
